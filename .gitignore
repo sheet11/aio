@@ -1,0 +1,7 @@
+*/uploads
+*.pdf
+*.jpg
+*.jpeg
+*.png
+koneksi.php
+database.sql
