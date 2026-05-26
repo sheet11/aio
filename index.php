@@ -13,8 +13,6 @@ if (isset($db_connection_error)) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     // Collect and sanitize/validate required fields
-    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
     $firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
     $lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
     $dob = isset($_POST['dob']) ? trim($_POST['dob']) : '';
@@ -31,66 +29,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     // Handle optional fields: convert empty strings to NULL to avoid database corruption or wrong inputs
     $currentLocation = (isset($_POST['currentLocation']) && trim($_POST['currentLocation']) !== '') ? trim($_POST['currentLocation']) : null;
     $gpa = (isset($_POST['gpa']) && trim($_POST['gpa']) !== '') ? trim($_POST['gpa']) : null;
-    $program2 = (isset($_POST['program2']) && trim($_POST['program2']) !== '') ? trim($_POST['program2']) : null;
-    $scholarship = (isset($_POST['scholarship']) && trim($_POST['scholarship']) !== '') ? trim($_POST['scholarship']) : null;
     $englishProficiency = (isset($_POST['englishProficiency']) && trim($_POST['englishProficiency']) !== '') ? trim($_POST['englishProficiency']) : null;
     $referral = (isset($_POST['referral']) && trim($_POST['referral']) !== '') ? trim($_POST['referral']) : null;
 
     // Check mandatory fields
     if (empty($firstName) || empty($lastName) || empty($dob) || empty($gender) || empty($nationality) || 
         empty($passport) || empty($email) || empty($phone) || empty($educationLevel) || 
-        empty($previousSchool) || empty($program1) || empty($sop) || empty($username) || empty($password)) {
+        empty($previousSchool) || empty($program1) || empty($sop)) {
         
         $message = "Please fill in all required fields marked with an asterisk (*).";
         $message_type = "error";
     } else {
-        // Check if username is already taken
-        $check_sql = "SELECT id FROM tb_interstudent WHERE username = ?";
-        if ($stmt_check = mysqli_prepare($conn, $check_sql)) {
-            mysqli_stmt_bind_param($stmt_check, "s", $username);
-            mysqli_stmt_execute($stmt_check);
-            mysqli_stmt_store_result($stmt_check);
+        // Insert into database using Secure Prepared Statement targeting the live table 'tb_interstudent'
+        $sql = "INSERT INTO tb_interstudent (
+                    first_name, last_name, dob, gender, nationality, passport, email, phone, 
+                    current_location, education_level, gpa, previous_school, program1, 
+                    english_proficiency, sop, referral
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        if ($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "ssssssssssssssss", 
+                $firstName, $lastName, $dob, $gender, $nationality, $passport, $email, $phone, 
+                $currentLocation, $educationLevel, $gpa, $previousSchool, $program1, 
+                $englishProficiency, $sop, $referral
+            );
             
-            if (mysqli_stmt_num_rows($stmt_check) > 0) {
-                $message = "Username is already taken. Please choose another one.";
-                $message_type = "error";
-                mysqli_stmt_close($stmt_check);
+            if (mysqli_stmt_execute($stmt)) {
+                $message = "Your registration has been submitted successfully!";
+                $message_type = "success";
             } else {
-                mysqli_stmt_close($stmt_check);
-                
-                // Hash password securely using standard secure BCRYPT algorithm
-                $passwordHash = password_hash($password, PASSWORD_BCRYPT);
-                
-                // Insert into database using Secure Prepared Statement targeting the live table 'tb_interstudent'
-                $sql = "INSERT INTO tb_interstudent (
-                            username, password, first_name, last_name, dob, gender, nationality, passport, email, phone, 
-                            current_location, education_level, gpa, previous_school, program1, program2, 
-                            scholarship, english_proficiency, sop, referral
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                
-                if ($stmt = mysqli_prepare($conn, $sql)) {
-                    mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", 
-                        $username, $passwordHash, $firstName, $lastName, $dob, $gender, $nationality, $passport, $email, $phone, 
-                        $currentLocation, $educationLevel, $gpa, $previousSchool, $program1, $program2, 
-                        $scholarship, $englishProficiency, $sop, $referral
-                    );
-                    
-                    if (mysqli_stmt_execute($stmt)) {
-                        $message = "Your registration has been submitted successfully! You can now <a href='login.php' style='font-weight: 700; text-decoration: underline; color: #008080;'>Login here</a> to access your Student Dashboard, upload your documents, and print your registration card.";
-                        $message_type = "success";
-                    } else {
-                        $message = "Oops! Something went wrong while saving your data: " . mysqli_stmt_error($stmt);
-                        $message_type = "error";
-                    }
-                    
-                    mysqli_stmt_close($stmt);
-                } else {
-                    $message = "Database prepared statement failed: " . mysqli_error($conn);
-                    $message_type = "error";
-                }
+                $message = "Oops! Something went wrong while saving your data: " . mysqli_stmt_error($stmt);
+                $message_type = "error";
             }
+            
+            mysqli_stmt_close($stmt);
         } else {
-            $message = "Database prepared statement check failed: " . mysqli_error($conn);
+            $message = "Database prepared statement failed: " . mysqli_error($conn);
             $message_type = "error";
         }
     }
@@ -98,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,13 +80,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
-            --primary: #008080; /* Teal brand color */
+            --primary: #008080;
+            /* Teal brand color */
             --primary-dark: #006666;
             --secondary: #f4fbfb;
             --text-dark: #2d3748;
@@ -142,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
             z-index: 1000;
             display: flex;
             justify-content: space-between;
@@ -231,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
         .hero-image img {
             width: 100%;
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         /* Section Global Settings */
@@ -271,7 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
             border-color: var(--primary);
         }
 
@@ -312,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
             background: var(--white);
             border-radius: 24px;
             padding: 3.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
             display: flex;
             gap: 3rem;
             align-items: center;
@@ -348,12 +325,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
 
         /* Form Registration Section */
         .form-container {
-            max-width: 850px !important; /* Increased width to perfectly host multi-column rows */
+            max-width: 850px !important;
+            /* Increased width to perfectly host multi-column rows */
             margin: 0 auto;
             background: var(--white);
             padding: 3.5rem;
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
         }
 
@@ -484,47 +462,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
             gap: 12px;
             animation: slideDown 0.4s ease-out;
         }
+
         .alert-success {
             background-color: #e6fffa;
             border: 1px solid #b2f5ea;
             color: #008080;
         }
+
         .alert-error {
             background-color: #fff5f5;
             border: 1px solid #fed7d7;
             color: #c53030;
         }
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        <blade keyframes|%20slideDown%20%7B%0D>from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
         }
 
         /* Responsive Design */
-        @media (max-width: 968px) {
-            nav { padding: 1.2rem 5%; }
-            .nav-links { gap: 1.5rem; }
-            .hero { flex-direction: column; text-align: center; padding-top: 8rem; }
-            .hero-content { max-width: 100%; margin-bottom: 3rem; }
-            .hero-image { max-width: 80%; }
-            .scholarship-box { flex-direction: column; padding: 2rem; }
-            .benefits-grid { grid-template-columns: 1fr; }
-            .form-container { padding: 2rem; }
+        <blade media|%20(max-width%3A%20968px)%20%7B%0D>nav {
+            padding: 1.2rem 5%;
         }
 
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr; /* Switch to single column on mobile views */
-                gap: 0;
-            }
+        .nav-links {
+            gap: 1.5rem;
+        }
+
+        .hero {
+            flex-direction: column;
+            text-align: center;
+            padding-top: 8rem;
+        }
+
+        .hero-content {
+            max-width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .hero-image {
+            max-width: 80%;
+        }
+
+        .scholarship-box {
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .benefits-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-container {
+            padding: 2rem;
+        }
+        }
+
+        <blade media|%20(max-width%3A%20768px)%20%7B%0D>.form-row {
+            grid-template-columns: 1fr;
+            /* Switch to single column on mobile views */
+            gap: 0;
+        }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navigation Bar -->
@@ -534,9 +542,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
         </a>
         <ul class="nav-links">
             <li><a href="#requirements">Requirements</a></li>
-            <li><a href="#scholarship">Scholarships</a></li>
+            <li><a href="#facilities">Campus Facilities</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="login.php" style="color: var(--primary); font-weight: 600; text-decoration: none; padding: 0.5rem 1rem;"><i class="fa-solid fa-right-to-bracket"></i> Login Portal</a></li>
             <li><a href="#register" class="btn-nav">Apply Now</a></li>
         </ul>
     </nav>
@@ -545,11 +552,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     <section class="hero">
         <div class="hero-content">
             <h1>Start Your Healthcare Career Journey in <span>Indonesia</span></h1>
-            <p>Poltekkes Kemenkes Bengkulu offers world-class health education modules tailored for global environments. Join our diverse international community today.</p>
-            <a href="#register" class="btn-nav" style="padding: 1rem 2.5rem; font-size: 1rem; text-align:center; display:inline-block;">Online Application Form</a>
+            <p>Poltekkes Kemenkes Bengkulu offers world-class health education modules tailored for global environments.
+                Join our diverse international community today.</p>
+            <a href="#register" class="btn-nav"
+                style="padding: 1rem 2.5rem; font-size: 1rem; text-align:center; display:inline-block;">Online
+                Application Form</a>
         </div>
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80" alt="Medical Students">
+            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80"
+                alt="Medical Students">
         </div>
     </section>
 
@@ -589,21 +600,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
         </div>
     </section>
 
-    <!-- Scholarship Section -->
-    <section id="scholarship">
+    <!-- Campus Facilities Section -->
+    <section id="facilities">
         <div class="section-title">
-            <h2>International Scholarships</h2>
-            <p>Financial aids designed to support outstanding global talents</p>
+            <h2>Campus Facilities</h2>
+            <p>Experience a conducive learning environment with our modern facilities</p>
         </div>
         <div class="scholarship-box">
             <div class="scholarship-info">
-                <h3>Poltekkes Bengkulu Global Excellence Fellowship</h3>
-                <p>This program is granted annually to top-performing international students evaluating academic merit and extra-curricular achievements.</p>
+                <h3>World-Class Learning Infrastructure</h3>
+                <p>We provide state-of-the-art facilities to ensure our students get the best practical and theoretical learning experience.</p>
                 <div class="benefits-grid">
-                    <div class="benefit-item"><i class="fa-solid fa-circle-check"></i> 100% Full Tuition Waiver</div>
-                    <div class="benefit-item"><i class="fa-solid fa-circle-check"></i> Monthly Living Allowance</div>
-                    <div class="benefit-item"><i class="fa-solid fa-circle-check"></i> Free Student Accommodation</div>
-                    <div class="benefit-item"><i class="fa-solid fa-circle-check"></i> Free Indonesian Language Support</div>
+                    <div class="benefit-item"><i class="fa-solid fa-flask"></i> Modern Health Laboratories</div>
+                    <div class="benefit-item"><i class="fa-solid fa-book-open"></i> Comprehensive Library</div>
+                    <div class="benefit-item"><i class="fa-solid fa-wifi"></i> High-Speed Campus Wi-Fi</div>
+                    <div class="benefit-item"><i class="fa-solid fa-bed"></i> Comfortable Student Dormitories</div>
+                    <div class="benefit-item"><i class="fa-solid fa-dumbbell"></i> Sports & Recreation Center</div>
+                    <div class="benefit-item"><i class="fa-solid fa-utensils"></i> Student Cafeteria</div>
                 </div>
             </div>
         </div>
@@ -616,32 +629,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
             <p>Please fill out the form completely. Fields marked with an asterisk (*) are required.</p>
         </div>
         <div class="form-container">
-            
+
             <!-- Dynamic Alert Box for PHP Response -->
             <?php if (!empty($message)): ?>
-                <div class="alert alert-<?php echo $message_type; ?>">
-                    <?php if ($message_type == 'success'): ?>
-                        <i class="fa-solid fa-circle-check" style="font-size: 1.25rem;"></i>
-                    <?php else: ?>
-                        <i class="fa-solid fa-circle-xmark" style="font-size: 1.25rem;"></i>
-                    <?php endif; ?>
-                    <div><?php echo htmlspecialchars($message); ?></div>
-                </div>
+            <div class="alert alert-<?php echo $message_type; ?>">
+                <?php if ($message_type == 'success'): ?>
+                <i class="fa-solid fa-circle-check" style="font-size: 1.25rem;"></i>
+                <?php else: ?>
+                <i class="fa-solid fa-circle-xmark" style="font-size: 1.25rem;"></i>
+                <?php endif; ?>
+                <div><?php echo htmlspecialchars($message); ?></div>
+            </div>
             <?php endif; ?>
 
             <form id="admissionForm" action="index.php#register" method="POST">
-                
+
                 <!-- SECTION 1: Personal Information -->
                 <div class="form-section">
                     <h3 class="section-subtitle"><i class="fa-solid fa-user"></i> Personal Information</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="John" required>
+                            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="John"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Doe" required>
+                            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Doe"
+                                required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -662,11 +677,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nationality">Nationality / Country of Origin *</label>
-                            <input type="text" id="nationality" name="nationality" class="form-control" placeholder="e.g., Malaysia, Timor Leste" required>
+                            <input type="text" id="nationality" name="nationality" class="form-control"
+                                placeholder="e.g., Malaysia, Timor Leste" required>
                         </div>
                         <div class="form-group">
                             <label for="passport">Passport Number *</label>
-                            <input type="text" id="passport" name="passport" class="form-control" placeholder="A1234567" required>
+                            <input type="text" id="passport" name="passport" class="form-control" placeholder="A1234567"
+                                required>
                         </div>
                     </div>
                 </div>
@@ -677,93 +694,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="johndoe@example.com" required>
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="johndoe@example.com" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">WhatsApp / Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="+62 812-3456-7890" required>
+                            <input type="tel" id="phone" name="phone" class="form-control"
+                                placeholder="+62 812-3456-7890" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="currentLocation">Current City & Country</label>
-                        <input type="text" id="currentLocation" name="currentLocation" class="form-control" placeholder="Kuala Lumpur, Malaysia">
+                        <input type="text" id="currentLocation" name="currentLocation" class="form-control"
+                            placeholder="Kuala Lumpur, Malaysia">
                     </div>
                 </div>
 
-                <!-- SECTION 3: Academic Background -->
-                <div class="form-section">
-                    <h3 class="section-subtitle"><i class="fa-solid fa-graduation-cap"></i> Academic Background</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="educationLevel">Highest Education Level *</label>
-                            <select id="educationLevel" name="educationLevel" class="form-control" required>
-                                <option value="" disabled selected>— Select —</option>
-                                <option value="High School / Senior Secondary">High School / Senior Secondary</option>
-                                <option value="Diploma (D-I / D-II / D-III)">Diploma (D-I / D-II / D-III)</option>
-                                <option value="Bachelor's Degree (S-1 / D-IV)">Bachelor's Degree (S-1 / D-IV)</option>
-                                <option value="Master's Degree (S-2)">Master's Degree (S-2)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="gpa">GPA / Final Grade</label>
-                            <input type="text" id="gpa" name="gpa" class="form-control" placeholder="e.g., 3.75 or 85%">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="previousSchool">Name of Last School / University *</label>
-                        <input type="text" id="previousSchool" name="previousSchool" class="form-control" placeholder="Global Health Academy" required>
-                    </div>
-                </div>
 
                 <!-- SECTION 4: Program & Requirements -->
                 <div class="form-section">
-                    <h3 class="section-subtitle"><i class="fa-solid fa-book-medical"></i> Program Selection & Preferences</h3>
+                    <h3 class="section-subtitle"><i class="fa-solid fa-book-medical"></i> Program Selection &
+                        Preferences</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="program1">1st Choice Program *</label>
+                            <label for="program1">Study Program *</label>
                             <select id="program1" name="program1" class="form-control" required>
                                 <option value="" disabled selected>— Select Program —</option>
-                                <option value="D-III Nursing">D-III Nursing</option>
-                                <option value="D-IV Nursing">D-IV Nursing</option>
-                                <option value="D-III Dental Health">D-III Dental Health</option>
-                                <option value="D-III Nutrition & Dietetics">D-III Nutrition & Dietetics</option>
-                                <option value="D-IV Nutrition & Dietetics">D-IV Nutrition & Dietetics</option>
-                                <option value="D-III Medical Laboratory">D-III Medical Laboratory</option>
-                                <option value="D-III Physiotherapy">D-III Physiotherapy</option>
-                                <option value="D-IV Physiotherapy">D-IV Physiotherapy</option>
-                                <option value="D-III Environmental Health">D-III Environmental Health</option>
-                                <option value="D-III Optics & Optometry">D-III Optics & Optometry</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="program2">2nd Choice Program</label>
-                            <select id="program2" name="program2" class="form-control">
-                                <option value="" selected>— Select Program (optional) —</option>
-                                <option value="D-III Nursing">D-III Nursing</option>
-                                <option value="D-IV Nursing">D-IV Nursing</option>
-                                <option value="D-III Dental Health">D-III Dental Health</option>
-                                <option value="D-III Nutrition & Dietetics">D-III Nutrition & Dietetics</option>
-                                <option value="D-IV Nutrition & Dietetics">D-IV Nutrition & Dietetics</option>
-                                <option value="D-III Medical Laboratory">D-III Medical Laboratory</option>
-                                <option value="D-III Physiotherapy">D-III Physiotherapy</option>
-                                <option value="D-IV Physiotherapy">D-IV Physiotherapy</option>
-                                <option value="D-III Environmental Health">D-III Environmental Health</option>
-                                <option value="D-III Optics & Optometry">D-III Optics & Optometry</option>
+                                <option value="Bachelor Promosi Kesehatan">Bachelor Promosi Kesehatan</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="scholarship">Scholarship Applied For</label>
-                            <select id="scholarship" name="scholarship" class="form-control">
-                                <option value="" disabled selected>— Select —</option>
-                                <option value="DIKE Scholarship (Ministry of Health)">DIKE Scholarship (Ministry of Health)</option>
-                                <option value="Poltekkes Excellence Award">Poltekkes Excellence Award</option>
-                                <option value="KNB Scholarship (DIKTI)">KNB Scholarship (DIKTI)</option>
-                                <option value="Bilateral Agreement Scholarship">Bilateral Agreement Scholarship</option>
-                                <option value="Self-funded (no scholarship)">Self-funded (no scholarship)</option>
-                            </select>
-                        </div>
+
                         <div class="form-group">
                             <label for="englishProficiency">English Proficiency Level</label>
                             <select id="englishProficiency" name="englishProficiency" class="form-control">
@@ -773,38 +735,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                                 <option value="TOEFL ITP 500–549">TOEFL ITP 500–549</option>
                                 <option value="TOEFL ITP 550+">TOEFL ITP 550+</option>
                                 <option value="Other Certificate">Other Certificate</option>
-                                <option value="No Certificate (applying for waiver)">No Certificate (applying for waiver)</option>
+                                <option value="No Certificate (applying for waiver)">No Certificate (applying for
+                                    waiver)</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="sop">Statement of Purpose *</label>
-                        <textarea id="sop" name="sop" rows="4" class="form-control" placeholder="Briefly describe your motivation to study at Poltekkes Bengkulu..." required style="resize: vertical; min-height: 100px;"></textarea>
+                        <textarea id="sop" name="sop" rows="4" class="form-control"
+                            placeholder="Briefly describe your motivation to study at Poltekkes Bengkulu..." required
+                            style="resize: vertical; min-height: 100px;"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="referral">How did you hear about us?</label>
-                        <input type="text" id="referral" name="referral" class="form-control" placeholder="e.g., Social Media, Embassy, Friends">
+                        <input type="text" id="referral" name="referral" class="form-control"
+                            placeholder="e.g., Social Media, Embassy, Friends">
                     </div>
                 </div>
 
-                <!-- SECTION 5: Account Credentials -->
-                <div class="form-section">
-                    <h3 class="section-subtitle"><i class="fa-solid fa-lock"></i> Account Credentials</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="username">Choose Username *</label>
-                            <input type="text" id="username" name="username" class="form-control" placeholder="Choose a unique username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Choose Password *</label>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Create a strong password" required>
-                        </div>
-                    </div>
-                    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: -0.5rem; display: flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i>
-                        These credentials will allow you to log in to your dashboard to upload documents and print your admission card.
-                    </p>
-                </div>
+
 
                 <button type="submit" class="btn-submit">Submit Registration</button>
             </form>
@@ -819,11 +768,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                 <p>Jl. Indragiri No.3, Padang Harapan, Kota Bengkulu, Indonesia</p>
             </div>
             <div class="contact-links">
-                <a href="mailto:international.admission@poltekkesbengkulu.ac.id"><i class="fa-solid fa-envelope"></i> Email Us</a>
-                <a href="https://wa.me/6281234567890" target="_blank"><i class="fa-brands fa-whatsapp"></i> International Desk (WhatsApp)</a>
+                <a href="mailto:international.admission@poltekkesbengkulu.ac.id"><i class="fa-solid fa-envelope"></i>
+                    Email Us</a>
+                <a href="https://wa.me/6281234567890" target="_blank"><i class="fa-brands fa-whatsapp"></i>
+                    International Desk (WhatsApp)</a>
             </div>
         </div>
-        <div style="text-align: center; margin-top: 3rem; color: #718096; font-size: 0.85rem; border-top: 1px solid #2d3748; padding-top: 1.5rem;">
+        <div
+            style="text-align: center; margin-top: 3rem; color: #718096; font-size: 0.85rem; border-top: 1px solid #2d3748; padding-top: 1.5rem;">
             &copy; 2026 Poltekkes Kemenkes Bengkulu. All Rights Reserved.
         </div>
     </footer>
@@ -832,7 +784,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     <script>
         const form = document.getElementById('admissionForm');
         const submitBtn = form.querySelector('.btn-submit');
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             submitBtn.disabled = true;
             submitBtn.innerText = 'Submitting your application...';
             submitBtn.style.opacity = '0.7';
@@ -840,4 +792,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
         });
     </script>
 </body>
+
 </html>

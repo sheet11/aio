@@ -5,8 +5,6 @@
 
 CREATE TABLE IF NOT EXISTS `tb_interstudent` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `username` VARCHAR(50) NOT NULL UNIQUE,
-    `password` VARCHAR(255) NOT NULL,
     `first_name` VARCHAR(50) NOT NULL,
     `last_name` VARCHAR(50) NOT NULL,
     `dob` DATE NOT NULL,
@@ -20,8 +18,6 @@ CREATE TABLE IF NOT EXISTS `tb_interstudent` (
     `gpa` VARCHAR(20) DEFAULT NULL,
     `previous_school` VARCHAR(150) NOT NULL,
     `program1` VARCHAR(100) NOT NULL,
-    `program2` VARCHAR(100) DEFAULT NULL,
-    `scholarship` VARCHAR(100) DEFAULT NULL,
     `english_proficiency` VARCHAR(100) DEFAULT NULL,
     `sop` TEXT NOT NULL,
     `referral` VARCHAR(150) DEFAULT NULL,
