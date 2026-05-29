@@ -1,920 +1,633 @@
-Jangan bingung, mari kita selesaikan ini bersama-sama. 😄
-
-Saya mengerti maksud Anda. Anda ingin mengganti bagian **Campus Facilities** yang ada di dalam file `index.php` yang Anda bawa, dengan data fasilitas lengkap versi bahasa Inggris yang diambil dari dokumen **Profil Poltekkes Bengkulu 2026 - Revisi.pptx**.
-
-Di bawah ini adalah kode utuh `index.php` Anda yang sudah saya perbarui. Bagian fasilitasnya sekarang jauh lebih informatif, profesional, dan mudah dipahami oleh calon mahasiswa internasional.
-
-### Cara Menggunakannya:
-
-1. Blok seluruh kode di bawah ini, lalu **Copy**.
-2. Buka file `index.php` Anda yang lama, hapus semua isinya, lalu **Paste** kode baru ini di sana.
-3. Simpan (Save) file Anda.
-
-Berikut adalah kode lengkapnya:
-
-```php
 <?php
-// Include database connection
-require_once 'koneksi.php';
-
-$message = "";
-$message_type = ""; // "success" or "error"
-
-// Check if database connection encountered an error
-if (isset($db_connection_error)) {
-    $message = $db_connection_error;
-    $message_type = "error";
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
-    // Collect and sanitize/validate required fields
-    $firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
-    $lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
-    $dob = isset($_POST['dob']) ? trim($_POST['dob']) : '';
-    $gender = isset($_POST['gender']) ? trim($_POST['gender']) : '';
-    $nationality = isset($_POST['nationality']) ? trim($_POST['nationality']) : '';
-    $passport = isset($_POST['passport']) ? trim($_POST['passport']) : '';
-    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-    $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-    $educationLevel = isset($_POST['educationLevel']) ? trim($_POST['educationLevel']) : '';
-    $previousSchool = isset($_POST['previousSchool']) ? trim($_POST['previousSchool']) : '';
-    $program1 = isset($_POST['program1']) ? trim($_POST['program1']) : '';
-    $sop = isset($_POST['sop']) ? trim($_POST['sop']) : '';
-
-    // Handle optional fields: convert empty strings to NULL to avoid database corruption or wrong inputs
-    $currentLocation = (isset($_POST['currentLocation']) && trim($_POST['currentLocation']) !== '') ? trim($_POST['currentLocation']) : null;
-    $gpa = (isset($_POST['gpa']) && trim($_POST['gpa']) !== '') ? trim($_POST['gpa']) : null;
-    $englishProficiency = (isset($_POST['englishProficiency']) && trim($_POST['englishProficiency']) !== '') ? trim($_POST['englishProficiency']) : null;
-    $referral = (isset($_POST['referral']) && trim($_POST['referral']) !== '') ? trim($_POST['referral']) : null;
-
-    // Check mandatory fields
-    if (empty($firstName) || empty($lastName) || empty($dob) || empty($gender) || empty($nationality) || 
-        empty($passport) || empty($email) || empty($phone) || empty($educationLevel) || 
-        empty($previousSchool) || empty($program1) || empty($sop)) {
-        
-        $message = "Please fill in all required fields marked with an asterisk (*).";
-        $message_type = "error";
-    } else {
-        // Insert into database using Secure Prepared Statement targeting the live table 'tb_interstudent'
-        $sql = "INSERT INTO tb_interstudent (
-                    first_name, last_name, dob, gender, nationality, passport, email, phone, 
-                    current_location, education_level, gpa, previous_school, program1, 
-                    english_proficiency, sop, referral
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        if ($stmt = mysqli_prepare($conn, $sql)) {
-            mysqli_stmt_bind_param($stmt, "ssssssssssssssss", 
-                $firstName, $lastName, $dob, $gender, $nationality, $passport, $email, $phone, 
-                $currentLocation, $educationLevel, $gpa, $previousSchool, $program1, 
-                $englishProficiency, $sop, $referral
-            );
-            
-            if (mysqli_stmt_execute($stmt)) {
-                $message = "Your registration has been submitted successfully!";
-                $message_type = "success";
-            } else {
-                $message = "Oops! Something went wrong while saving your data: " . mysqli_stmt_error($stmt);
-                $message_type = "error";
-            }
-            
-            mysqli_stmt_close($stmt);
-        } else {
-            $message = "Database prepared statement failed: " . mysqli_error($conn);
-            $message_type = "error";
-        }
-    }
-}
+require_once 'header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>International Admissions | Poltekkes Kemenkes Bengkulu</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-content">
+            <span class="hero-badge"><i class="fa-solid fa-earth-asia"></i> International Admissions 2026</span>
+            <h1>Start Your Healthcare Career Journey in <span>Indonesia</span></h1>
+            <p>Poltekkes Kemenkes Bengkulu offers world-class health education modules tailored for global environments. Join our diverse international community and become a professional health worker.</p>
+            <div class="hero-actions">
+                <a href="register.php" class="btn-primary">Apply Online Now <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="facilities.php" class="btn-secondary">Explore Facilities <i class="fa-solid fa-hospital"></i></a>
+            </div>
+        </div>
+        <div class="hero-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80" alt="Poltekkes Bengkulu Medical Students">
+            <div class="floating-badge badge-1">
+                <i class="fa-solid fa-circle-check"></i>
+                <div>
+                    <h4>Accredited</h4>
+                    <p>Accredited "A" / Paripurna</p>
+                </div>
+            </div>
+            <div class="floating-badge badge-2">
+                <i class="fa-solid fa-users"></i>
+                <div>
+                    <h4>Global Network</h4>
+                    <p>International Career Prep</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <style>
-        :root {
-            --primary: #008080;
-            /* Teal brand color */
-            --primary-dark: #006666;
-            --secondary: #f4fbfb;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --white: #ffffff;
-            --success: #38a169;
-        }
+<!-- Stats Showcase -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>6+</h3>
+            <p>Integrated Campus Facilities</p>
+        </div>
+        <div class="stat-card">
+            <h3>100%</h3>
+            <p>Accredited Health Services</p>
+        </div>
+        <div class="stat-card">
+            <h3>1,000+</h3>
+            <p>Annual Graduates</p>
+        </div>
+        <div class="stat-card">
+            <h3>4+</h3>
+            <p>International Partnerships</p>
+        </div>
+    </div>
+</section>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            scroll-behavior: smooth;
-        }
+<!-- Why Choose Us -->
+<section class="features-section">
+    <div class="section-container">
+        <div class="section-header">
+            <h2>Why Study at Poltekkes Bengkulu?</h2>
+            <p>We provide a premium education ecosystem designed to prepare you for international health certification and career deployment.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-hospital-user"></i></div>
+                <h3>Clinical Mock Practice</h3>
+                <p>Train inside our high-fidelity Mini Hospital OSCE facility and standard labs replicating real-world clinical wards.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-plane-departure"></i></div>
+                <h3>Migrant & Career Center</h3>
+                <p>Specialized guidance program preparing graduates for placement exams in Germany, Japan, and other global regions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-language"></i></div>
+                <h3>Language Preparatory Program</h3>
+                <p>Equip yourself with specialized English and Indonesian language programs to ease into local and global environments.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-        body {
-            color: var(--text-dark);
-            background-color: var(--white);
-            line-height: 1.6;
-        }
+<!-- Study Program Spotlight -->
+<section class="program-section">
+    <div class="section-container">
+        <div class="section-header">
+            <h2>Program Spotlight</h2>
+            <p>Our premier study program accepting international applicants for the 2026 academic year.</p>
+        </div>
+        <div class="program-card">
+            <div class="program-info">
+                <span class="program-type">Four-Year Applied Bachelor (D-IV)</span>
+                <h3>Bachelor of Health Promotion</h3>
+                <p>This program focuses on preparing professionals capable of designing, implementing, and assessing health promotion programs in public health settings, hospitals, and community environments.</p>
+                <ul class="program-highlights">
+                    <li><i class="fa-solid fa-check"></i> Standard Curriculum aligned with national public health competencies</li>
+                    <li><i class="fa-solid fa-check"></i> In-depth field internships in public health agencies and community groups</li>
+                    <li><i class="fa-solid fa-check"></i> Career path: Health Promoter, CSR Health Analyst, Community Consultant</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="requirements.php" class="btn-primary">Check Requirements <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+            </div>
+            <div class="program-meta">
+                <div class="meta-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <h4>Duration</h4>
+                        <p>8 Semesters (4 Years)</p>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fa-solid fa-certificate"></i>
+                    <div>
+                        <h4>Degree Awarded</h4>
+                        <p>Applied Bachelor of Science (S.Tr.Kes)</p>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fa-solid fa-earth-americas"></i>
+                    <div>
+                        <h4>Language of Instruction</h4>
+                        <p>Indonesian / English Support</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 8%;
-        }
+<!-- Call to Action Section -->
+<section class="cta-section">
+    <div class="cta-container">
+        <h2>Ready to Shape the Future of Healthcare?</h2>
+        <p>Applications for the 2026 intake are currently open. Fill out our simplified online application form and start your journey today.</p>
+        <a href="register.php" class="btn-cta">Start Application <i class="fa-solid fa-user-plus"></i></a>
+    </div>
+</section>
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.4rem;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+<style>
+    /* Home Page Specific CSS */
+    .hero-section {
+        background: linear-gradient(135deg, #f0fafa 0%, #ffffff 100%);
+        padding: 6rem 8%;
+        position: relative;
+        overflow: hidden;
+    }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-            align-items: center;
-        }
+    .hero-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 4rem;
+    }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
+    .hero-content {
+        max-width: 55%;
+        animation: fadeInUp 0.8s ease-out;
+    }
 
-        .nav-links a:hover {
-            color: var(--primary);
-        }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius-xl);
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        .btn-nav {
-            background: var(--primary);
-            color: white !important;
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            transition: all 0.3s !important;
-        }
+    .hero-content h1 {
+        font-size: 3.5rem;
+        line-height: 1.15;
+        margin-bottom: 1.5rem;
+        color: var(--text-dark);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+    }
 
-        .btn-nav:hover {
-            background: var(--primary-dark);
-            box-shadow: 0 4px 12px rgba(0, 128, 128, 0.2);
-        }
+    .hero-content h1 span {
+        color: var(--primary);
+        position: relative;
+    }
 
-        /* Hero Section */
-        .hero {
-            padding: 10rem 8% 6rem 8%;
-            background: linear-gradient(135deg, #e6f2f2 0%, #ffffff 100%);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 85vh;
+    .hero-content h1 span::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: rgba(0, 128, 128, 0.15);
+        z-index: -1;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 2.5rem;
+        line-height: 1.7;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        text-decoration: none;
+        padding: 1rem 2.2rem;
+        border-radius: var(--border-radius-xl);
+        font-weight: 700;
+        box-shadow: 0 4px 20px rgba(0, 128, 128, 0.2);
+        transition: var(--transition-all);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 128, 128, 0.35);
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: var(--text-dark);
+        border: 2px solid var(--primary);
+        text-decoration: none;
+        padding: 0.85rem 2rem;
+        border-radius: var(--border-radius-xl);
+        font-weight: 700;
+        transition: var(--transition-all);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-secondary:hover {
+        background: var(--primary-light);
+        color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    .hero-image-wrapper {
+        flex: 1;
+        position: relative;
+        max-width: 45%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .hero-image-wrapper img {
+        width: 100%;
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-xl);
+        transform: rotate(-1deg);
+        transition: var(--transition-all);
+    }
+
+    .hero-image-wrapper img:hover {
+        transform: rotate(0deg) scale(1.02);
+    }
+
+    .floating-badge {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 128, 128, 0.08);
+        padding: 0.85rem 1.25rem;
+        border-radius: var(--border-radius-md);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: var(--shadow-xl);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .floating-badge i {
+        font-size: 1.5rem;
+        color: var(--primary);
+    }
+
+    .floating-badge h4 {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .floating-badge p {
+        font-size: 0.75rem;
+        color: var(--text-light);
+    }
+
+    .badge-1 {
+        top: 20px;
+        left: -40px;
+    }
+
+    .badge-2 {
+        bottom: 30px;
+        right: -30px;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        padding: 3rem 8%;
+        background-color: var(--primary);
+        color: var(--white);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .stat-card h3 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.25rem;
+        letter-spacing: -1px;
+    }
+
+    .stat-card p {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+    }
+
+    /* Features Section */
+    .features-section, .program-section {
+        padding: 6rem 8%;
+        background: var(--white);
+    }
+
+    .section-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.25rem;
+        color: var(--text-dark);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        letter-spacing: -0.5px;
+    }
+
+    .section-header p {
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+        font-size: 1.05rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .feature-card {
+        background: var(--white);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 3rem 2.5rem;
+        border-radius: var(--border-radius-md);
+        transition: var(--transition-all);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--primary);
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--primary-light);
+        border-radius: var(--border-radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        transition: var(--transition-all);
+    }
+
+    .feature-card:hover .feature-icon {
+        background: var(--primary);
+        color: var(--white);
+        transform: scale(1.05);
+    }
+
+    .feature-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .feature-card p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Program Section */
+    .program-section {
+        background-color: var(--secondary);
+    }
+
+    .program-card {
+        background: var(--white);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid rgba(0, 128, 128, 0.05);
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        overflow: hidden;
+    }
+
+    .program-info {
+        padding: 4rem;
+    }
+
+    .program-type {
+        display: inline-block;
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: var(--primary);
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .program-info h3 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+    }
+
+    .program-info p {
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin-bottom: 2rem;
+    }
+
+    .program-highlights {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .program-highlights li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.95rem;
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    .program-highlights li i {
+        color: var(--success);
+        font-weight: bold;
+    }
+
+    .program-meta {
+        background-color: #fafbfc;
+        padding: 4rem;
+        border-left: 1px solid #edf2f7;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2.2rem;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .meta-item i {
+        font-size: 2rem;
+        color: var(--primary);
+        width: 40px;
+        text-align: center;
+    }
+
+    .meta-item h4 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.2rem;
+    }
+
+    .meta-item p {
+        font-size: 0.85rem;
+        color: var(--text-light);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: 6rem 8%;
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        color: var(--white);
+        text-align: center;
+    }
+
+    .cta-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .cta-container h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
+    }
+
+    .cta-container p {
+        font-size: 1.15rem;
+        margin-bottom: 2.5rem;
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.6;
+    }
+
+    .btn-cta {
+        background: var(--white);
+        color: var(--primary-dark);
+        text-decoration: none;
+        padding: 1.1rem 2.5rem;
+        border-radius: var(--border-radius-xl);
+        font-weight: 800;
+        font-size: 1.05rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: var(--transition-all);
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        color: var(--primary);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 968px) {
+        .hero-container {
+            flex-direction: column;
+            text-align: center;
+            padding-top: 3rem;
+            gap: 3rem;
         }
 
         .hero-content {
-            max-width: 55%;
+            max-width: 100%;
         }
 
-        .hero-content h1 {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            color: #1a202c;
+        .hero-image-wrapper {
+            max-width: 80%;
         }
 
-        .hero-content h1 span {
-            color: var(--primary);
-        }
-
-        .hero-content p {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-image {
-            max-width: 40%;
-            position: relative;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Section Global Settings */
-        section {
-            padding: 6rem 8%;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.2rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .section-title p {
-            color: var(--text-light);
-        }
-
-        /* Requirements Section */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .card {
-            background: var(--white);
-            padding: 2.5rem;
-            border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
-            border-color: var(--primary);
-        }
-
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            background: #e6f2f2;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
+        .hero-actions {
             justify-content: center;
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
         }
 
-        .card h3 {
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
+        .floating-badge {
+            display: none; /* Hide floating badges on smaller viewports */
         }
 
-        .card ul {
-            list-style-position: inside;
-            color: var(--text-light);
-            font-size: 0.95rem;
+        .program-card {
+            grid-template-columns: 1fr;
         }
 
-        .card ul li {
-            margin-bottom: 0.5rem;
+        .program-meta {
+            border-left: none;
+            border-top: 1px solid #edf2f7;
+            padding: 3rem;
         }
 
-        /* NEW Facilities Section Grid Layout */
-        #facilities {
-            background-color: var(--secondary);
+        .program-info {
+            padding: 3rem;
         }
+    }
 
-        .facilities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
+    @media (max-width: 480px) {
+        .hero-content h1 {
+            font-size: 2.5rem;
         }
-
-        .facility-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
+        .cta-container h2 {
+            font-size: 2rem;
         }
+    }
+</style>
 
-        .facility-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 128, 128, 0.08);
-            border-color: var(--primary);
-        }
-
-        .facility-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 1.2rem;
-            border-bottom: 2px solid #edf2f7;
-            padding-bottom: 0.8rem;
-        }
-
-        .facility-header i {
-            font-size: 1.6rem;
-            color: var(--primary);
-        }
-
-        .facility-header h3 {
-            font-size: 1.25rem;
-            color: var(--text-dark);
-        }
-
-        .facility-body ul {
-            list-style: none;
-        }
-
-        .facility-body ul li {
-            position: relative;
-            padding-left: 20px;
-            margin-bottom: 0.6rem;
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-
-        .facility-body ul li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--success);
-            font-weight: bold;
-        }
-
-        /* Form Registration Section */
-        .form-container {
-            max-width: 850px !important;
-            margin: 0 auto;
-            background: var(--white);
-            padding: 3.5rem;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-        }
-
-        .form-section {
-            margin-bottom: 2.5rem;
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 1.5rem;
-        }
-
-        .form-section:last-of-type {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.85rem 1rem;
-            border: 1px solid #cbd5e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: #f7fafc;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: var(--white);
-            box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.15);
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 1rem;
-        }
-
-        .btn-submit:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Contact Section */
-        #contact {
-            background: #1a202c;
-            color: var(--white);
-            padding: 4rem 8%;
-        }
-
-        .contact-grid {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-
-        .contact-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-info p {
-            color: #a0aec0;
-        }
-
-        .contact-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .contact-links a {
-            color: var(--white);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: color 0.3s;
-        }
-
-        .contact-links a:hover {
-            color: var(--primary);
-        }
-
-        /* Alert Styles */
-        .alert {
-            padding: 1.25rem 1.75rem;
-            margin-bottom: 2rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideDown 0.4s ease-out;
-        }
-
-        .alert-success {
-            background-color: #e6fffa;
-            border: 1px solid #b2f5ea;
-            color: #008080;
-        }
-
-        .alert-error {
-            background-color: #fff5f5;
-            border: 1px solid #fed7d7;
-            color: #c53030;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 968px) {
-            nav {
-                padding: 1.2rem 5%;
-            }
-            .nav-links {
-                gap: 1.5rem;
-            }
-            .hero {
-                flex-direction: column;
-                text-align: center;
-                padding-top: 8rem;
-            }
-            .hero-content {
-                max-width: 100%;
-                margin-bottom: 3rem;
-            }
-            .hero-image {
-                max-width: 80%;
-            }
-            .form-container {
-                padding: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Navigation Bar -->
-    <nav>
-        <a href="#" class="logo">
-            <i class="fa-solid fa-graduation-cap"></i> Poltekkes Bengkulu
-        </a>
-        <ul class="nav-links">
-            <li><a href="#requirements">Requirements</a></li>
-            <li><a href="#facilities">Campus Facilities</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#register" class="btn-nav">Apply Now</a></li>
-        </ul>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Start Your Healthcare Career Journey in <span>Indonesia</span></h1>
-            <p>Poltekkes Kemenkes Bengkulu offers world-class health education modules tailored for global environments.
-                Join our diverse international community today.</p>
-            <a href="#register" class="btn-nav"
-                style="padding: 1rem 2.5rem; font-size: 1rem; text-align:center; display:inline-block;">Online
-                Application Form</a>
-        </div>
-        <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80"
-                alt="Medical Students">
-        </div>
-    </section>
-
-    <!-- Requirements Section -->
-    <section id="requirements">
-        <div class="section-title">
-            <h2>Admission Requirements</h2>
-            <p>Please check the criteria below before submitting your application files</p>
-        </div>
-        <div class="grid-3">
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-user-graduate"></i></div>
-                <h3>Academic Criteria</h3>
-                <ul>
-                    <li>High school graduate certificate or equivalent</li>
-                    <li>Minimum GPA equivalent to 3.00 out of 4.00</li>
-                    <li>Strong foundation in Natural Sciences (Biology, Chemistry)</li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-passport"></i></div>
-                <h3>Documents Needed</h3>
-                <ul>
-                    <li>Scanned copy of valid passport (min. 18 months validity)</li>
-                    <li>Recent formal photograph (red background)</li>
-                    <li>Health certificate & proof of health insurance</li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-language"></i></div>
-                <h3>Language Mastery</h3>
-                <ul>
-                    <li>English Proficiency Certificate (TOEFL min. 500 / IELTS min. 5.5)</li>
-                    <li>Willingness to join Basic Indonesian Language Course</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- UPDATED: CAMPUS FACILITIES SECTION (ENG)   -->
-    <!-- ========================================== -->
-    <section id="facilities">
-        <div class="section-title">
-            <h2>Our Excellent Campus Facilities</h2>
-            <p>Explore our premium infrastructure built to support premium healthcare education.</p>
-        </div>
-        
-        <div class="facilities-grid">
-            <!-- 1. Training & Guidance Center -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <i class="fa-solid fa-hotel"></i>
-                    <h3>Training & Guidance Center</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>GTC Ballroom:</strong> 250-student capacity with central AC and Videotron[cite: 2].</li>
-                        <li><strong>GTC Rooms:</strong> 54 premium guest rooms (Superior, Deluxe, Family type) with Wi-Fi, AC, TV, and water heater[cite: 2].</li>
-                        <li><strong>Migrant Guidance Center:</strong> Specialized preparation hub for international career deployment[cite: 2].</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 2. Auditoriums -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <i class="fa-solid fa-screen-users"></i>
-                    <h3>Grand Auditoriums</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Campus A Auditorium:</strong> Large hall hosting up to 1,000 participants, fully equipped with central AC, Videotron, and VIP lounges[cite: 2].</li>
-                        <li><strong>Campus B Auditorium:</strong> Modern hall with a 600-participant capacity and full air conditioning[cite: 2].</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 3. Medical Practices & Testing -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <i class="fa-solid fa-hospital-user"></i>
-                    <h3>Clinical Practice & Testing Center</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Mini Hospital:</strong> Realistic setting for student medical simulation and OSCE exams.</li>
-                        <li><strong>OSCE Center:</strong> Professional 12-station standard setup with full monitoring systems and briefing rooms.</li>
-                        <li><strong>CBT Center:</strong> LPUK-NAKES certified computer labs (120 units on Campus A, 50 units on Campus B Curup).</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 4. Specialized Laboratories -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <i class="fa-solid fa-flask-vial"></i>
-                    <h3>Integrated Health Laboratories</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Major Specific Labs:</strong> Dedicated labs for Nursing, Midwifery, Nutrition, Medical Laboratory Technology (Analis Kesehatan), Sanitation, and Health Promotion.</li>
-                        <li><strong>Language Laboratory:</strong> 40-unit multimedia PC workstations with sound systems.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 5. Public Health & Training Services -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <i class="fa-solid fa-house-medical-check"></i>
-                    <h3>Health Services & Professional Training</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Hygea Pratama Clinic:</strong> Fully accredited (Paripurna) facility serving general public & BPJS users with advanced chemistry and hematology testing.</li>
-                        <li><strong>UPK SDMK Center:</strong> Accredited center for webinars and certified health workshops (Wound care, BTCLS, teaching methodologies).</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 6. General Campus Infrastructure -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <i class="fa-solid fa-gavel"></i>
-                    <h3>Support Facilities & Amenities</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Integrated Library:</strong> "A" Grade accredited archive complete with thesis sections and study rooms.</li>
-                        <li><strong>Masjid Tarbiyatus Shihah:</strong> Comfortable, fully air-conditioned campus mosque.</li>
-                        <li><strong>Sports Fields:</strong> Outdoor/indoor infrastructure for Futsal, Basketball, Volleyball, Badminton, and Table Tennis[cite: 1].</li>
-                        <li><strong>Theater Room:</strong> 80-seat audio-visual learning room with full Wi-Fi and sound setup.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Registration Form Section -->
-    <section id="register">
-        <div class="section-title">
-            <h2>Registration Form</h2>
-            <p>Please fill out the form completely. Fields marked with an asterisk (*) are required.</p>
-        </div>
-        <div class="form-container">
-
-            <!-- Dynamic Alert Box for PHP Response -->
-            <?php if (!empty($message)): ?>
-            <div class="alert alert-<?php echo $message_type; ?>">
-                <?php if ($message_type == 'success'): ?>
-                <i class="fa-solid fa-circle-check" style="font-size: 1.25rem;"></i>
-                <?php else: ?>
-                <i class="fa-solid fa-circle-xmark" style="font-size: 1.25rem;"></i>
-                <?php endif; ?>
-                <div><?php echo htmlspecialchars($message); ?></div>
-            </div>
-            <?php endif; ?>
-
-            <form id="admissionForm" action="index.php#register" method="POST">
-
-                <!-- SECTION 1: Personal Information -->
-                <div class="form-section">
-                    <h3 class="section-subtitle"><i class="fa-solid fa-user"></i> Personal Information</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="John"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Doe"
-                                required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="dob">Date of Birth *</label>
-                            <input type="date" id="dob" name="dob" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="gender">Gender *</label>
-                            <select id="gender" name="gender" class="form-control" required>
-                                <option value="" disabled selected>— Select —</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Prefer not to say">Prefer not to say</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nationality">Nationality / Country of Origin *</label>
-                            <input type="text" id="nationality" name="nationality" class="form-control"
-                                placeholder="e.g., Malaysia, Timor Leste" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="passport">Passport Number *</label>
-                            <input type="text" id="passport" name="passport" class="form-control" placeholder="A1234567"
-                                required>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECTION 2: Contact Details -->
-                <div class="form-section">
-                    <h3 class="section-subtitle"><i class="fa-solid fa-address-book"></i> Contact Details</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" class="form-control"
-                                placeholder="johndoe@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">WhatsApp / Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" class="form-control"
-                                placeholder="+62 812-3456-7890" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="currentLocation">Current City & Country</label>
-                        <input type="text" id="currentLocation" name="currentLocation" class="form-control"
-                            placeholder="Kuala Lumpur, Malaysia">
-                    </div>
-                </div>
-
-                <!-- SECTION 3: Academic Background -->
-                <div class="form-section">
-                    <h3 class="section-subtitle"><i class="fa-solid fa-graduation-cap"></i> Academic Background</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="educationLevel">Highest Education Level *</label>
-                            <select id="educationLevel" name="educationLevel" class="form-control" required>
-                                <option value="" disabled selected>— Select —</option>
-                                <option value="High School / Senior Secondary">High School / Senior Secondary</option>
-                                <option value="Diploma (D-I / D-II / D-III)">Diploma (D-I / D-II / D-III)</option>
-                                <option value="Bachelor's Degree (S-1 / D-IV)">Bachelor's Degree (S-1 / D-IV)</option>
-                                <option value="Master's Degree (S-2)">Master's Degree (S-2)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="gpa">GPA / Final Grade</label>
-                            <input type="text" id="gpa" name="gpa" class="form-control"
-                                placeholder="e.g., 3.75 or 85%">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="previousSchool">Name of Last School / University *</label>
-                        <input type="text" id="previousSchool" name="previousSchool" class="form-control"
-                            placeholder="Global Health Academy" required>
-                    </div>
-                </div>
-
-                <!-- SECTION 4: Program & Requirements -->
-                <div class="form-section">
-                    <h3 class="section-subtitle"><i class="fa-solid fa-book-medical"></i> Program Selection &
-                        Preferences</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="program1">Study Program *</label>
-                            <select id="program1" name="program1" class="form-control" required>
-                                <option value="" disabled selected>— Select Program —</option>
-                                <option value="Bachelor Promosi Kesehatan">Bachelor Health Promotion</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="englishProficiency">English Proficiency Level</label>
-                            <select id="englishProficiency" name="englishProficiency" class="form-control">
-                                <option value="" disabled selected>— Select —</option>
-                                <option value="IELTS 5.0–5.5">IELTS 5.0–5.5</option>
-                                <option value="IELTS 6.0+">IELTS 6.0+</option>
-                                <option value="TOEFL ITP 500–549">TOEFL ITP 500–549</option>
-                                <option value="TOEFL ITP 550+">TOEFL ITP 550+</option>
-                                <option value="Other Certificate">Other Certificate</option>
-                                <option value="No Certificate (applying for waiver)">No Certificate (applying for
-                                    waiver)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sop">Statement of Purpose *</label>
-                        <textarea id="sop" name="sop" rows="4" class="form-control"
-                            placeholder="Briefly describe your motivation to study at Poltekkes Bengkulu..." required
-                            style="resize: vertical; min-height: 100px;"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="referral">How did you hear about us?</label>
-                        <input type="text" id="referral" name="referral" class="form-control"
-                            placeholder="e.g., Social Media, Embassy, Friends">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-submit">Submit Registration</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Contact Person / Footer Section -->
-    <footer id="contact">
-        <div class="contact-grid">
-            <div class="contact-info">
-                <h3>Poltekkes Kemenkes Bengkulu</h3>
-                <p>Jl. Indragiri No.3, Padang Harapan, Kota Bengkulu, Indonesia</p>
-            </div>
-            <div class="contact-links">
-                <a href="mailto:international.admission@poltekkesbengkulu.ac.id"><i class="fa-solid fa-envelope"></i>
-                    Email Us</a>
-                <a href="https://wa.me/6281234567890" target="_blank"><i class="fa-brands fa-whatsapp"></i>
-                    International Desk (WhatsApp)</a>
-            </div>
-        </div>
-        <div
-            style="text-align: center; margin-top: 3rem; color: #718096; font-size: 0.85rem; border-top: 1px solid #2d3748; padding-top: 1.5rem;">
-            &copy; 2026 Poltekkes Kemenkes Bengkulu. All Rights Reserved.
-        </div>
-    </footer>
-
-    <!-- Handling Form Submission cleanly with Premium UX Loader -->
-    <script>
-        const form = document.getElementById('admissionForm');
-        const submitBtn = form.querySelector('.btn-submit');
-        form.addEventListener('submit', function (e) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Submitting your application...';
-            submitBtn.style.opacity = '0.7';
-            submitBtn.style.cursor = 'not-allowed';
-        });
-    </script>
-</body>
-
-</html>
+<?php
+require_once 'footer.php';
+?>
