@@ -419,6 +419,9 @@ require_once 'header.php';
                                 <span class="upload-sub">CV / Resume</span>
                             </div>
                         </label>
+                        <div class="sample-actions">
+                            <a href="downloads/cv_template.rtf" class="sample-download" download>Download contoh CV</a>
+                        </div>
                         <div class="upload-drop-zone" id="zone_cv" onclick="document.getElementById('cv_file').click()">
                             <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
                             <p class="upload-drop-text">Click to upload or drag & drop</p>
@@ -438,6 +441,10 @@ require_once 'header.php';
                                 <span class="upload-sub">From teacher, employer, or headmaster</span>
                             </div>
                         </label>
+                        <div class="sample-actions">
+                            <a href="downloads/letter_of_recommendation.rtf" class="sample-download" download>Download
+                                contoh Surat Rekomendasi</a>
+                        </div>
                         <div class="upload-drop-zone" id="zone_letter_rec"
                             onclick="document.getElementById('letter_rec_file').click()">
                             <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
@@ -458,6 +465,10 @@ require_once 'header.php';
                                 <span class="upload-sub">Signed statement agreeing to regulations</span>
                             </div>
                         </label>
+                        <div class="sample-actions">
+                            <a href="downloads/statement_of_commitment.rtf" class="sample-download" download>Download
+                                contoh Statement</a>
+                        </div>
                         <div class="upload-drop-zone" id="zone_statement"
                             onclick="document.getElementById('statement_file').click()">
                             <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
@@ -679,6 +690,27 @@ require_once 'header.php';
     .upload-sub {
         font-size: 0.78rem;
         color: var(--text-light);
+    }
+
+    .sample-actions {
+        margin-top: 6px;
+    }
+
+    .sample-download {
+        display: inline-block;
+        font-size: 0.82rem;
+        color: var(--primary-dark);
+        background: rgba(0, 0, 0, 0.03);
+        padding: 6px 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .sample-download:hover {
+        background: var(--primary-light);
+        color: var(--primary);
+        transform: translateY(-2px);
     }
 
     .upload-drop-zone {
