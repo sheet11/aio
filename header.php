@@ -326,6 +326,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <li><a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>">Home</a></li>
             <li><a href="requirements.php" class="<?php echo $current_page == 'requirements.php' ? 'active' : ''; ?>">Requirements</a></li>
             <li><a href="facilities.php" class="<?php echo $current_page == 'facilities.php' ? 'active' : ''; ?>">Campus Facilities</a></li>
+            <li><a href="cost-of-living.php" class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost of Living</a></li>
             <li><a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact</a></li>
             <li><a href="register.php" class="btn-nav <?php echo $current_page == 'register.php' ? 'active' : ''; ?>">Apply Now</a></li>
         </ul>
@@ -342,6 +343,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>">Home</a>
         <a href="requirements.php" class="<?php echo $current_page == 'requirements.php' ? 'active' : ''; ?>">Requirements</a>
         <a href="facilities.php" class="<?php echo $current_page == 'facilities.php' ? 'active' : ''; ?>">Campus Facilities</a>
+        <a href="cost-of-living.php" class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost of Living</a>
         <a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact</a>
         <a href="register.php" class="btn-nav-mobile">Apply Now</a>
     </div>
