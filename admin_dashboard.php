@@ -1039,56 +1039,113 @@ if (empty($db_error)) {
                                 <th>GPA</th>
                                 <th>Passport No.</th>
                                 <th>Registration Date</th>
+                                <th>Documents</th>
                                 <th style="text-align: center;">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php if (count($applicants) > 0): ?>
-                                <?php foreach ($applicants as $applicant): 
-                                    $first_initial = strtoupper(substr($applicant['first_name'], 0, 1));
-                                    $last_initial = strtoupper(substr($applicant['last_name'], 0, 1));
-                                    $initials = $first_initial . $last_initial;
-                                ?>
-                                    <tr>
-                                        <td>
-                                            <div class="cell-avatar">
-                                                <div class="avatar-circle"><?php echo $initials; ?></div>
-                                                <div>
-                                                    <span class="cell-bold"><?php echo htmlspecialchars($applicant['first_name'] . ' ' . $applicant['last_name']); ?></span>
-                                                    <div style="font-size: 0.75rem; color: var(--text-light);"><?php echo htmlspecialchars($applicant['email']); ?></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge-country">
-                                                <i class="fa-solid fa-globe"></i>
-                                                <?php echo htmlspecialchars($applicant['nationality']); ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="badge-program">
-                                                <?php echo ($applicant['program1'] == 'Bachelor Promosi Kesehatan') ? 'Bachelor Health Promo' : htmlspecialchars($applicant['program1']); ?>
-                                            </span>
-                                        </td>
-                                        <td class="cell-bold"><?php echo !empty($applicant['gpa']) ? htmlspecialchars($applicant['gpa']) : '—'; ?></td>
-                                        <td><code><?php echo htmlspecialchars($applicant['passport']); ?></code></td>
-                                        <td><?php echo date("M d, Y", strtotime($applicant['created_at'])); ?></td>
-                                        <td style="text-align: center;">
-                                            <button class="btn-view-details" onclick="openDetails(<?php echo $applicant['id']; ?>)">
-                                                <i class="fa-solid fa-eye"></i> Details
-                                            </button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="7" class="empty-table-state">
-                                        <i class="fa-solid fa-folder-open"></i>
-                                        No applicant records found matching your filters.
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
+<tbody>
+<?php if (count($applicants) > 0): ?>
+    <?php foreach ($applicants as $applicant): 
+        $first_initial = strtoupper(substr($applicant['first_name'], 0, 1));
+        $last_initial = strtoupper(substr($applicant['last_name'], 0, 1));
+        $initials = $first_initial . $last_initial;
+    ?>
+        <tr>
+            <td>
+                <div class="cell-avatar">
+                    <div class="avatar-circle"><?php echo $initials; ?></div>
+                    <div>
+                        <span class="cell-bold">
+                            <?php echo htmlspecialchars($applicant['first_name'].' '.$applicant['last_name']); ?>
+                        </span>
+                        <div style="font-size:0.75rem;color:var(--text-light);">
+                            <?php echo htmlspecialchars($applicant['email']); ?>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <span class="badge-country">
+                    <i class="fa-solid fa-globe"></i>
+                    <?php echo htmlspecialchars($applicant['nationality']); ?>
+                </span>
+            </td>
+
+            <td>
+                <span class="badge-program">
+                    <?php echo ($applicant['program1']=='Bachelor Promosi Kesehatan')
+                        ? 'Bachelor Health Promotion'
+                        : htmlspecialchars($applicant['program1']); ?>
+                </span>
+            </td>
+
+            <td class="cell-bold">
+                <?php echo !empty($applicant['gpa']) ? htmlspecialchars($applicant['gpa']) : '—'; ?>
+            </td>
+
+            <td>
+                <code><?php echo htmlspecialchars($applicant['passport']); ?></code>
+            </td>
+
+            <td>
+                <?php echo date("M d, Y", strtotime($applicant['created_at'])); ?>
+            </td>
+
+            <!-- KOLOM DOKUMEN -->
+            <td>
+                <div style="display:flex;gap:5px;flex-wrap:wrap;">
+
+                    <?php if(!empty($applicant['passport_file'])): ?>
+                        <a href="uploads/<?php echo htmlspecialchars($applicant['passport_file']); ?>"
+                           target="_blank"
+                           title="View Passport"
+                           class="btn-view-details">
+                            <i class="fa-solid fa-passport"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(!empty($applicant['english_cert_file'])): ?>
+                        <a href="uploads/<?php echo htmlspecialchars($applicant['english_cert_file']); ?>"
+                           target="_blank"
+                           title="View English Certificate"
+                           class="btn-view-details">
+                            <i class="fa-solid fa-language"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(!empty($applicant['diploma_file'])): ?>
+                        <a href="uploads/<?php echo htmlspecialchars($applicant['diploma_file']); ?>"
+                           target="_blank"
+                           title="View Diploma / Transcript"
+                           class="btn-view-details">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </a>
+                    <?php endif; ?>
+
+                </div>
+            </td>
+
+            <!-- KOLOM AKSI -->
+            <td style="text-align:center;">
+                <button class="btn-view-details"
+                        onclick="openDetails(<?php echo $applicant['id']; ?>)">
+                    <i class="fa-solid fa-eye"></i>
+                    Details
+                </button>
+            </td>
+
+        </tr>
+    <?php endforeach; ?>
+<?php else: ?>
+    <tr>
+        <td colspan="8" class="empty-table-state">
+            <i class="fa-solid fa-folder-open"></i>
+            No applicant records found matching your filters.
+        </td>
+    </tr>
+<?php endif; ?>
+</tbody>
                     </table>
                 </div>
 
