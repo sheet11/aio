@@ -138,8 +138,8 @@ require_once 'header.php';
     <div class="section-container">
         <div class="scholarship-header">
             <span class="scholarship-badge"><i class="fa-solid fa-award"></i> Full Scholarship Program</span>
-            <h2>Beasiswa Penuh untuk Mahasiswa Internasional</h2>
-            <p>Poltekkes Kemenkes Bengkulu menyediakan paket beasiswa komprehensif yang mencakup seluruh kebutuhan akademik dan kehidupan Anda selama masa studi di Indonesia.</p>
+            <h2>Full Scholarship for International Students</h2>
+            <p>Poltekkes Kemenkes Bengkulu provides a comprehensive scholarship package covering all academic and living needs throughout your entire study period in Indonesia.</p>
         </div>
 
         <div class="scholarship-grid">
@@ -150,8 +150,8 @@ require_once 'header.php';
                     <i class="fa-solid fa-book-open"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Bebas Uang Kuliah Tunggal (UKT)</h4>
-                    <p>Pemberian bantuan bebas UKT sebesar <strong>Rp. 0,-</strong> setiap semester, mencakup segala biaya yang berkaitan dengan kegiatan akademik.</p>
+                    <h4>Full Tuition Fee Waiver (UKT)</h4>
+                    <p>Full waiver of tuition fees amounting to <strong>Rp. 0,-</strong> per semester, covering all costs related to academic activities.</p>
                 </div>
             </div>
 
@@ -161,8 +161,8 @@ require_once 'header.php';
                     <i class="fa-solid fa-wallet"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Biaya Hidup Bulanan</h4>
-                    <p>Bantuan biaya hidup sebesar <strong>Rp. 2.500.000,-</strong> setiap bulan untuk mendukung kebutuhan sehari-hari selama masa studi.</p>
+                    <h4>Monthly Living Allowance</h4>
+                    <p>A monthly living allowance of <strong>Rp. 2,500,000,-</strong> to support day-to-day needs throughout the study period.</p>
                 </div>
             </div>
 
@@ -172,8 +172,8 @@ require_once 'header.php';
                     <i class="fa-solid fa-shield-heart"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Jaminan Kesehatan Nasional</h4>
-                    <p>Perlindungan kesehatan penuh melalui <strong>JKN BPJS Kesehatan</strong> yang berlaku selama periode studi di Indonesia.</p>
+                    <h4>National Health Insurance</h4>
+                    <p>Full health coverage through <strong>JKN BPJS Kesehatan</strong>, Indonesia's national health insurance scheme, valid throughout your study period.</p>
                 </div>
             </div>
 
@@ -183,8 +183,8 @@ require_once 'header.php';
                     <i class="fa-solid fa-building"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Tempat Tinggal Asrama</h4>
-                    <p>Bantuan tempat tinggal di <strong>Asrama Mahasiswa Asing Poltekkes Bengkulu</strong> yang nyaman dan aman selama masa studi.</p>
+                    <h4>On-Campus Dormitory</h4>
+                    <p>Fully subsidised accommodation at the <strong>Poltekkes Bengkulu International Student Dormitory</strong> — safe, comfortable, and conveniently located.</p>
                 </div>
             </div>
 
@@ -194,8 +194,8 @@ require_once 'header.php';
                     <i class="fa-solid fa-file-signature"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Bantuan Izin Studi &amp; Tinggal</h4>
-                    <p>Pengurusan izin studi dari <strong>Kemdiktisaintek</strong> serta izin tinggal di Bengkulu difasilitasi sepenuhnya oleh institusi.</p>
+                    <h4>Study &amp; Residence Permit Assistance</h4>
+                    <p>Full facilitation of study permits through <strong>Kemdiktisaintek</strong> (Ministry of Higher Education, Science &amp; Technology) and residence permits in Bengkulu.</p>
                 </div>
             </div>
 
@@ -205,8 +205,8 @@ require_once 'header.php';
                     <i class="fa-solid fa-plane-circle-check"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Tiket &amp; Visa</h4>
-                    <p>Bantuan <strong>tiket pulang-pergi</strong> dari negara asal ke Indonesia dan sebaliknya, termasuk biaya pengurusan visa.</p>
+                    <h4>Round-Trip Airfare &amp; Visa</h4>
+                    <p>Scholarship includes <strong>round-trip airfare</strong> from your home country to Indonesia and back, plus full visa application fee coverage.</p>
                 </div>
             </div>
 
@@ -214,10 +214,10 @@ require_once 'header.php';
 
         <div class="scholarship-cta">
             <a href="register.php" class="btn-scholarship-apply">
-                <i class="fa-solid fa-user-plus"></i> Daftar &amp; Dapatkan Beasiswa
+                <i class="fa-solid fa-user-plus"></i> Apply &amp; Get the Scholarship
             </a>
             <a href="requirements.php" class="btn-scholarship-info">
-                <i class="fa-solid fa-circle-info"></i> Lihat Persyaratan
+                <i class="fa-solid fa-circle-info"></i> View Requirements
             </a>
         </div>
     </div>
