@@ -11,6 +11,49 @@ if (isset($db_connection_error)) {
     $message_type = "error";
 }
 
+// -------------------------------------------------------
+// File Upload Helper Function
+// -------------------------------------------------------
+function handleFileUpload($fileKey, $fieldLabel) {
+    if (!isset($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] === UPLOAD_ERR_NO_FILE) {
+        return ['path' => null, 'error' => null];
+    }
+
+    $file = $_FILES[$fileKey];
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['path' => null, 'error' => "Upload error for $fieldLabel. Please try again."];
+    }
+
+    // Validate file size (max 5MB)
+    $maxSize = 5 * 1024 * 1024;
+    if ($file['size'] > $maxSize) {
+        return ['path' => null, 'error' => "$fieldLabel exceeds the 5MB file size limit."];
+    }
+
+    // Validate MIME type
+    $allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+
+    if (!in_array($mimeType, $allowedTypes)) {
+        return ['path' => null, 'error' => "$fieldLabel must be a PDF, JPG, or PNG file."];
+    }
+
+    // Generate unique filename
+    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $uniqueName = uniqid($fileKey . '_', true) . '.' . strtolower($ext);
+    $uploadDir = __DIR__ . '/uploads/';
+    $destPath = $uploadDir . $uniqueName;
+
+    if (!move_uploaded_file($file['tmp_name'], $destPath)) {
+        return ['path' => null, 'error' => "Failed to save $fieldLabel. Check server permissions."];
+    }
+
+    return ['path' => 'uploads/' . $uniqueName, 'error' => null];
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     // Collect and sanitize/validate required fields
     $firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
@@ -32,6 +75,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     $englishProficiency = (isset($_POST['englishProficiency']) && trim($_POST['englishProficiency']) !== '') ? trim($_POST['englishProficiency']) : null;
     $referral = (isset($_POST['referral']) && trim($_POST['referral']) !== '') ? trim($_POST['referral']) : null;
 
+    // -------------------------------------------------------
+    // Handle file uploads
+    // -------------------------------------------------------
+    $passportUpload      = handleFileUpload('passport_file', 'Passport Scan');
+    $englishCertUpload   = handleFileUpload('english_cert_file', 'English Certificate');
+    $diplomaUpload       = handleFileUpload('diploma_file', 'Diploma / Transcript');
+
+    $uploadError = $passportUpload['error'] ?? $englishCertUpload['error'] ?? $diplomaUpload['error'];
+
+    $passportFilePath    = $passportUpload['path'];
+    $englishCertFilePath = $englishCertUpload['path'];
+    $diplomaFilePath     = $diplomaUpload['path'];
+
     // Check mandatory fields
     if (empty($firstName) || empty($lastName) || empty($dob) || empty($gender) || empty($nationality) || 
         empty($passport) || empty($email) || empty($phone) || empty($educationLevel) || 
@@ -39,23 +95,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
         
         $message = "Please fill in all required fields marked with an asterisk (*).";
         $message_type = "error";
+    } elseif ($uploadError) {
+        $message = $uploadError;
+        $message_type = "error";
     } else {
         // Insert into database using Secure Prepared Statement targeting the live table 'tb_interstudent'
         $sql = "INSERT INTO tb_interstudent (
                     first_name, last_name, dob, gender, nationality, passport, email, phone, 
                     current_location, education_level, gpa, previous_school, program1, 
-                    english_proficiency, sop, referral
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    english_proficiency, sop, referral,
+                    passport_file, english_cert_file, diploma_file
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         if ($stmt = mysqli_prepare($conn, $sql)) {
-            mysqli_stmt_bind_param($stmt, "ssssssssssssssss", 
+            mysqli_stmt_bind_param($stmt, "sssssssssssssssssss", 
                 $firstName, $lastName, $dob, $gender, $nationality, $passport, $email, $phone, 
                 $currentLocation, $educationLevel, $gpa, $previousSchool, $program1, 
-                $englishProficiency, $sop, $referral
+                $englishProficiency, $sop, $referral,
+                $passportFilePath, $englishCertFilePath, $diplomaFilePath
             );
             
             if (mysqli_stmt_execute($stmt)) {
-                $message = "Your registration has been submitted successfully!";
+                $message = "Your registration has been submitted successfully! We will contact you via email within 3–5 business days.";
                 $message_type = "success";
             } else {
                 $message = "Oops! Something went wrong while saving your data: " . mysqli_stmt_error($stmt);
@@ -95,7 +156,7 @@ require_once 'header.php';
         </div>
         <?php endif; ?>
 
-        <form id="admissionForm" action="register.php" method="POST">
+        <form id="admissionForm" action="register.php" method="POST" enctype="multipart/form-data">
 
             <!-- SECTION 1: Personal Information -->
             <div class="form-section">
@@ -212,6 +273,68 @@ require_once 'header.php';
                 <div class="form-group">
                     <label for="referral">How did you hear about us?</label>
                     <input type="text" id="referral" name="referral" class="form-control" placeholder="e.g., Social Media, Embassy, Friends">
+                </div>
+            </div>
+
+            <!-- SECTION 5: Document Uploads -->
+            <div class="form-section">
+                <h3 class="section-subtitle"><i class="fa-solid fa-file-arrow-up"></i> Supporting Documents</h3>
+                <p class="upload-note">Upload scanned copies or photos of your documents. Accepted formats: <strong>PDF, JPG, PNG</strong>. Max size: <strong>5MB</strong> per file.</p>
+
+                <div class="upload-grid">
+                    <!-- Passport Scan -->
+                    <div class="upload-item">
+                        <label class="upload-label" for="passport_file">
+                            <div class="upload-icon"><i class="fa-solid fa-passport"></i></div>
+                            <div class="upload-info">
+                                <span class="upload-title">Passport Scan</span>
+                                <span class="upload-sub">Photo page of your valid passport</span>
+                            </div>
+                        </label>
+                        <div class="upload-drop-zone" id="zone_passport" onclick="document.getElementById('passport_file').click()">
+                            <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
+                            <p class="upload-drop-text">Click to upload or drag & drop</p>
+                            <p class="upload-drop-hint">PDF, JPG, PNG &mdash; max 5MB</p>
+                            <div class="upload-preview" id="preview_passport"></div>
+                        </div>
+                        <input type="file" id="passport_file" name="passport_file" accept=".pdf,.jpg,.jpeg,.png" class="upload-input" data-zone="zone_passport" data-preview="preview_passport">
+                    </div>
+
+                    <!-- English Certificate -->
+                    <div class="upload-item">
+                        <label class="upload-label" for="english_cert_file">
+                            <div class="upload-icon"><i class="fa-solid fa-language"></i></div>
+                            <div class="upload-info">
+                                <span class="upload-title">English Certificate</span>
+                                <span class="upload-sub">IELTS / TOEFL or equivalent</span>
+                            </div>
+                        </label>
+                        <div class="upload-drop-zone" id="zone_english" onclick="document.getElementById('english_cert_file').click()">
+                            <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
+                            <p class="upload-drop-text">Click to upload or drag & drop</p>
+                            <p class="upload-drop-hint">PDF, JPG, PNG &mdash; max 5MB</p>
+                            <div class="upload-preview" id="preview_english"></div>
+                        </div>
+                        <input type="file" id="english_cert_file" name="english_cert_file" accept=".pdf,.jpg,.jpeg,.png" class="upload-input" data-zone="zone_english" data-preview="preview_english">
+                    </div>
+
+                    <!-- Diploma / Transcript -->
+                    <div class="upload-item">
+                        <label class="upload-label" for="diploma_file">
+                            <div class="upload-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <div class="upload-info">
+                                <span class="upload-title">Diploma / Transcript</span>
+                                <span class="upload-sub">Most recent academic certificate</span>
+                            </div>
+                        </label>
+                        <div class="upload-drop-zone" id="zone_diploma" onclick="document.getElementById('diploma_file').click()">
+                            <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
+                            <p class="upload-drop-text">Click to upload or drag & drop</p>
+                            <p class="upload-drop-hint">PDF, JPG, PNG &mdash; max 5MB</p>
+                            <div class="upload-preview" id="preview_diploma"></div>
+                        </div>
+                        <input type="file" id="diploma_file" name="diploma_file" accept=".pdf,.jpg,.jpeg,.png" class="upload-input" data-zone="zone_diploma" data-preview="preview_diploma">
+                    </div>
                 </div>
             </div>
 
@@ -365,6 +488,134 @@ require_once 'header.php';
         }
     }
 
+    /* ── Upload Section ── */
+    .upload-note {
+        font-size: 0.88rem;
+        color: var(--text-light);
+        margin-bottom: 1.75rem;
+        background: var(--primary-light);
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius-sm);
+        border-left: 3px solid var(--primary);
+    }
+
+    .upload-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .upload-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    .upload-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: default;
+    }
+
+    .upload-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--border-radius-sm);
+        background: var(--primary-light);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .upload-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .upload-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .upload-sub {
+        font-size: 0.78rem;
+        color: var(--text-light);
+    }
+
+    .upload-drop-zone {
+        border: 2px dashed #cbd5e0;
+        border-radius: var(--border-radius-sm);
+        padding: 1.5rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition-all);
+        background: #f7fafc;
+        position: relative;
+        min-height: 110px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .upload-drop-zone:hover,
+    .upload-drop-zone.drag-over {
+        border-color: var(--primary);
+        background: var(--primary-light);
+    }
+
+    .upload-drop-zone.has-file {
+        border-color: #48bb78;
+        background: #f0fff4;
+    }
+
+    .upload-drop-icon {
+        font-size: 1.6rem;
+        color: #a0aec0;
+        transition: var(--transition-all);
+    }
+
+    .upload-drop-zone:hover .upload-drop-icon,
+    .upload-drop-zone.drag-over .upload-drop-icon {
+        color: var(--primary);
+        transform: translateY(-3px);
+    }
+
+    .upload-drop-zone.has-file .upload-drop-icon {
+        color: #48bb78;
+    }
+
+    .upload-drop-text {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    .upload-drop-hint {
+        font-size: 0.75rem;
+        color: var(--text-light);
+        margin: 0;
+    }
+
+    .upload-preview {
+        font-size: 0.78rem;
+        color: #276749;
+        font-weight: 600;
+        margin-top: 4px;
+        word-break: break-all;
+    }
+
+    .upload-input {
+        display: none;
+    }
+
     @media (max-width: 768px) {
         .form-container {
             padding: 2.5rem;
@@ -373,12 +624,16 @@ require_once 'header.php';
             grid-template-columns: 1fr;
             gap: 0;
         }
+        .upload-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
-<!-- Form submission loading states -->
+<!-- Form submission loading states + File upload previews -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // ── Submit loading state ──
         const form = document.getElementById('admissionForm');
         if (form) {
             const submitBtn = form.querySelector('.btn-submit');
@@ -388,6 +643,57 @@ require_once 'header.php';
                 submitBtn.style.opacity = '0.8';
                 submitBtn.style.cursor = 'not-allowed';
             });
+        }
+
+        // ── File Upload: preview & drag-drop ──
+        document.querySelectorAll('.upload-input').forEach(input => {
+            const zoneId   = input.getAttribute('data-zone');
+            const previewId = input.getAttribute('data-preview');
+            const zone     = document.getElementById(zoneId);
+            const preview  = document.getElementById(previewId);
+
+            // Click to upload handled by zone onclick → triggers input.click()
+            input.addEventListener('change', () => updatePreview(input, zone, preview));
+
+            // Drag & Drop
+            zone.addEventListener('dragover', e => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', e => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length) {
+                    // Transfer dropped file to input
+                    const dt = new DataTransfer();
+                    dt.items.add(files[0]);
+                    input.files = dt.files;
+                    updatePreview(input, zone, preview);
+                }
+            });
+        });
+
+        function updatePreview(input, zone, preview) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert(`File "${file.name}" exceeds the 5MB limit.`);
+                input.value = '';
+                return;
+            }
+
+            zone.classList.add('has-file');
+            const icon = zone.querySelector('.upload-drop-icon');
+            if (icon) icon.className = 'fa-solid fa-circle-check upload-drop-icon';
+
+            const textEl = zone.querySelector('.upload-drop-text');
+            if (textEl) textEl.textContent = 'File selected';
+
+            preview.textContent = `📄 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
         }
     });
 </script>
