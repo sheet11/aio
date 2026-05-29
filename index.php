@@ -2,6 +2,13 @@
 require_once 'header.php';
 ?>
 
+<!-- Flyer Banner -->
+<section class="flyer-banner">
+    <div class="flyer-container">
+        <img src="flyer.png" alt="International New Student Admission Flyer">
+    </div>
+</section>
+
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="hero-container">
@@ -14,23 +21,6 @@ require_once 'header.php';
                 <a href="register.php" class="btn-primary">Apply Online Now <i class="fa-solid fa-arrow-right"></i></a>
                 <a href="facilities.php" class="btn-secondary">Explore Facilities <i
                         class="fa-solid fa-hospital"></i></a>
-            </div>
-        </div>
-        <div class="hero-image-wrapper">
-            <img src="/oia/flyer.png" alt="International New Student Admission Flyer">
-            <div class="floating-badge badge-1">
-                <i class="fa-solid fa-circle-check"></i>
-                <div>
-                    <h4>Accredited</h4>
-                    <p>Accredited "A" / Paripurna</p>
-                </div>
-            </div>
-            <div class="floating-badge badge-2">
-                <i class="fa-solid fa-users"></i>
-                <div>
-                    <h4>Global Network</h4>
-                    <p>International Career Prep</p>
-                </div>
             </div>
         </div>
     </div>
