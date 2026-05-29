@@ -8,14 +8,16 @@ require_once 'header.php';
         <div class="hero-content">
             <span class="hero-badge"><i class="fa-solid fa-earth-asia"></i> International Admissions 2026</span>
             <h1>Start Your Healthcare Career Journey in <span>Indonesia</span></h1>
-            <p>Poltekkes Kemenkes Bengkulu offers world-class health education modules tailored for global environments. Join our diverse international community and become a professional health worker.</p>
+            <p>Poltekkes Kemenkes Bengkulu offers world-class health education modules tailored for global environments.
+                Join our diverse international community and become a professional health worker.</p>
             <div class="hero-actions">
                 <a href="register.php" class="btn-primary">Apply Online Now <i class="fa-solid fa-arrow-right"></i></a>
-                <a href="facilities.php" class="btn-secondary">Explore Facilities <i class="fa-solid fa-hospital"></i></a>
+                <a href="facilities.php" class="btn-secondary">Explore Facilities <i
+                        class="fa-solid fa-hospital"></i></a>
             </div>
         </div>
         <div class="hero-image-wrapper">
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80" alt="Poltekkes Bengkulu Medical Students">
+            <img src="FLAYER%20SPMB%20MAHASISWA%20ASING.png" alt="International New Student Admission Flyer">
             <div class="floating-badge badge-1">
                 <i class="fa-solid fa-circle-check"></i>
                 <div>
@@ -61,23 +63,27 @@ require_once 'header.php';
     <div class="section-container">
         <div class="section-header">
             <h2>Why Study at Poltekkes Bengkulu?</h2>
-            <p>We provide a premium education ecosystem designed to prepare you for international health certification and career deployment.</p>
+            <p>We provide a premium education ecosystem designed to prepare you for international health certification
+                and career deployment.</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon"><i class="fa-solid fa-hospital-user"></i></div>
                 <h3>Clinical Mock Practice</h3>
-                <p>Train inside our high-fidelity Mini Hospital OSCE facility and standard labs replicating real-world clinical wards.</p>
+                <p>Train inside our high-fidelity Mini Hospital OSCE facility and standard labs replicating real-world
+                    clinical wards.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon"><i class="fa-solid fa-plane-departure"></i></div>
                 <h3>Migrant & Career Center</h3>
-                <p>Specialized guidance program preparing graduates for placement exams in Germany, Japan, and other global regions.</p>
+                <p>Specialized guidance program preparing graduates for placement exams in Germany, Japan, and other
+                    global regions.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon"><i class="fa-solid fa-language"></i></div>
                 <h3>Language Preparatory Program</h3>
-                <p>Equip yourself with specialized English and Indonesian language programs to ease into local and global environments.</p>
+                <p>Equip yourself with specialized English and Indonesian language programs to ease into local and
+                    global environments.</p>
             </div>
         </div>
     </div>
@@ -94,14 +100,19 @@ require_once 'header.php';
             <div class="program-info">
                 <span class="program-type">Four-Year Applied Bachelor (D-IV)</span>
                 <h3>Bachelor of Health Promotion</h3>
-                <p>This program focuses on preparing professionals capable of designing, implementing, and assessing health promotion programs in public health settings, hospitals, and community environments.</p>
+                <p>This program focuses on preparing professionals capable of designing, implementing, and assessing
+                    health promotion programs in public health settings, hospitals, and community environments.</p>
                 <ul class="program-highlights">
-                    <li><i class="fa-solid fa-check"></i> Standard Curriculum aligned with national public health competencies</li>
-                    <li><i class="fa-solid fa-check"></i> In-depth field internships in public health agencies and community groups</li>
-                    <li><i class="fa-solid fa-check"></i> Career path: Health Promoter, CSR Health Analyst, Community Consultant</li>
+                    <li><i class="fa-solid fa-check"></i> Standard Curriculum aligned with national public health
+                        competencies</li>
+                    <li><i class="fa-solid fa-check"></i> In-depth field internships in public health agencies and
+                        community groups</li>
+                    <li><i class="fa-solid fa-check"></i> Career path: Health Promoter, CSR Health Analyst, Community
+                        Consultant</li>
                 </ul>
                 <div style="margin-top: 2rem;">
-                    <a href="requirements.php" class="btn-primary">Check Requirements <i class="fa-solid fa-chevron-right"></i></a>
+                    <a href="requirements.php" class="btn-primary">Check Requirements <i
+                            class="fa-solid fa-chevron-right"></i></a>
                 </div>
             </div>
             <div class="program-meta">
@@ -139,7 +150,8 @@ require_once 'header.php';
         <div class="scholarship-header">
             <span class="scholarship-badge"><i class="fa-solid fa-award"></i> Full Scholarship Program</span>
             <h2>Full Scholarship for International Students</h2>
-            <p>Poltekkes Kemenkes Bengkulu provides a comprehensive scholarship package covering all academic and living needs throughout your entire study period in Indonesia.</p>
+            <p>Poltekkes Kemenkes Bengkulu provides a comprehensive scholarship package covering all academic and living
+                needs throughout your entire study period in Indonesia.</p>
         </div>
 
         <div class="scholarship-grid">
@@ -151,7 +163,8 @@ require_once 'header.php';
                 </div>
                 <div class="sc-body">
                     <h4>Full Tuition Fee Waiver (UKT)</h4>
-                    <p>Full waiver of tuition fees amounting to <strong>Rp. 0,-</strong> per semester, covering all costs related to academic activities.</p>
+                    <p>Full waiver of tuition fees amounting to <strong>Rp. 0,-</strong> per semester, covering all
+                        costs related to academic activities.</p>
                 </div>
             </div>
 
@@ -162,7 +175,8 @@ require_once 'header.php';
                 </div>
                 <div class="sc-body">
                     <h4>Monthly Living Allowance</h4>
-                    <p>A monthly living allowance of <strong>Rp. 2,500,000,-</strong> to support day-to-day needs throughout the study period.</p>
+                    <p>A monthly living allowance of <strong>Rp. 2,500,000,-</strong> to support day-to-day needs
+                        throughout the study period.</p>
                 </div>
             </div>
 
@@ -173,7 +187,8 @@ require_once 'header.php';
                 </div>
                 <div class="sc-body">
                     <h4>National Health Insurance</h4>
-                    <p>Full health coverage through <strong>JKN BPJS Kesehatan</strong>, Indonesia's national health insurance scheme, valid throughout your study period.</p>
+                    <p>Full health coverage through <strong>JKN BPJS Kesehatan</strong>, Indonesia's national health
+                        insurance scheme, valid throughout your study period.</p>
                 </div>
             </div>
 
@@ -184,7 +199,8 @@ require_once 'header.php';
                 </div>
                 <div class="sc-body">
                     <h4>On-Campus Dormitory</h4>
-                    <p>Fully subsidised accommodation at the <strong>Poltekkes Bengkulu International Student Dormitory</strong> — safe, comfortable, and conveniently located.</p>
+                    <p>Fully subsidised accommodation at the <strong>Poltekkes Bengkulu International Student
+                            Dormitory</strong> — safe, comfortable, and conveniently located.</p>
                 </div>
             </div>
 
@@ -195,7 +211,8 @@ require_once 'header.php';
                 </div>
                 <div class="sc-body">
                     <h4>Study &amp; Residence Permit Assistance</h4>
-                    <p>Full facilitation of study permits through <strong>Kemdiktisaintek</strong> (Ministry of Higher Education, Science &amp; Technology) and residence permits in Bengkulu.</p>
+                    <p>Full facilitation of study permits through <strong>Kemdiktisaintek</strong> (Ministry of Higher
+                        Education, Science &amp; Technology) and residence permits in Bengkulu.</p>
                 </div>
             </div>
 
@@ -206,7 +223,8 @@ require_once 'header.php';
                 </div>
                 <div class="sc-body">
                     <h4>Round-Trip Airfare &amp; Visa</h4>
-                    <p>Scholarship includes <strong>round-trip airfare</strong> from your home country to Indonesia and back, plus full visa application fee coverage.</p>
+                    <p>Scholarship includes <strong>round-trip airfare</strong> from your home country to Indonesia and
+                        back, plus full visa application fee coverage.</p>
                 </div>
             </div>
 
@@ -227,7 +245,8 @@ require_once 'header.php';
 <section class="cta-section">
     <div class="cta-container">
         <h2>Ready to Shape the Future of Healthcare?</h2>
-        <p>Applications for the 2026 intake are currently open. Fill out our simplified online application form and start your journey today.</p>
+        <p>Applications for the 2026 intake are currently open. Fill out our simplified online application form and
+            start your journey today.</p>
         <a href="register.php" class="btn-cta">Start Application <i class="fa-solid fa-user-plus"></i></a>
     </div>
 </section>
@@ -442,7 +461,8 @@ require_once 'header.php';
     }
 
     /* Features Section */
-    .features-section, .program-section {
+    .features-section,
+    .program-section {
         padding: 6rem 8%;
         background: var(--white);
     }
@@ -647,7 +667,7 @@ require_once 'header.php';
         width: 500px;
         height: 500px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.03);
+        background: rgba(255, 255, 255, 0.03);
         top: -150px;
         right: -100px;
         pointer-events: none;
@@ -662,8 +682,8 @@ require_once 'header.php';
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: #a8f0e0;
         font-weight: 700;
         font-size: 0.82rem;
@@ -684,7 +704,7 @@ require_once 'header.php';
 
     .scholarship-header p {
         font-size: 1rem;
-        color: rgba(255,255,255,0.75);
+        color: rgba(255, 255, 255, 0.75);
         max-width: 650px;
         margin: 0 auto;
         line-height: 1.7;
@@ -698,8 +718,8 @@ require_once 'header.php';
     }
 
     .scholarship-card {
-        background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: var(--border-radius-md);
         padding: 1.75rem 1.5rem;
         display: flex;
@@ -710,10 +730,10 @@ require_once 'header.php';
     }
 
     .scholarship-card:hover {
-        background: rgba(255,255,255,0.13);
+        background: rgba(255, 255, 255, 0.13);
         transform: translateY(-4px);
-        border-color: rgba(255,255,255,0.25);
-        box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
     }
 
     .sc-icon-wrap {
@@ -727,12 +747,35 @@ require_once 'header.php';
         flex-shrink: 0;
     }
 
-    .sc-teal   { background: rgba(0, 210, 180, 0.2); color: #5ef0d8; }
-    .sc-gold   { background: rgba(255, 200, 50, 0.2); color: #ffd96e; }
-    .sc-green  { background: rgba(72, 187, 120, 0.2); color: #68d391; }
-    .sc-blue   { background: rgba(100, 160, 255, 0.2); color: #90c2ff; }
-    .sc-purple { background: rgba(180, 120, 255, 0.2); color: #c9a3ff; }
-    .sc-orange { background: rgba(255, 140, 70, 0.2); color: #ffb07a; }
+    .sc-teal {
+        background: rgba(0, 210, 180, 0.2);
+        color: #5ef0d8;
+    }
+
+    .sc-gold {
+        background: rgba(255, 200, 50, 0.2);
+        color: #ffd96e;
+    }
+
+    .sc-green {
+        background: rgba(72, 187, 120, 0.2);
+        color: #68d391;
+    }
+
+    .sc-blue {
+        background: rgba(100, 160, 255, 0.2);
+        color: #90c2ff;
+    }
+
+    .sc-purple {
+        background: rgba(180, 120, 255, 0.2);
+        color: #c9a3ff;
+    }
+
+    .sc-orange {
+        background: rgba(255, 140, 70, 0.2);
+        color: #ffb07a;
+    }
 
     .sc-body h4 {
         font-size: 1rem;
@@ -744,7 +787,7 @@ require_once 'header.php';
 
     .sc-body p {
         font-size: 0.875rem;
-        color: rgba(255,255,255,0.72);
+        color: rgba(255, 255, 255, 0.72);
         line-height: 1.6;
         margin: 0;
     }
@@ -782,7 +825,7 @@ require_once 'header.php';
     }
 
     .btn-scholarship-info {
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         color: #fff;
         text-decoration: none;
         padding: 1rem 2.2rem;
@@ -792,12 +835,12 @@ require_once 'header.php';
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        border: 1px solid rgba(255,255,255,0.25);
+        border: 1px solid rgba(255, 255, 255, 0.25);
         transition: var(--transition-all);
     }
 
     .btn-scholarship-info:hover {
-        background: rgba(255,255,255,0.18);
+        background: rgba(255, 255, 255, 0.18);
         transform: translateY(-3px);
     }
 
@@ -831,63 +874,63 @@ require_once 'header.php';
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         transition: var(--transition-all);
     }
 
     .btn-cta:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         color: var(--primary);
     }
 
     /* Responsive adjustments */
-    @media (max-width: 968px) {
-        .hero-container {
-            flex-direction: column;
-            text-align: center;
-            padding-top: 3rem;
-            gap: 3rem;
-        }
-
-        .hero-content {
-            max-width: 100%;
-        }
-
-        .hero-image-wrapper {
-            max-width: 80%;
-        }
-
-        .hero-actions {
-            justify-content: center;
-        }
-
-        .floating-badge {
-            display: none; /* Hide floating badges on smaller viewports */
-        }
-
-        .program-card {
-            grid-template-columns: 1fr;
-        }
-
-        .program-meta {
-            border-left: none;
-            border-top: 1px solid #edf2f7;
-            padding: 3rem;
-        }
-
-        .program-info {
-            padding: 3rem;
-        }
+    <blade media|%20(max-width%3A%20968px)%20%7B>.hero-container {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 3rem;
+        gap: 3rem;
     }
 
-    @media (max-width: 480px) {
-        .hero-content h1 {
-            font-size: 2.5rem;
-        }
-        .cta-container h2 {
-            font-size: 2rem;
-        }
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-image-wrapper {
+        max-width: 80%;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .floating-badge {
+        display: none;
+        /* Hide floating badges on smaller viewports */
+    }
+
+    .program-card {
+        grid-template-columns: 1fr;
+    }
+
+    .program-meta {
+        border-left: none;
+        border-top: 1px solid #edf2f7;
+        padding: 3rem;
+    }
+
+    .program-info {
+        padding: 3rem;
+    }
+    }
+
+    <blade media|%20(max-width%3A%20480px)%20%7B>.hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .cta-container h2 {
+        font-size: 2rem;
+    }
     }
 </style>
 
