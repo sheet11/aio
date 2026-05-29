@@ -331,7 +331,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Navigation Header -->
     <nav>
         <a href="index.php" class="logo">
-            <img src="logo-ptk.png" alt="Poltekkes Kemenkes Bengkulu Logo" width="32" height="32">
+            <img src="logo-ptk.png" alt="Poltekkes Kemenkes Bengkulu Logo" width="320" height="320">
         </a>
 
         <!-- Desktop Nav Links -->
