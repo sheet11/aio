@@ -1097,7 +1097,7 @@ if (empty($db_error)) {
                 <div style="display:flex;gap:5px;flex-wrap:wrap;">
 
                     <?php if(!empty($applicant['passport_file'])): ?>
-                        <a href="uploads/<?php echo htmlspecialchars($applicant['passport_file']); ?>"
+                        <a href="<?php echo htmlspecialchars($applicant['passport_file']); ?>"
                            target="_blank"
                            title="View Passport"
                            class="btn-view-details">
@@ -1106,7 +1106,7 @@ if (empty($db_error)) {
                     <?php endif; ?>
 
                     <?php if(!empty($applicant['english_cert_file'])): ?>
-                        <a href="uploads/<?php echo htmlspecialchars($applicant['english_cert_file']); ?>"
+                        <a href="<?php echo htmlspecialchars($applicant['english_cert_file']); ?>"
                            target="_blank"
                            title="View English Certificate"
                            class="btn-view-details">
@@ -1115,7 +1115,7 @@ if (empty($db_error)) {
                     <?php endif; ?>
 
                     <?php if(!empty($applicant['diploma_file'])): ?>
-                        <a href="uploads/<?php echo htmlspecialchars($applicant['diploma_file']); ?>"
+                        <a href="<?php echo htmlspecialchars($applicant['diploma_file']); ?>"
                            target="_blank"
                            title="View Diploma / Transcript"
                            class="btn-view-details">
