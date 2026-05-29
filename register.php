@@ -419,9 +419,6 @@ require_once 'header.php';
                                 <span class="upload-sub">CV / Resume</span>
                             </div>
                         </label>
-                        <div class="sample-actions">
-                            <a href="downloads/cv_template.rtf" class="sample-download" download>Download contoh CV</a>
-                        </div>
                         <div class="upload-drop-zone" id="zone_cv" onclick="document.getElementById('cv_file').click()">
                             <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
                             <p class="upload-drop-text">Click to upload or drag & drop</p>
@@ -442,7 +439,7 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/letter_of_recommendation.rtf" class="sample-download" download>Download
+                            <a href="downloads/letter of recomendation.docx" class="sample-download" download>Download
                                 contoh Surat Rekomendasi</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_letter_rec"
@@ -466,7 +463,8 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/statement_of_commitment.rtf" class="sample-download" download>Download
+                            <a href="downloads/statement of legal compliment.docx" class="sample-download"
+                                download>Download
                                 contoh Statement</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_statement"
