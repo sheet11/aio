@@ -17,7 +17,7 @@ require_once 'header.php';
             </div>
         </div>
         <div class="hero-image-wrapper">
-            <img src="FLAYER%20SPMB%20MAHASISWA%20ASING.png" alt="International New Student Admission Flyer">
+            <img src="flyer.png" alt="International New Student Admission Flyer">
             <div class="floating-badge badge-1">
                 <i class="fa-solid fa-circle-check"></i>
                 <div>
