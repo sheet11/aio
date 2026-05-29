@@ -131,6 +131,98 @@ require_once 'header.php';
     </div>
 </section>
 
+<!-- =============================================== -->
+<!-- Scholarship / Beasiswa Section -->
+<!-- =============================================== -->
+<section class="scholarship-section">
+    <div class="section-container">
+        <div class="scholarship-header">
+            <span class="scholarship-badge"><i class="fa-solid fa-award"></i> Full Scholarship Program</span>
+            <h2>Beasiswa Penuh untuk Mahasiswa Internasional</h2>
+            <p>Poltekkes Kemenkes Bengkulu menyediakan paket beasiswa komprehensif yang mencakup seluruh kebutuhan akademik dan kehidupan Anda selama masa studi di Indonesia.</p>
+        </div>
+
+        <div class="scholarship-grid">
+
+            <!-- Benefit A -->
+            <div class="scholarship-card">
+                <div class="sc-icon-wrap sc-teal">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <div class="sc-body">
+                    <h4>Bebas Uang Kuliah Tunggal (UKT)</h4>
+                    <p>Pemberian bantuan bebas UKT sebesar <strong>Rp. 0,-</strong> setiap semester, mencakup segala biaya yang berkaitan dengan kegiatan akademik.</p>
+                </div>
+            </div>
+
+            <!-- Benefit B -->
+            <div class="scholarship-card">
+                <div class="sc-icon-wrap sc-gold">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div class="sc-body">
+                    <h4>Biaya Hidup Bulanan</h4>
+                    <p>Bantuan biaya hidup sebesar <strong>Rp. 2.500.000,-</strong> setiap bulan untuk mendukung kebutuhan sehari-hari selama masa studi.</p>
+                </div>
+            </div>
+
+            <!-- Benefit C -->
+            <div class="scholarship-card">
+                <div class="sc-icon-wrap sc-green">
+                    <i class="fa-solid fa-shield-heart"></i>
+                </div>
+                <div class="sc-body">
+                    <h4>Jaminan Kesehatan Nasional</h4>
+                    <p>Perlindungan kesehatan penuh melalui <strong>JKN BPJS Kesehatan</strong> yang berlaku selama periode studi di Indonesia.</p>
+                </div>
+            </div>
+
+            <!-- Benefit D -->
+            <div class="scholarship-card">
+                <div class="sc-icon-wrap sc-blue">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <div class="sc-body">
+                    <h4>Tempat Tinggal Asrama</h4>
+                    <p>Bantuan tempat tinggal di <strong>Asrama Mahasiswa Asing Poltekkes Bengkulu</strong> yang nyaman dan aman selama masa studi.</p>
+                </div>
+            </div>
+
+            <!-- Benefit E -->
+            <div class="scholarship-card">
+                <div class="sc-icon-wrap sc-purple">
+                    <i class="fa-solid fa-file-signature"></i>
+                </div>
+                <div class="sc-body">
+                    <h4>Bantuan Izin Studi &amp; Tinggal</h4>
+                    <p>Pengurusan izin studi dari <strong>Kemdiktisaintek</strong> serta izin tinggal di Bengkulu difasilitasi sepenuhnya oleh institusi.</p>
+                </div>
+            </div>
+
+            <!-- Benefit F -->
+            <div class="scholarship-card">
+                <div class="sc-icon-wrap sc-orange">
+                    <i class="fa-solid fa-plane-circle-check"></i>
+                </div>
+                <div class="sc-body">
+                    <h4>Tiket &amp; Visa</h4>
+                    <p>Bantuan <strong>tiket pulang-pergi</strong> dari negara asal ke Indonesia dan sebaliknya, termasuk biaya pengurusan visa.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="scholarship-cta">
+            <a href="register.php" class="btn-scholarship-apply">
+                <i class="fa-solid fa-user-plus"></i> Daftar &amp; Dapatkan Beasiswa
+            </a>
+            <a href="requirements.php" class="btn-scholarship-info">
+                <i class="fa-solid fa-circle-info"></i> Lihat Persyaratan
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- Call to Action Section -->
 <section class="cta-section">
     <div class="cta-container">
@@ -536,6 +628,177 @@ require_once 'header.php';
         background: linear-gradient(135deg, var(--primary-dark), var(--primary));
         color: var(--white);
         text-align: center;
+    }
+
+    /* =============================================
+       Scholarship Section
+    ============================================= */
+    .scholarship-section {
+        padding: 6rem 8%;
+        background: linear-gradient(160deg, #003d3d 0%, #005f5f 60%, #007a7a 100%);
+        color: var(--white);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .scholarship-section::before {
+        content: '';
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.03);
+        top: -150px;
+        right: -100px;
+        pointer-events: none;
+    }
+
+    .scholarship-header {
+        text-align: center;
+        margin-bottom: 3.5rem;
+    }
+
+    .scholarship-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #a8f0e0;
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 0.45rem 1.1rem;
+        border-radius: 999px;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .scholarship-header h2 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+
+    .scholarship-header p {
+        font-size: 1rem;
+        color: rgba(255,255,255,0.75);
+        max-width: 650px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    .scholarship-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .scholarship-card {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: var(--border-radius-md);
+        padding: 1.75rem 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1.25rem;
+        transition: var(--transition-all);
+        backdrop-filter: blur(4px);
+    }
+
+    .scholarship-card:hover {
+        background: rgba(255,255,255,0.13);
+        transform: translateY(-4px);
+        border-color: rgba(255,255,255,0.25);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    .sc-icon-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: var(--border-radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+    }
+
+    .sc-teal   { background: rgba(0, 210, 180, 0.2); color: #5ef0d8; }
+    .sc-gold   { background: rgba(255, 200, 50, 0.2); color: #ffd96e; }
+    .sc-green  { background: rgba(72, 187, 120, 0.2); color: #68d391; }
+    .sc-blue   { background: rgba(100, 160, 255, 0.2); color: #90c2ff; }
+    .sc-purple { background: rgba(180, 120, 255, 0.2); color: #c9a3ff; }
+    .sc-orange { background: rgba(255, 140, 70, 0.2); color: #ffb07a; }
+
+    .sc-body h4 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0.4rem;
+        line-height: 1.3;
+    }
+
+    .sc-body p {
+        font-size: 0.875rem;
+        color: rgba(255,255,255,0.72);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .sc-body p strong {
+        color: #a8f0e0;
+        font-weight: 700;
+    }
+
+    .scholarship-cta {
+        display: flex;
+        justify-content: center;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-scholarship-apply {
+        background: linear-gradient(135deg, #00d2b4, #009e87);
+        color: #fff;
+        text-decoration: none;
+        padding: 1rem 2.2rem;
+        border-radius: var(--border-radius-xl);
+        font-weight: 700;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(0, 210, 180, 0.35);
+        transition: var(--transition-all);
+    }
+
+    .btn-scholarship-apply:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0, 210, 180, 0.5);
+    }
+
+    .btn-scholarship-info {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        text-decoration: none;
+        padding: 1rem 2.2rem;
+        border-radius: var(--border-radius-xl);
+        font-weight: 700;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid rgba(255,255,255,0.25);
+        transition: var(--transition-all);
+    }
+
+    .btn-scholarship-info:hover {
+        background: rgba(255,255,255,0.18);
+        transform: translateY(-3px);
     }
 
     .cta-container {
