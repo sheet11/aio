@@ -4,6 +4,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +12,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --primary: #008080; /* Teal brand color */
+            --primary: #008080;
+            /* Teal brand color */
             --primary-dark: #006666;
             --primary-light: #e6f2f2;
             --primary-rgb: 0, 128, 128;
@@ -30,8 +33,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             --success-light: #f0fff4;
             --error: #e53e3e;
             --error-light: #fff5f5;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
             --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
             --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -63,13 +66,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
         ::-webkit-scrollbar {
             width: 8px;
         }
+
         ::-webkit-scrollbar-track {
             background: #f7fafc;
         }
+
         ::-webkit-scrollbar-thumb {
             background: var(--primary-light);
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary);
         }
@@ -254,24 +260,29 @@ $current_page = basename($_SERVER['PHP_SELF']);
         /* Page Layout Adjustment for Fixed Header */
         main {
             flex: 1 0 auto;
-            margin-top: 75px; /* Offset for the fixed navigation height */
+            margin-top: 75px;
+            /* Offset for the fixed navigation height */
         }
 
         /* Custom Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        <blade keyframes|%20fadeInUp%20%7B>from {
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        }
+
+        <blade keyframes|%20fadeIn%20%7B>from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
         }
 
         /* Common Page Header Utility */
@@ -300,35 +311,42 @@ $current_page = basename($_SERVER['PHP_SELF']);
         }
 
         /* Responsive Layouts */
-        @media (max-width: 968px) {
-            nav {
-                padding: 1.2rem 5%;
-            }
-            .nav-links {
-                display: none;
-            }
-            .mobile-toggle {
-                display: block;
-            }
+        <blade media|%20(max-width%3A%20968px)%20%7B>nav {
+            padding: 1.2rem 5%;
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        .mobile-toggle {
+            display: block;
+        }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navigation Header -->
     <nav>
         <a href="index.php" class="logo">
-            <i class="fa-solid fa-graduation-cap"></i> Poltekkes Bengkulu
+            <img src="logo-ptk.png" alt="Poltekkes Kemenkes Bengkulu Logo" width="32" height="32">
         </a>
-        
+
         <!-- Desktop Nav Links -->
         <ul class="nav-links">
             <li><a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>">Home</a></li>
-            <li><a href="requirements.php" class="<?php echo $current_page == 'requirements.php' ? 'active' : ''; ?>">Requirements</a></li>
-            <li><a href="facilities.php" class="<?php echo $current_page == 'facilities.php' ? 'active' : ''; ?>">Campus Facilities</a></li>
-            <li><a href="cost-of-living.php" class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost of Living</a></li>
-            <li><a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact</a></li>
-            <li><a href="register.php" class="btn-nav <?php echo $current_page == 'register.php' ? 'active' : ''; ?>">Apply Now</a></li>
+            <li><a href="requirements.php"
+                    class="<?php echo $current_page == 'requirements.php' ? 'active' : ''; ?>">Requirements</a></li>
+            <li><a href="facilities.php" class="<?php echo $current_page == 'facilities.php' ? 'active' : ''; ?>">Campus
+                    Facilities</a></li>
+            <li><a href="cost-of-living.php"
+                    class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost of Living</a></li>
+            <li><a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact</a>
+            </li>
+            <li><a href="register.php"
+                    class="btn-nav <?php echo $current_page == 'register.php' ? 'active' : ''; ?>">Apply Now</a></li>
         </ul>
 
         <!-- Mobile Hamburg Button -->
@@ -341,9 +359,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="mobile-overlay"></div>
     <div class="mobile-nav">
         <a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>">Home</a>
-        <a href="requirements.php" class="<?php echo $current_page == 'requirements.php' ? 'active' : ''; ?>">Requirements</a>
-        <a href="facilities.php" class="<?php echo $current_page == 'facilities.php' ? 'active' : ''; ?>">Campus Facilities</a>
-        <a href="cost-of-living.php" class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost of Living</a>
+        <a href="requirements.php"
+            class="<?php echo $current_page == 'requirements.php' ? 'active' : ''; ?>">Requirements</a>
+        <a href="facilities.php" class="<?php echo $current_page == 'facilities.php' ? 'active' : ''; ?>">Campus
+            Facilities</a>
+        <a href="cost-of-living.php" class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost
+            of Living</a>
         <a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact</a>
         <a href="register.php" class="btn-nav-mobile">Apply Now</a>
     </div>
