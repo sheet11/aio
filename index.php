@@ -5,7 +5,7 @@ require_once 'header.php';
 <!-- Flyer Banner -->
 <section class="flyer-banner">
     <div class="flyer-container">
-        <img src="flyer.png" alt="International New Student Admission Flyer">
+        <img src="flyer.png" alt="International New Student Admission Flyer" align="center">
     </div>
 </section>
 
@@ -243,9 +243,29 @@ require_once 'header.php';
 
 <style>
     /* Home Page Specific CSS */
+    .flyer-banner {
+        background: #f8fdfd;
+        padding: 2rem 0 0;
+    }
+
+    .flyer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 8%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .flyer-container img {
+        width: 100%;
+        max-width: 1200px;
+        border-radius: var(--border-radius-xl);
+        box-shadow: var(--shadow-xl);
+    }
+
     .hero-section {
         background: linear-gradient(135deg, #f0fafa 0%, #ffffff 100%);
-        padding: 6rem 8%;
+        padding: 4rem 8rem 6rem;
         position: relative;
         overflow: hidden;
     }
@@ -253,7 +273,7 @@ require_once 'header.php';
     .hero-container {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         max-width: 1200px;
         margin: 0 auto;
         gap: 4rem;
@@ -875,28 +895,30 @@ require_once 'header.php';
     }
 
     /* Responsive adjustments */
-    <blade media|%20(max-width%3A%20968px)%20%7B>.hero-container {
+    <blade media|%20(max-width%3A%20968px)%20%7B>.flyer-container,
+    .hero-section,
+    .hero-container {
+        padding: 0 2rem;
+        width: 100%;
+    }
+
+    .flyer-container {
+        padding-bottom: 1.5rem;
+    }
+
+    .hero-container {
         flex-direction: column;
         text-align: center;
-        padding-top: 3rem;
-        gap: 3rem;
+        padding-top: 1rem;
+        gap: 2rem;
     }
 
     .hero-content {
         max-width: 100%;
     }
 
-    .hero-image-wrapper {
-        max-width: 80%;
-    }
-
     .hero-actions {
         justify-content: center;
-    }
-
-    .floating-badge {
-        display: none;
-        /* Hide floating badges on smaller viewports */
     }
 
     .program-card {
