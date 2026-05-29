@@ -3,9 +3,9 @@ require_once 'header.php';
 ?>
 
 <!-- Flyer Banner -->
-<section class="flyer-banner">
+<section class="flyer-banner" align="center">
     <div class="flyer-container">
-        <img src="flyer.png" alt="International New Student Admission Flyer" align="center">
+        <img src="flyer.png" alt="International New Student Admission Flyer">
     </div>
 </section>
 
