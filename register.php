@@ -390,12 +390,12 @@ require_once 'header.php';
                             class="upload-input" data-zone="zone_transcript" data-preview="preview_transcript">
                     </div>
 
-                    <!-- Pas Foto (Passport Photo) -->
+                    <!-- Passport Photo -->
                     <div class="upload-item">
                         <label class="upload-label" for="photo_file">
                             <div class="upload-icon"><i class="fa-solid fa-image"></i></div>
                             <div class="upload-info">
-                                <span class="upload-title">Pas Foto</span>
+                                <span class="upload-title">Passport Photo</span>
                                 <span class="upload-sub">Recent passport-style photograph (4x6 preferred)</span>
                             </div>
                         </label>
@@ -439,8 +439,7 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/letter of recomendation.docx" class="sample-download" download>Download
-                                contoh Surat Rekomendasi</a>
+                            <a href="downloads/letter of recomendation.docx" class="sample-download" download>Download Sample Recommendation Letter</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_letter_rec"
                             onclick="document.getElementById('letter_rec_file').click()">
@@ -463,9 +462,7 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/statement of legal compliment.docx" class="sample-download"
-                                download>Download
-                                contoh Statement</a>
+                            <a href="downloads/statement of legal compliment.docx" class="sample-download" download>Download Sample Statement</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_statement"
                             onclick="document.getElementById('statement_file').click()">

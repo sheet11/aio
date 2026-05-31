@@ -260,29 +260,31 @@ $current_page = basename($_SERVER['PHP_SELF']);
         /* Page Layout Adjustment for Fixed Header */
         main {
             flex: 1 0 auto;
-            margin-top: 75px;
+            margin-top: 90px;
             /* Offset for the fixed navigation height */
         }
 
         /* Custom Animations */
-        <blade keyframes|%20fadeInUp%20%7B>from {
-            opacity: 0;
-            transform: translateY(20px);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
 
-        <blade keyframes|%20fadeIn%20%7B>from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
+            to {
+                opacity: 1;
+            }
         }
 
         /* Common Page Header Utility */
@@ -311,17 +313,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
         }
 
         /* Responsive Layouts */
-        <blade media|%20(max-width%3A%20968px)%20%7B>nav {
-            padding: 1.2rem 5%;
-        }
+        @media (max-width: 968px) {
+            nav {
+                padding: 1.2rem 5%;
+            }
 
-        .nav-links {
-            display: none;
-        }
+            .nav-links {
+                display: none;
+            }
 
-        .mobile-toggle {
-            display: block;
-        }
+            .mobile-toggle {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -345,6 +348,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost of Living</a></li>
             <li><a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact</a>
             </li>
+            <li><a href="guidelines.php" class="<?php echo $current_page == 'guidelines.php' ? 'active' : ''; ?>">Guidelines</a></li>
             <li><a href="register.php"
                     class="btn-nav <?php echo $current_page == 'register.php' ? 'active' : ''; ?>">Apply Now</a></li>
         </ul>
@@ -366,6 +370,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <a href="cost-of-living.php" class="<?php echo $current_page == 'cost-of-living.php' ? 'active' : ''; ?>">Cost
             of Living</a>
         <a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact</a>
+        <a href="guidelines.php" class="<?php echo $current_page == 'guidelines.php' ? 'active' : ''; ?>">Guidelines</a>
         <a href="register.php" class="btn-nav-mobile">Apply Now</a>
     </div>
 
