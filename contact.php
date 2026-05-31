@@ -30,7 +30,7 @@ require_once 'header.php';
                         <i class="fa-solid fa-envelope"></i>
                         <div>
                             <h4>Official Email</h4>
-                            <p><a href="mailto:international.admission@poltekkesbengkulu.ac.id">international.admission@poltekkesbengkulu.ac.id</a></p>
+                            <p><a href="mailto:aio@poltekkesbengkulu.ac.id">aio@poltekkesbengkulu.ac.id</a></p>
                         </div>
                     </div>
 
@@ -38,7 +38,7 @@ require_once 'header.php';
                         <i class="fa-brands fa-whatsapp"></i>
                         <div>
                             <h4>WhatsApp International Desk</h4>
-                            <p><a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a></p>
+                            <p><a href="https://wa.me/6281370216550" target="_blank">+62 813-7021-6550</a></p>
                         </div>
                     </div>
 
@@ -57,7 +57,7 @@ require_once 'header.php';
             <div class="contact-form-panel">
                 <h2>Send an Inquiry</h2>
                 <p>Have a quick question? Fill out the short form below and we will get back to you within 24 hours.</p>
-                
+
                 <form id="inquiryForm" onsubmit="event.preventDefault(); handleInquirySubmit();">
                     <div class="form-group">
                         <label for="inquiryName">Full Name</label>
@@ -76,7 +76,7 @@ require_once 'header.php';
 
                     <button type="submit" class="btn-submit btn-inquiry">Send Message <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i></button>
                 </form>
-                
+
                 <div id="inquirySuccess" class="alert alert-success" style="display: none; margin-top: 1.5rem; margin-bottom: 0;">
                     <i class="fa-solid fa-circle-check" style="font-size: 1.25rem;"></i>
                     <div>Thank you! Your message has been sent successfully. We will contact you soon.</div>
@@ -88,8 +88,8 @@ require_once 'header.php';
         <div class="map-wrapper">
             <h2>Find Us on Map</h2>
             <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3980.957640656041!2d102.28589781165243!3d-3.818442842918884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e36b0410ffdf15b%3A0xe10839e559e37704!2sPoltekkes%20Kemenkes%20Bengkulu!5e0!3m2!1sen!2sid!4v1716954200000!5m2!1sen!2sid" 
-                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3980.957640656041!2d102.28589781165243!3d-3.818442842918884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e36b0410ffdf15b%3A0xe10839e559e37704!2sPoltekkes%20Kemenkes%20Bengkulu!5e0!3m2!1sen!2sid!4v1716954200000!5m2!1sen!2sid"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>
@@ -124,8 +124,8 @@ require_once 'header.php';
         letter-spacing: -0.5px;
     }
 
-    .contact-info-panel > p,
-    .contact-form-panel > p {
+    .contact-info-panel>p,
+    .contact-form-panel>p {
         color: var(--text-muted);
         font-size: 1rem;
         margin-bottom: 2.5rem;
@@ -251,6 +251,7 @@ require_once 'header.php';
             grid-template-columns: 1fr;
             gap: 4rem;
         }
+
         .contact-form-panel {
             padding: 2.5rem;
         }
@@ -263,7 +264,7 @@ require_once 'header.php';
         const form = document.getElementById('inquiryForm');
         const submitBtn = document.querySelector('.btn-inquiry');
         const successBox = document.getElementById('inquirySuccess');
-        
+
         // Mock loading state
         submitBtn.disabled = true;
         submitBtn.innerHTML = 'Sending message... <i class="fa-solid fa-spinner fa-spin" style="margin-left: 8px;"></i>';

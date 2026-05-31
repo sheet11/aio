@@ -183,11 +183,11 @@
                     </li>
                     <li>
                         <i class="fa-solid fa-envelope"></i>
-                        <a href="mailto:international.admission@poltekkesbengkulu.ac.id">international.admission@poltekkesbengkulu.ac.id</a>
+                        <a href="mailto:aio@poltekkesbengkulu.ac.id">aio@poltekkesbengkulu.ac.id</a>
                     </li>
                     <li>
                         <i class="fa-brands fa-whatsapp"></i>
-                        <a href="https://wa.me/6281234567890" target="_blank">International Desk: +62 812-3456-7890</a>
+                        <a href="https://wa.me/6281370216550" target="_blank">International Desk: +62 813-7021-6550</a>
                     </li>
                 </ul>
             </div>
