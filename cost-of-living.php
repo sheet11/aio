@@ -4,14 +4,16 @@
 <div class="page-hero col-hero">
     <span class="col-badge"><i class="fa-solid fa-earth-asia"></i> Cost of Living Guide</span>
     <h1>Living in Bengkulu vs. Other Cities</h1>
-    <p>Discover how affordable student life in Bengkulu is compared to major cities across Asia and beyond — all prices in <strong>USD per month</strong>.</p>
+    <p>Discover how affordable student life in Bengkulu is compared to major cities across Asia and beyond — all prices
+        in <strong>USD per month</strong>.</p>
 </div>
 
 <!-- Exchange Rate Note -->
 <div class="exchange-banner">
     <div class="exchange-inner">
         <i class="fa-solid fa-circle-info"></i>
-        <span>Reference exchange rate: <strong>1 USD ≈ IDR 16,000</strong>. Prices are approximate estimates for a student lifestyle.</span>
+        <span>Reference exchange rate: <strong>1 USD ≈ IDR 16,000</strong>. Prices are approximate estimates for a
+            student lifestyle.</span>
     </div>
 </div>
 
@@ -23,7 +25,8 @@
 
         <div class="col-intro">
             <h2>Monthly Cost Breakdown</h2>
-            <p>A side-by-side comparison of typical monthly student expenses across cities. Bengkulu consistently offers one of the most affordable student environments in the region.</p>
+            <p>A side-by-side comparison of typical monthly student expenses across cities. Bengkulu consistently offers
+                one of the most affordable student environments in the region.</p>
         </div>
 
         <!-- City tabs -->
@@ -107,7 +110,8 @@
                     </tr>
                     <tr class="total-row">
                         <td><strong><i class="fa-solid fa-calculator"></i> Estimated Total / Month</strong></td>
-                        <td class="city-col active highlight-best" data-city="bengkulu"><strong>$140 – $260</strong></td>
+                        <td class="city-col active highlight-best" data-city="bengkulu"><strong>$100 – $140</strong>
+                        </td>
                         <td class="city-col" data-city="jakarta"><strong>$350 – $670</strong></td>
                         <td class="city-col" data-city="kualalumpur"><strong>$372 – $717</strong></td>
                         <td class="city-col" data-city="bangkok"><strong>$367 – $718</strong></td>
@@ -115,7 +119,8 @@
                     </tr>
                     <tr class="tuition-row">
                         <td><i class="fa-solid fa-graduation-cap"></i> Tuition Fee / Semester</td>
-                        <td class="city-col active highlight-best" data-city="bengkulu"><span class="free-badge">FREE with Scholarship</span></td>
+                        <td class="city-col active highlight-best" data-city="bengkulu"><span class="free-badge">FREE
+                                with Scholarship</span></td>
                         <td class="city-col" data-city="jakarta">$300 – $800</td>
                         <td class="city-col" data-city="kualalumpur">$600 – $2,000</td>
                         <td class="city-col" data-city="bangkok">$500 – $1,500</td>
@@ -130,7 +135,8 @@
             <i class="fa-solid fa-piggy-bank savings-icon"></i>
             <div>
                 <h3>Save up to <span>$1,800+</span> every month</h3>
-                <p>Compared to studying in Singapore, living in Bengkulu on our scholarship saves you an estimated <strong>$1,800 – $2,200 per month</strong> in combined tuition and living costs.</p>
+                <p>Compared to studying in Singapore, living in Bengkulu on our scholarship saves you an estimated
+                    <strong>$1,800 – $2,200 per month</strong> in combined tuition and living costs.</p>
             </div>
         </div>
 
@@ -242,10 +248,13 @@
 <section class="col-cta-section">
     <div class="col-cta-inner">
         <h2>Study in Bengkulu — For Free</h2>
-        <p>With our full scholarship, you'll enjoy zero tuition costs, a monthly allowance, free dormitory, and all the benefits of living in one of Indonesia's most affordable cities.</p>
+        <p>With our full scholarship, you'll enjoy zero tuition costs, a monthly allowance, free dormitory, and all the
+            benefits of living in one of Indonesia's most affordable cities.</p>
         <div class="col-cta-btns">
-            <a href="register.php" class="col-btn-primary"><i class="fa-solid fa-user-plus"></i> Apply for Scholarship</a>
-            <a href="requirements.php" class="col-btn-secondary"><i class="fa-solid fa-list-check"></i> Check Requirements</a>
+            <a href="register.php" class="col-btn-primary"><i class="fa-solid fa-user-plus"></i> Apply for
+                Scholarship</a>
+            <a href="requirements.php" class="col-btn-secondary"><i class="fa-solid fa-list-check"></i> Check
+                Requirements</a>
         </div>
     </div>
 </section>
@@ -261,16 +270,24 @@
         padding: 5.5rem 8% 4rem;
     }
 
-    .col-hero h1 { color: #fff; }
-    .col-hero p  { color: rgba(255,255,255,0.82); }
-    .col-hero p strong { color: #a8f0e0; }
+    .col-hero h1 {
+        color: #fff;
+    }
+
+    .col-hero p {
+        color: rgba(255, 255, 255, 0.82);
+    }
+
+    .col-hero p strong {
+        color: #a8f0e0;
+    }
 
     .col-badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: #a8f0e0;
         font-weight: 700;
         font-size: 0.82rem;
@@ -298,8 +315,14 @@
         color: #92400e;
     }
 
-    .exchange-inner i { color: #d97706; font-size: 1rem; }
-    .exchange-inner strong { color: #78350f; }
+    .exchange-inner i {
+        color: #d97706;
+        font-size: 1rem;
+    }
+
+    .exchange-inner strong {
+        color: #78350f;
+    }
 
     /* Main sections */
     .col-section {
@@ -357,7 +380,10 @@
         color: var(--text-dark);
     }
 
-    .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .tab-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
 
     .tab-btn.active {
         background: var(--primary);
@@ -403,7 +429,9 @@
         transition: background 0.2s;
     }
 
-    .col-table tbody tr:hover { background: #f7fafc; }
+    .col-table tbody tr:hover {
+        background: #f7fafc;
+    }
 
     .col-table td {
         padding: 0.95rem 1.2rem;
@@ -417,13 +445,18 @@
         white-space: nowrap;
     }
 
-    .col-table td i { color: var(--primary); margin-right: 6px; }
+    .col-table td i {
+        color: var(--primary);
+        margin-right: 6px;
+    }
 
     /* Active city column highlight */
-    .col-table .city-col.active { background: rgba(0,128,128,0.04); }
+    .col-table .city-col.active {
+        background: rgba(0, 128, 128, 0.04);
+    }
 
     .col-table th.city-col.active {
-        background: rgba(0,0,0,0.15);
+        background: rgba(0, 0, 0, 0.15);
         opacity: 1;
     }
 
@@ -434,13 +467,27 @@
     }
 
     /* Total row */
-    .total-row { background: #f0fff4 !important; }
-    .total-row td { font-size: 0.95rem; }
-    .total-row .highlight-best { font-size: 1rem; color: #22543d !important; }
+    .total-row {
+        background: #f0fff4 !important;
+    }
+
+    .total-row td {
+        font-size: 0.95rem;
+    }
+
+    .total-row .highlight-best {
+        font-size: 1rem;
+        color: #22543d !important;
+    }
 
     /* Tuition row */
-    .tuition-row { background: #fffbeb; }
-    .tuition-row td { font-size: 0.88rem; }
+    .tuition-row {
+        background: #fffbeb;
+    }
+
+    .tuition-row td {
+        font-size: 0.88rem;
+    }
 
     .free-badge {
         background: linear-gradient(135deg, #00d2b4, #009e87);
@@ -476,16 +523,20 @@
         margin-bottom: 0.4rem;
     }
 
-    .savings-banner h3 span { color: #a8f0e0; }
+    .savings-banner h3 span {
+        color: #a8f0e0;
+    }
 
     .savings-banner p {
         font-size: 0.9rem;
-        color: rgba(255,255,255,0.78);
+        color: rgba(255, 255, 255, 0.78);
         margin: 0;
         line-height: 1.6;
     }
 
-    .savings-banner p strong { color: #a8f0e0; }
+    .savings-banner p strong {
+        color: #a8f0e0;
+    }
 
     /* ── City Profile Cards ── */
     .city-cards-grid {
@@ -511,7 +562,7 @@
 
     .city-card.featured {
         border-color: var(--primary);
-        box-shadow: 0 0 0 2px rgba(0,128,128,0.15), var(--shadow-lg);
+        box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.15), var(--shadow-lg);
         background: linear-gradient(180deg, #f0fafa, #fff);
     }
 
@@ -522,7 +573,10 @@
         margin-bottom: 1.25rem;
     }
 
-    .city-flag { font-size: 2.2rem; line-height: 1; }
+    .city-flag {
+        font-size: 2.2rem;
+        line-height: 1;
+    }
 
     .city-card-header h3 {
         font-size: 1.15rem;
@@ -563,10 +617,27 @@
         line-height: 1.4;
     }
 
-    .city-facts li i.fa-check { color: #38a169; flex-shrink: 0; margin-top: 2px; }
-    .city-facts li i.fa-minus { color: #d69e2e; flex-shrink: 0; margin-top: 2px; }
-    .city-facts li i.fa-xmark { color: #e53e3e; flex-shrink: 0; margin-top: 2px; }
-    .city-facts li strong { color: var(--text-dark); }
+    .city-facts li i.fa-check {
+        color: #38a169;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .city-facts li i.fa-minus {
+        color: #d69e2e;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .city-facts li i.fa-xmark {
+        color: #e53e3e;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .city-facts li strong {
+        color: var(--text-dark);
+    }
 
     /* ── CTA Section ── */
     .col-cta-section {
@@ -576,7 +647,10 @@
         color: white;
     }
 
-    .col-cta-inner { max-width: 700px; margin: 0 auto; }
+    .col-cta-inner {
+        max-width: 700px;
+        margin: 0 auto;
+    }
 
     .col-cta-section h2 {
         font-size: 2.2rem;
@@ -587,7 +661,7 @@
 
     .col-cta-section p {
         font-size: 1rem;
-        color: rgba(255,255,255,0.8);
+        color: rgba(255, 255, 255, 0.8);
         margin-bottom: 2.5rem;
         line-height: 1.7;
     }
@@ -610,14 +684,17 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        box-shadow: 0 4px 20px rgba(0,210,180,0.35);
+        box-shadow: 0 4px 20px rgba(0, 210, 180, 0.35);
         transition: var(--transition-all);
     }
 
-    .col-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,210,180,0.5); }
+    .col-btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0, 210, 180, 0.5);
+    }
 
     .col-btn-secondary {
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         color: white;
         text-decoration: none;
         padding: 1rem 2.2rem;
@@ -627,17 +704,29 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        border: 1px solid rgba(255,255,255,0.25);
+        border: 1px solid rgba(255, 255, 255, 0.25);
         transition: var(--transition-all);
     }
 
-    .col-btn-secondary:hover { background: rgba(255,255,255,0.18); transform: translateY(-3px); }
+    .col-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-3px);
+    }
 
     /* ── Responsive ── */
-    @media (max-width: 768px) {
-        .savings-banner { flex-direction: column; text-align: center; gap: 1rem; }
-        .city-cards-grid { grid-template-columns: 1fr; }
-        .col-cta-section h2 { font-size: 1.7rem; }
+    <blade media|%20(max-width%3A%20768px)%20%7B>.savings-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .city-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .col-cta-section h2 {
+        font-size: 1.7rem;
+    }
     }
 </style>
 
