@@ -141,10 +141,12 @@
             footer {
                 padding: 3rem 6% 1.5rem 6%;
             }
+
             .footer-grid {
                 grid-template-columns: 1fr;
                 gap: 2.5rem;
             }
+
             .footer-bottom {
                 flex-direction: column;
                 text-align: center;
@@ -159,18 +161,19 @@
                 <h3><i class="fa-solid fa-graduation-cap"></i> Poltekkes Bengkulu</h3>
                 <p>Leading healthcare academy in Bengkulu, Indonesia, certified to produce professional, international-ready medical workers.</p>
             </div>
-            
+
             <div class="footer-links">
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="index.php">Home</a></li>
                     <li><a href="requirements.php">Requirements</a></li>
                     <li><a href="facilities.php">Campus Facilities</a></li>
+                    <li><a href="guidelines.php">Guidelines</a></li>
                     <li><a href="contact.php">Contact & Support</a></li>
                     <li><a href="register.php">Apply Now</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-contact">
                 <h4>Contact Details</h4>
                 <ul>
@@ -180,20 +183,20 @@
                     </li>
                     <li>
                         <i class="fa-solid fa-envelope"></i>
-                        <a href="mailto:international.admission@poltekkesbengkulu.ac.id">international.admission@poltekkesbengkulu.ac.id</a>
+                        <a href="mailto:aio@poltekkesbengkulu.ac.id">aio@poltekkesbengkulu.ac.id</a>
                     </li>
                     <li>
                         <i class="fa-brands fa-whatsapp"></i>
-                        <a href="https://wa.me/6281234567890" target="_blank">International Desk: +62 812-3456-7890</a>
+                        <a href="https://wa.me/6281370216550" target="_blank">International Desk: +62 813-7021-6550</a>
                     </li>
                 </ul>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
             <div>&copy; <?php echo date("Y"); ?> Poltekkes Kemenkes Bengkulu. All Rights Reserved.</div>
             <div>
-                <a href="#">Privacy Policy</a> &middot; 
+                <a href="#">Privacy Policy</a> &middot;
                 <a href="#">Terms & Conditions</a>
             </div>
         </div>
@@ -210,7 +213,7 @@
             function toggleMenu() {
                 const isOpen = mobileNav.classList.toggle('open');
                 mobileOverlay.classList.toggle('open');
-                
+
                 // Toggle between bar and xmark icon
                 if (isOpen) {
                     menuIcon.classList.remove('fa-bars');
@@ -236,5 +239,6 @@
             });
         });
     </script>
-</body>
-</html>
+    </body>
+
+    </html>

@@ -14,7 +14,8 @@ if (isset($db_connection_error)) {
 // -------------------------------------------------------
 // File Upload Helper Function
 // -------------------------------------------------------
-function handleFileUpload($fileKey, $fieldLabel) {
+function handleFileUpload($fileKey, $fieldLabel)
+{
     if (!isset($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] === UPLOAD_ERR_NO_FILE) {
         return ['path' => null, 'error' => null];
     }
@@ -90,7 +91,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     // Consolidate upload errors (take the first non-null error)
     $uploadError = null;
     foreach ([$passportUpload, $englishCertUpload, $diplomaUpload, $transcriptUpload, $photoUpload, $cvUpload, $letterRecUpload, $statementUpload] as $u) {
-        if (!empty($u['error'])) { $uploadError = $u['error']; break; }
+        if (!empty($u['error'])) {
+            $uploadError = $u['error'];
+            break;
+        }
     }
 
     $passportFilePath        = $passportUpload['path'];
@@ -103,10 +107,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     $statementFilePath       = $statementUpload['path'];
 
     // Check mandatory fields
-    if (empty($firstName) || empty($lastName) || empty($dob) || empty($gender) || empty($nationality) || 
-        empty($passport) || empty($email) || empty($phone) || empty($educationLevel) || 
-        empty($previousSchool) || empty($program1) || empty($sop)) {
-        
+    if (
+        empty($firstName) || empty($lastName) || empty($dob) || empty($gender) || empty($nationality) ||
+        empty($passport) || empty($email) || empty($phone) || empty($educationLevel) ||
+        empty($previousSchool) || empty($program1) || empty($sop)
+    ) {
+
         $message = "Please fill in all required fields marked with an asterisk (*).";
         $message_type = "error";
     } elseif ($uploadError) {
@@ -120,15 +126,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                     english_proficiency, sop, referral,
                     passport_file, english_cert_file, diploma_file, transcript_file, photo_file, cv_file, letter_rec_file, statement_file
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+
         if ($stmt = mysqli_prepare($conn, $sql)) {
-            mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssssss", 
-                $firstName, $lastName, $dob, $gender, $nationality, $passport, $email, $phone, 
-                $currentLocation, $educationLevel, $gpa, $previousSchool, $program1, 
-                $englishProficiency, $sop, $referral,
-                $passportFilePath, $englishCertFilePath, $diplomaFilePath, $transcriptFilePath, $photoFilePath, $cvFilePath, $letterRecFilePath, $statementFilePath
+            mysqli_stmt_bind_param(
+                $stmt,
+                "ssssssssssssssssssssssss",
+                $firstName,
+                $lastName,
+                $dob,
+                $gender,
+                $nationality,
+                $passport,
+                $email,
+                $phone,
+                $currentLocation,
+                $educationLevel,
+                $gpa,
+                $previousSchool,
+                $program1,
+                $englishProficiency,
+                $sop,
+                $referral,
+                $passportFilePath,
+                $englishCertFilePath,
+                $diplomaFilePath,
+                $transcriptFilePath,
+                $photoFilePath,
+                $cvFilePath,
+                $letterRecFilePath,
+                $statementFilePath
             );
-            
+
             if (mysqli_stmt_execute($stmt)) {
                 $message = "Your registration has been submitted successfully! We will contact you via email within 3–5 business days.";
                 $message_type = "success";
@@ -136,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                 $message = "Oops! Something went wrong while saving your data: " . mysqli_stmt_error($stmt);
                 $message_type = "error";
             }
-            
+
             mysqli_stmt_close($stmt);
         } else {
             $message = "Database prepared statement failed: " . mysqli_error($conn);
@@ -160,14 +188,14 @@ require_once 'header.php';
 
         <!-- Dynamic Alert Box for PHP Response -->
         <?php if (!empty($message)): ?>
-        <div class="alert alert-<?php echo $message_type; ?>">
-            <?php if ($message_type == 'success'): ?>
-            <i class="fa-solid fa-circle-check" style="font-size: 1.4rem;"></i>
-            <?php else: ?>
-            <i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem;"></i>
-            <?php endif; ?>
-            <div><?php echo htmlspecialchars($message); ?></div>
-        </div>
+            <div class="alert alert-<?php echo $message_type; ?>">
+                <?php if ($message_type == 'success'): ?>
+                    <i class="fa-solid fa-circle-check" style="font-size: 1.4rem;"></i>
+                <?php else: ?>
+                    <i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem;"></i>
+                <?php endif; ?>
+                <div><?php echo htmlspecialchars($message); ?></div>
+            </div>
         <?php endif; ?>
 
         <form id="admissionForm" action="register.php" method="POST" enctype="multipart/form-data">
@@ -390,12 +418,12 @@ require_once 'header.php';
                             class="upload-input" data-zone="zone_transcript" data-preview="preview_transcript">
                     </div>
 
-                    <!-- Pas Foto (Passport Photo) -->
+                    <!-- Passport Photo -->
                     <div class="upload-item">
                         <label class="upload-label" for="photo_file">
                             <div class="upload-icon"><i class="fa-solid fa-image"></i></div>
                             <div class="upload-info">
-                                <span class="upload-title">Pas Foto</span>
+                                <span class="upload-title">Passport Photo</span>
                                 <span class="upload-sub">Recent passport-style photograph (4x6 preferred)</span>
                             </div>
                         </label>
@@ -439,8 +467,7 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/letter of recomendation.docx" class="sample-download" download>Download
-                                contoh Surat Rekomendasi</a>
+                            <a href="downloads/letter of recomendation.docx" class="sample-download" download>Download Sample Recommendation Letter</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_letter_rec"
                             onclick="document.getElementById('letter_rec_file').click()">
@@ -463,9 +490,7 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/statement of legal compliment.docx" class="sample-download"
-                                download>Download
-                                contoh Statement</a>
+                            <a href="downloads/statement of legal compliment.docx" class="sample-download" download>Download Sample Statement</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_statement"
                             onclick="document.getElementById('statement_file').click()">
@@ -802,7 +827,7 @@ require_once 'header.php';
         const form = document.getElementById('admissionForm');
         if (form) {
             const submitBtn = form.querySelector('.btn-submit');
-            form.addEventListener('submit', function () {
+            form.addEventListener('submit', function() {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML =
                     'Submitting your application... <i class="fa-solid fa-spinner fa-spin" style="margin-left: 8px;"></i>';

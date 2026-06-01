@@ -8,96 +8,180 @@ require_once 'header.php';
     <p>Explore our premium state-of-the-art infrastructure designed to support a high-quality medical education experience.</p>
 </div>
 
-<!-- Facilities Grid -->
+<!-- Facilities Slider -->
 <section class="facilities-page-section">
     <div class="facilities-container">
-        <div class="facilities-grid">
-            <!-- 1. Training & Guidance Center -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <div class="facility-icon"><i class="fa-solid fa-hotel"></i></div>
-                    <h3>Training & Guidance Center</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>GTC Ballroom:</strong> A premium, multi-purpose hall with a 250-student capacity, fully equipped with central AC and interactive Videotron display.</li>
-                        <li><strong>GTC Guest Rooms:</strong> 54 comfortable rooms (Superior, Deluxe, and Family types) complete with Wi-Fi, AC, TV, and hot water.</li>
-                        <li><strong>Migrant Guidance Center:</strong> A specialized prep hub designed to groom graduates for international recruitment and global career deployment.</li>
-                    </ul>
-                </div>
+        <div class="section-header">
+            <h2>Campus Facilities Showcase</h2>
+            <p>Explore campus facilities with clear image slides and descriptions based on the actual facility photos.</p>
+        </div>
+
+        <div class="facilities-slider">
+            <div class="slider-track">
+                <article class="facility-slide active">
+                    <div class="slide-image"><img src="facilities/gtc.png" alt="GTC Training and Guidance Center"></div>
+                    <div class="slide-content">
+                        <h3>GTC Building</h3>
+                        <ul>
+                            <li>Modern Training & Guidance Center serving as a hub for training and mentorship.</li>
+                            <li>Includes an auditorium, lounge, and international career preparation spaces.</li>
+                            <li>Supports academic activities, training programs, and official guest reception.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/auditorium.jpg" alt="Campus Auditorium"></div>
+                    <div class="slide-content">
+                        <h3>Auditorium</h3>
+                        <ul>
+                            <li>A spacious auditorium ideal for seminars, public lectures, and major presentations.</li>
+                            <li>Organized seating with professional sound systems for the best event experience.</li>
+                            <li>Equipped with visual support for academic and public events.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/mini hospital.png" alt="Mini Hospital for clinical student practice"></div>
+                    <div class="slide-content">
+                        <h3>Mini Hospital</h3>
+                        <ul>
+                            <li>A realistic clinical practice facility designed to mirror a real hospital setting.</li>
+                            <li>Supports nursing simulation, patient examination, and clinical management training.</li>
+                            <li>Provides practical learning that prepares students for medical careers.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/osce center.png" alt="OSCE Center with clinical practice stations"></div>
+                    <div class="slide-content">
+                        <h3>OSCE Center</h3>
+                        <ul>
+                            <li>A standard OSCE exam room with multiple clinical practice stations.</li>
+                            <li>Designed to evaluate clinical skills and medical communication.</li>
+                            <li>Includes briefing and monitoring areas for evaluators and participants.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/laboratorium terpadu.jpg" alt="Integrated health laboratory"></div>
+                    <div class="slide-content">
+                        <h3>Integrated Laboratory</h3>
+                        <ul>
+                            <li>A comprehensive health laboratory for lab technique practice and research.</li>
+                            <li>Supports programs such as Medical Laboratory Technology and Environmental Health.</li>
+                            <li>Features organized workspaces with adequate practical equipment.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/laboratorium bahasa.jpg" alt="Language laboratory with computers and headsets"></div>
+                    <div class="slide-content">
+                        <h3>Language Laboratory</h3>
+                        <ul>
+                            <li>A multimedia language room equipped with computers, headsets, and audio devices.</li>
+                            <li>Used for intensive English and Indonesian language training.</li>
+                            <li>Supports student communication skill development.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/klinik hygea.jpg" alt="Hygea Clinic reception area"></div>
+                    <div class="slide-content">
+                        <h3>Hygea Clinic</h3>
+                        <ul>
+                            <li>The campus clinic provides general check-ups and basic health services.</li>
+                            <li>A clean, professional reception area serving student healthcare needs.</li>
+                            <li>One of the healthcare service centers supporting academic programs.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/library.png" alt="Campus library with reading areas and book collections"></div>
+                    <div class="slide-content">
+                        <h3>Library</h3>
+                        <ul>
+                            <li>An accredited library with books, journals, and quiet reading spaces.</li>
+                            <li>Provides study and group work areas for students.</li>
+                            <li>Serves as an academic reference center for research and assignments.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/mosque.png" alt="Campus mosque for worship and spiritual activities"></div>
+                    <div class="slide-content">
+                        <h3>Campus Mosque</h3>
+                        <ul>
+                            <li>An air-conditioned mosque with a modern design for student worship.</li>
+                            <li>A spacious and comfortable prayer area for campus spiritual activities.</li>
+                            <li>Acts as a center for religious activities and character development.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/sarana prasarana olahraga.jpg" alt="Indoor sports facility on campus"></div>
+                    <div class="slide-content">
+                        <h3>Sports Facilities</h3>
+                        <ul>
+                            <li>An indoor sports court with clear markings for multiple sports.</li>
+                            <li>Designed for extracurricular activities and student fitness training.</li>
+                            <li>Supports a healthy lifestyle within the campus community.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/theater.png" alt="Multimedia theater with comfortable seating"></div>
+                    <div class="slide-content">
+                        <h3>Multimedia Theater</h3>
+                        <ul>
+                            <li>A theater space for presentations, discussions, and cultural events.</li>
+                            <li>Comfortable seating and integrated audio-visual systems.</li>
+                            <li>Supports academic events and soft skill development.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/cbt center.jpg" alt="CBT Center with rows of computers for digital exams"></div>
+                    <div class="slide-content">
+                        <h3>CBT Center</h3>
+                        <ul>
+                            <li>A computer-based testing room for selection and competency evaluations.</li>
+                            <li>Neatly arranged computers for participant comfort.</li>
+                            <li>Standard facilities for official digital exam administration.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
+                    <div class="slide-image"><img src="facilities/upk sdmk.jpg" alt="UPK SDMK training center"></div>
+                    <div class="slide-content">
+                        <h3>UPK SDMK</h3>
+                        <ul>
+                            <li>An accredited training center for health workforce development programs.</li>
+                            <li>Used for workshops, certifications, and professional training.</li>
+                            <li>Builds practical competence for future health workers.</li>
+                        </ul>
+                    </div>
+                </article>
             </div>
 
-            <!-- 2. Auditoriums -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <div class="facility-icon"><i class="fa-solid fa-people-roof"></i></div>
-                    <h3>Grand Auditoriums</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Campus A Auditorium:</strong> A massive hall hosting up to 1,000 participants, featuring centralized AC, high-res Videotron screens, and VIP waiting lounges.</li>
-                        <li><strong>Campus B Auditorium:</strong> A modern auditorium with a 600-participant capacity, fully air-conditioned for academic assemblies and guest lectures.</li>
-                    </ul>
-                </div>
-            </div>
+            <button class="slider-btn prev" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="slider-btn next" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
+            <div class="slider-dots"></div>
+        </div>
 
-            <!-- 3. Medical Practices & Testing -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <div class="facility-icon"><i class="fa-solid fa-hospital-user"></i></div>
-                    <h3>Clinical Practice & Testing</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Mini Hospital:</strong> A realistic clinical mock ward representing actual hospital settings for students' hands-on medical simulation.</li>
-                        <li><strong>OSCE Center:</strong> Professional 12-station standard clinical setup with real-time video monitoring and briefing stations.</li>
-                        <li><strong>CBT Center:</strong> LPUK-NAKES certified computer testing rooms (120 units at Campus A, 50 units at Campus B Curup).</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 4. Specialized Laboratories -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <div class="facility-icon"><i class="fa-solid fa-flask-vial"></i></div>
-                    <h3>Integrated Health Labs</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Departmental Labs:</strong> Dedicated labs for Nursing, Midwifery, Nutrition, Medical Lab Technology (MLT), Environmental Health, and Health Promotion.</li>
-                        <li><strong>Language Laboratory:</strong> 40-unit multimedia PC workstations equipped with digital audio systems for language training.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 5. Public Health & Training Services -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <div class="facility-icon"><i class="fa-solid fa-clinic-medical"></i></div>
-                    <h3>Health Services & UPK SDMK</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Hygea Pratama Clinic:</strong> Fully accredited (Paripurna) healthcare clinic providing general medicine, dental, and advanced lab tests for the community.</li>
-                        <li><strong>UPK SDMK Center:</strong> Certified training center conducting accredited workshops (Wound Care, BTCLS, teaching methodologies).</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 6. General Campus Infrastructure -->
-            <div class="facility-card">
-                <div class="facility-header">
-                    <div class="facility-icon"><i class="fa-solid fa-layer-group"></i></div>
-                    <h3>Amenities & Support</h3>
-                </div>
-                <div class="facility-body">
-                    <ul>
-                        <li><strong>Integrated Library:</strong> Grade "A" accredited library cataloging books, clinical journals, and academic thesis collections with quiet reading zones.</li>
-                        <li><strong>Mosque & Theater:</strong> Masjid Tarbiyatus Shihah (air-conditioned mosque) and an 80-seat multimedia theater room.</li>
-                        <li><strong>Sports Infrastructure:</strong> Outdoor and indoor facilities supporting Futsal, Basketball, Volleyball, Badminton, and Table Tennis.</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="slider-note">
+            <a href="Poltekkes Bengkulu Campus Facilities.pdf" class="btn-primary" target="_blank">Open Full Facilities Brochure</a>
         </div>
     </div>
 </section>
@@ -110,106 +194,225 @@ require_once 'header.php';
     }
 
     .facilities-container {
-        max-width: 1200px;
+        max-width: 1140px;
         margin: 0 auto;
     }
 
-    .facilities-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-        gap: 2.5rem;
-    }
-
-    .facility-card {
-        background: var(--white);
-        border-radius: var(--border-radius-md);
-        padding: 3rem 2.5rem;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        transition: var(--transition-all);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .facility-card:hover {
-        transform: translateY(-5px);
+    .facilities-slider {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--border-radius-lg);
         box-shadow: var(--shadow-xl);
-        border-color: var(--primary-light);
+        background: var(--white);
     }
 
-    .facility-header {
+    .slider-track {
         display: flex;
-        align-items: center;
-        gap: 15px;
+        transition: transform 0.55s ease;
+        will-change: transform;
+    }
+
+    .facility-slide {
+        min-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+    }
+
+    .slide-image {
+        width: 100%;
+        min-height: 460px;
+        position: relative;
+        overflow: hidden;
+        background: #f8fafc;
+    }
+
+    .slide-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
+
+    .slide-content {
+        width: 100%;
+        padding: 3rem 3rem 4rem 3rem;
+        background: var(--white);
+    }
+
+    .slide-content h3 {
         margin-bottom: 1.5rem;
-        border-bottom: 1px solid #edf2f7;
-        padding-bottom: 1rem;
-    }
-
-    .facility-icon {
-        width: 50px;
-        height: 50px;
-        background-color: var(--primary-light);
-        color: var(--primary);
-        border-radius: var(--border-radius-sm);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        transition: var(--transition-all);
-    }
-
-    .facility-card:hover .facility-icon {
-        background-color: var(--primary);
-        color: var(--white);
-    }
-
-    .facility-header h3 {
-        font-size: 1.25rem;
-        font-weight: 700;
+        font-size: 2rem;
         color: var(--text-dark);
     }
 
-    .facility-body {
-        flex-grow: 1;
-    }
-
-    .facility-body ul {
+    .slide-content ul {
         list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        display: grid;
+        gap: 1.15rem;
     }
 
-    .facility-body ul li {
-        position: relative;
+    .slide-content ul li {
         padding-left: 24px;
+        position: relative;
+        line-height: 1.8;
         color: var(--text-muted);
-        font-size: 0.95rem;
-        line-height: 1.6;
+        font-size: 1rem;
     }
 
-    .facility-body ul li::before {
-        content: "\f058";
+    .slide-content ul li::before {
+        content: "\f0da";
         font-family: "Font Awesome 6 Free";
         font-weight: 900;
         position: absolute;
         left: 0;
         top: 2px;
         color: var(--primary);
-        font-size: 0.95rem;
+        font-size: 0.85rem;
     }
 
-    .facility-body ul li strong {
-        color: var(--text-dark);
+    .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    @media (max-width: 768px) {
-        .facilities-grid {
-            grid-template-columns: 1fr;
+    .slider-btn:hover {
+        transform: translateY(-50%) scale(1.05);
+        box-shadow: var(--shadow-md);
+    }
+
+    .slider-btn.prev {
+        left: 1.5rem;
+    }
+
+    .slider-btn.next {
+        right: 1.5rem;
+    }
+
+    .slider-dots {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.75rem;
+        z-index: 10;
+    }
+
+    .slider-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        transition: background-color 0.25s ease;
+    }
+
+    .slider-dot.active {
+        background: var(--primary);
+    }
+
+    .slider-note {
+        text-align: center;
+        padding: 2rem 0 0;
+    }
+
+    .slider-note .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    @media (max-width: 960px) {
+        .slide-image {
+            min-height: 340px;
+        }
+
+        .slide-content {
+            padding: 2.5rem 2rem 3rem 2rem;
+        }
+
+        .slider-btn {
+            width: 44px;
+            height: 44px;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .facilities-page-section {
+            padding: 3rem 5%;
+        }
+
+        .slide-content h3 {
+            font-size: 1.75rem;
+        }
+
+        .slide-content ul li {
+            font-size: 0.98rem;
+        }
+
+        .slider-btn.prev {
+            left: 1rem;
+        }
+
+        .slider-btn.next {
+            right: 1rem;
         }
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.querySelector('.slider-track');
+        const slides = Array.from(document.querySelectorAll('.facility-slide'));
+        const prevButton = document.querySelector('.slider-btn.prev');
+        const nextButton = document.querySelector('.slider-btn.next');
+        const dotsContainer = document.querySelector('.slider-dots');
+        let currentIndex = 0;
+
+        function createDots() {
+            slides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = 'slider-dot' + (index === 0 ? ' active' : '');
+                dot.type = 'button';
+                dot.addEventListener('click', () => goToSlide(index));
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function updateDots() {
+            dotsContainer.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = (index + slides.length) % slides.length;
+            const offset = currentIndex * -100;
+            track.style.transform = `translateX(${offset}%)`;
+            updateDots();
+        }
+
+        prevButton.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+        createDots();
+    });
+</script>
 
 <?php
 require_once 'footer.php';
