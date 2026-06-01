@@ -176,7 +176,7 @@ require_once 'header.php';
                     <i class="fa-solid fa-shield-heart"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Health Insurance</h4>
+                    <h4>Health Coverage Insurance</h4>
                     <p>Full health coverage through <strong>Health Insurance</strong>,Health
                         insurance scheme, valid throughout your study period.</p>
                 </div>
