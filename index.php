@@ -177,7 +177,7 @@ require_once 'header.php';
                 </div>
                 <div class="sc-body">
                     <h4>National Health Insurance</h4>
-                    <p>Full health coverage through <strong>JKN BPJS Kesehatan</strong>, Indonesia's national health
+                    <p>Full health coverage through <strong>Health Insurance</strong>,Health
                         insurance scheme, valid throughout your study period.</p>
                 </div>
             </div>
