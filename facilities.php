@@ -5,7 +5,8 @@ require_once 'header.php';
 <!-- Page Hero -->
 <div class="page-hero">
     <h1>Campus Facilities</h1>
-    <p>Explore our premium state-of-the-art infrastructure designed to support a high-quality medical education experience.</p>
+    <p>Explore our premium state-of-the-art infrastructure designed to support a high-quality medical education
+        experience.</p>
 </div>
 
 <!-- Facilities Slider -->
@@ -13,12 +14,26 @@ require_once 'header.php';
     <div class="facilities-container">
         <div class="section-header">
             <h2>Campus Facilities Showcase</h2>
-            <p>Explore campus facilities with clear image slides and descriptions based on the actual facility photos.</p>
+            <p>Explore campus facilities with clear image slides and descriptions based on the actual facility photos.
+            </p>
         </div>
 
         <div class="facilities-slider">
             <div class="slider-track">
                 <article class="facility-slide active">
+                    <div class="slide-image"><img src="facilities/laboratorium terpadu.jpg"
+                            alt="Integrated health laboratory"></div>
+                    <div class="slide-content">
+                        <h3>Integrated Laboratory</h3>
+                        <ul>
+                            <li>A comprehensive health laboratory for lab technique practice and research.</li>
+                            <li>Supports programs such as Medical Laboratory Technology and Environmental Health.</li>
+                            <li>Features organized workspaces with adequate practical equipment.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="facility-slide">
                     <div class="slide-image"><img src="facilities/gtc.png" alt="GTC Training and Guidance Center"></div>
                     <div class="slide-content">
                         <h3>GTC Building</h3>
@@ -43,7 +58,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/mini hospital.png" alt="Mini Hospital for clinical student practice"></div>
+                    <div class="slide-image"><img src="facilities/mini hospital.png"
+                            alt="Mini Hospital for clinical student practice"></div>
                     <div class="slide-content">
                         <h3>Mini Hospital</h3>
                         <ul>
@@ -55,7 +71,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/osce center.png" alt="OSCE Center with clinical practice stations"></div>
+                    <div class="slide-image"><img src="facilities/osce center.png"
+                            alt="OSCE Center with clinical practice stations"></div>
                     <div class="slide-content">
                         <h3>OSCE Center</h3>
                         <ul>
@@ -67,19 +84,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/laboratorium terpadu.jpg" alt="Integrated health laboratory"></div>
-                    <div class="slide-content">
-                        <h3>Integrated Laboratory</h3>
-                        <ul>
-                            <li>A comprehensive health laboratory for lab technique practice and research.</li>
-                            <li>Supports programs such as Medical Laboratory Technology and Environmental Health.</li>
-                            <li>Features organized workspaces with adequate practical equipment.</li>
-                        </ul>
-                    </div>
-                </article>
-
-                <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/laboratorium bahasa.jpg" alt="Language laboratory with computers and headsets"></div>
+                    <div class="slide-image"><img src="facilities/laboratorium bahasa.jpg"
+                            alt="Language laboratory with computers and headsets"></div>
                     <div class="slide-content">
                         <h3>Language Laboratory</h3>
                         <ul>
@@ -91,7 +97,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/klinik hygea.jpg" alt="Hygea Clinic reception area"></div>
+                    <div class="slide-image"><img src="facilities/klinik hygea.jpg" alt="Hygea Clinic reception area">
+                    </div>
                     <div class="slide-content">
                         <h3>Hygea Clinic</h3>
                         <ul>
@@ -103,7 +110,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/library.png" alt="Campus library with reading areas and book collections"></div>
+                    <div class="slide-image"><img src="facilities/library.png"
+                            alt="Campus library with reading areas and book collections"></div>
                     <div class="slide-content">
                         <h3>Library</h3>
                         <ul>
@@ -115,7 +123,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/mosque.png" alt="Campus mosque for worship and spiritual activities"></div>
+                    <div class="slide-image"><img src="facilities/mosque.png"
+                            alt="Campus mosque for worship and spiritual activities"></div>
                     <div class="slide-content">
                         <h3>Campus Mosque</h3>
                         <ul>
@@ -127,7 +136,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/sarana prasarana olahraga.jpg" alt="Indoor sports facility on campus"></div>
+                    <div class="slide-image"><img src="facilities/sarana prasarana olahraga.jpg"
+                            alt="Indoor sports facility on campus"></div>
                     <div class="slide-content">
                         <h3>Sports Facilities</h3>
                         <ul>
@@ -139,7 +149,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/theater.png" alt="Multimedia theater with comfortable seating"></div>
+                    <div class="slide-image"><img src="facilities/theater.png"
+                            alt="Multimedia theater with comfortable seating"></div>
                     <div class="slide-content">
                         <h3>Multimedia Theater</h3>
                         <ul>
@@ -151,7 +162,8 @@ require_once 'header.php';
                 </article>
 
                 <article class="facility-slide">
-                    <div class="slide-image"><img src="facilities/cbt center.jpg" alt="CBT Center with rows of computers for digital exams"></div>
+                    <div class="slide-image"><img src="facilities/cbt center.jpg"
+                            alt="CBT Center with rows of computers for digital exams"></div>
                     <div class="slide-content">
                         <h3>CBT Center</h3>
                         <ul>
@@ -175,13 +187,15 @@ require_once 'header.php';
                 </article>
             </div>
 
-            <button class="slider-btn prev" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="slider-btn prev" aria-label="Previous slide"><i
+                    class="fa-solid fa-chevron-left"></i></button>
             <button class="slider-btn next" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
             <div class="slider-dots"></div>
         </div>
 
         <div class="slider-note">
-            <a href="Poltekkes Bengkulu Campus Facilities.pdf" class="btn-primary" target="_blank">Open Full Facilities Brochure</a>
+            <a href="Poltekkes Bengkulu Campus Facilities.pdf" class="btn-primary" target="_blank">Open Full Facilities
+                Brochure</a>
         </div>
     </div>
 </section>
@@ -189,12 +203,12 @@ require_once 'header.php';
 <style>
     /* Facilities Page Specific Styling */
     .facilities-page-section {
-        padding: 5rem 8%;
+        padding: 3rem 4%;
         background-color: var(--secondary);
     }
 
     .facilities-container {
-        max-width: 1140px;
+        max-width: 980px;
         margin: 0 auto;
     }
 
@@ -208,7 +222,7 @@ require_once 'header.php';
 
     .slider-track {
         display: flex;
-        transition: transform 0.55s ease;
+        transition: transform 0.45s ease;
         will-change: transform;
     }
 
@@ -221,7 +235,9 @@ require_once 'header.php';
 
     .slide-image {
         width: 100%;
-        min-height: 460px;
+        min-height: 260px;
+        max-height: 420px;
+        aspect-ratio: 16 / 9;
         position: relative;
         overflow: hidden;
         background: #f8fafc;
@@ -237,28 +253,28 @@ require_once 'header.php';
 
     .slide-content {
         width: 100%;
-        padding: 3rem 3rem 4rem 3rem;
+        padding: 2rem 2rem 2.5rem 2rem;
         background: var(--white);
     }
 
     .slide-content h3 {
-        margin-bottom: 1.5rem;
-        font-size: 2rem;
+        margin-bottom: 1.25rem;
+        font-size: 1.85rem;
         color: var(--text-dark);
     }
 
     .slide-content ul {
         list-style: none;
         display: grid;
-        gap: 1.15rem;
+        gap: 1rem;
     }
 
     .slide-content ul li {
-        padding-left: 24px;
+        padding-left: 22px;
         position: relative;
-        line-height: 1.8;
+        line-height: 1.75;
         color: var(--text-muted);
-        font-size: 1rem;
+        font-size: 0.98rem;
     }
 
     .slide-content ul li::before {
@@ -278,8 +294,8 @@ require_once 'header.php';
         transform: translateY(-50%);
         background: rgba(255, 255, 255, 0.95);
         border: 1px solid rgba(0, 0, 0, 0.08);
-        width: 52px;
-        height: 52px;
+        width: 46px;
+        height: 46px;
         border-radius: 50%;
         display: grid;
         place-items: center;
@@ -294,16 +310,16 @@ require_once 'header.php';
     }
 
     .slider-btn.prev {
-        left: 1.5rem;
+        left: 1.2rem;
     }
 
     .slider-btn.next {
-        right: 1.5rem;
+        right: 1.2rem;
     }
 
     .slider-dots {
         position: absolute;
-        bottom: 1.5rem;
+        bottom: 1.25rem;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
@@ -312,11 +328,11 @@ require_once 'header.php';
     }
 
     .slider-dot {
-        width: 12px;
-        height: 12px;
+        width: 11px;
+        height: 11px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.55);
-        border: 1px solid rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.95);
         cursor: pointer;
         transition: background-color 0.25s ease;
     }
@@ -327,7 +343,7 @@ require_once 'header.php';
 
     .slider-note {
         text-align: center;
-        padding: 2rem 0 0;
+        padding: 1.5rem 0 0;
     }
 
     .slider-note .btn-primary {
@@ -337,46 +353,48 @@ require_once 'header.php';
         gap: 0.5rem;
     }
 
-    @media (max-width: 960px) {
-        .slide-image {
-            min-height: 340px;
-        }
-
-        .slide-content {
-            padding: 2.5rem 2rem 3rem 2rem;
-        }
-
-        .slider-btn {
-            width: 44px;
-            height: 44px;
-        }
+    <blade media|%20(max-width%3A%20960px)%20%7B%0D>.slide-image {
+        min-height: 240px;
     }
 
-    @media (max-width: 720px) {
-        .facilities-page-section {
-            padding: 3rem 5%;
-        }
+    .slide-content {
+        padding: 1.75rem 1.5rem 2rem 1.5rem;
+    }
 
-        .slide-content h3 {
-            font-size: 1.75rem;
-        }
+    .slider-btn {
+        width: 40px;
+        height: 40px;
+    }
+    }
 
-        .slide-content ul li {
-            font-size: 0.98rem;
-        }
+    <blade media|%20(max-width%3A%20720px)%20%7B%0D>.facilities-page-section {
+        padding: 2rem 3%;
+    }
 
-        .slider-btn.prev {
-            left: 1rem;
-        }
+    .slide-image {
+        min-height: 200px;
+    }
 
-        .slider-btn.next {
-            right: 1rem;
-        }
+    .slide-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .slide-content ul li {
+        font-size: 0.95rem;
+    }
+
+    .slider-btn.prev {
+        left: 0.9rem;
+    }
+
+    .slider-btn.next {
+        right: 0.9rem;
+    }
     }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const track = document.querySelector('.slider-track');
         const slides = Array.from(document.querySelectorAll('.facility-slide'));
         const prevButton = document.querySelector('.slider-btn.prev');

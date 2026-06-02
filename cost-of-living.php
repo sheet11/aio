@@ -62,7 +62,7 @@
                     </tr>
                     <tr>
                         <td><i class="fa-solid fa-utensils"></i> Food (3 meals/day)</td>
-                        <td class="city-col active highlight-best" data-city="bengkulu">$60 – $100</td>
+                        <td class="city-col active highlight-best" data-city="bengkulu">$30 – $60</td>
                         <td class="city-col" data-city="jakarta">$120 – $200</td>
                         <td class="city-col" data-city="kualalumpur">$130 – $220</td>
                         <td class="city-col" data-city="bangkok">$120 – $200</td>
