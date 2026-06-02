@@ -152,7 +152,7 @@ require_once 'header.php';
                     <i class="fa-solid fa-book-open"></i>
                 </div>
                 <div class="sc-body">
-                    <h4>Full Tuition Fee Waiver (UKT)</h4>
+                    <h4>Full Tuition Fee Waiver</h4>
                     <p>Full waiver of tuition fees amounting to <strong>Rp. 0,-</strong> per semester, covering all
                         costs related to academic activities.</p>
                 </div>
@@ -207,16 +207,15 @@ require_once 'header.php';
             </div>
 
             <!-- Benefit F -->
-            <div class="scholarship-card">
-                <div class="sc-icon-wrap sc-orange">
-                    <i class="fa-solid fa-plane-circle-check"></i>
-                </div>
-                <div class="sc-body">
-                    <h4>Round-Trip Airfare &amp; Visa</h4>
-                    <p>Scholarship includes <strong>round-trip airfare</strong> from your home country to Indonesia and
-                        back, plus full visa application fee coverage.</p>
-                </div>
-            </div>
+    <div class="scholarship-card">
+    <div class="sc-icon-wrap sc-orange">
+        <i class="fa-solid fa-plane-circle-check"></i>
+    </div>
+    <div class="sc-body">
+        <h4>Airfare &amp; Visa Support</h4>
+        <p>Scholarship includes a <strong>one-way airfare ticket</strong> from your home country to Indonesia, along with full visa application fee coverage.</p>
+    </div>
+</div>
 
         </div>
 
