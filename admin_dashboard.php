@@ -15,6 +15,67 @@ if (isset($db_connection_error)) {
     $db_error = $db_connection_error;
 }
 
+// ============================================
+// Handle DELETE request
+// ============================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete') {
+    $applicant_id = intval($_POST['id']);
+    
+    if (empty($db_error) && $applicant_id > 0) {
+        $delete_sql = "DELETE FROM tb_interstudent WHERE id = ?";
+        if ($stmt = mysqli_prepare($conn, $delete_sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+            if (mysqli_stmt_execute($stmt)) {
+                // Redirect to refresh the page and show success
+                header("Location: admin_dashboard.php");
+                exit;
+            }
+            mysqli_stmt_close($stmt);
+        }
+    }
+}
+
+// ============================================
+// Handle UPDATE request
+// ============================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
+    $applicant_id = intval($_POST['id']);
+    
+    // Collect all updateable fields
+    $update_fields = [];
+    $update_params = [];
+    $types = "";
+    
+    $updateable_fields = [
+        'first_name', 'last_name', 'dob', 'gender', 'nationality', 'passport',
+        'email', 'phone', 'current_location', 'education_level', 'gpa',
+        'previous_school', 'program1', 'english_proficiency', 'sop', 'referral'
+    ];
+    
+    foreach ($updateable_fields as $field) {
+        if (isset($_POST[$field]) && !empty($_POST[$field])) {
+            $update_fields[] = "`$field` = ?";
+            $update_params[] = $_POST[$field];
+            $types .= "s";
+        }
+    }
+    
+    if (!empty($update_fields) && empty($db_error) && $applicant_id > 0) {
+        $update_sql = "UPDATE tb_interstudent SET " . implode(", ", $update_fields) . " WHERE id = ?";
+        $update_params[] = $applicant_id;
+        $types .= "i";
+        
+        if ($stmt = mysqli_prepare($conn, $update_sql)) {
+            mysqli_stmt_bind_param($stmt, $types, ...$update_params);
+            if (mysqli_stmt_execute($stmt)) {
+                header("Location: admin_dashboard.php");
+                exit;
+            }
+            mysqli_stmt_close($stmt);
+        }
+    }
+}
+
 // Initialize variables for filtering & search
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $filter_nationality = isset($_GET['nationality']) ? trim($_GET['nationality']) : '';
@@ -1094,13 +1155,14 @@ if (empty($db_error)) {
 
             <!-- KOLOM DOKUMEN -->
             <td>
-                <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
 
                     <?php if(!empty($applicant['passport_file'])): ?>
                         <a href="<?php echo htmlspecialchars($applicant['passport_file']); ?>"
                            target="_blank"
-                           title="View Passport"
-                           class="btn-view-details">
+                           title="Passport"
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
                             <i class="fa-solid fa-passport"></i>
                         </a>
                     <?php endif; ?>
@@ -1108,8 +1170,9 @@ if (empty($db_error)) {
                     <?php if(!empty($applicant['english_cert_file'])): ?>
                         <a href="<?php echo htmlspecialchars($applicant['english_cert_file']); ?>"
                            target="_blank"
-                           title="View English Certificate"
-                           class="btn-view-details">
+                           title="English Certificate"
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
                             <i class="fa-solid fa-language"></i>
                         </a>
                     <?php endif; ?>
@@ -1117,9 +1180,60 @@ if (empty($db_error)) {
                     <?php if(!empty($applicant['diploma_file'])): ?>
                         <a href="<?php echo htmlspecialchars($applicant['diploma_file']); ?>"
                            target="_blank"
-                           title="View Diploma / Transcript"
-                           class="btn-view-details">
+                           title="Diploma"
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
                             <i class="fa-solid fa-graduation-cap"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(!empty($applicant['transcript_file'])): ?>
+                        <a href="<?php echo htmlspecialchars($applicant['transcript_file']); ?>"
+                           target="_blank"
+                           title="Transcript"
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(!empty($applicant['photo_file'])): ?>
+                        <a href="<?php echo htmlspecialchars($applicant['photo_file']); ?>"
+                           target="_blank"
+                           title="Photo"
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
+                            <i class="fa-solid fa-image"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(!empty($applicant['cv_file'])): ?>
+                        <a href="<?php echo htmlspecialchars($applicant['cv_file']); ?>"
+                           target="_blank"
+                           title="CV"
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(!empty($applicant['letter_rec_file'])): ?>
+                        <a href="<?php echo htmlspecialchars($applicant['letter_rec_file']); ?>"
+                           target="_blank"
+                           title="Letter of Rec."
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(!empty($applicant['statement_file'])): ?>
+                        <a href="<?php echo htmlspecialchars($applicant['statement_file']); ?>"
+                           target="_blank"
+                           title="Statement"
+                           class="btn-view-details"
+                           style="padding:4px 8px;font-size:0.75rem;">
+                            <i class="fa-solid fa-file-contract"></i>
                         </a>
                     <?php endif; ?>
 
@@ -1128,11 +1242,20 @@ if (empty($db_error)) {
 
             <!-- KOLOM AKSI -->
             <td style="text-align:center;">
-                <button class="btn-view-details"
-                        onclick="openDetails(<?php echo $applicant['id']; ?>)">
-                    <i class="fa-solid fa-eye"></i>
-                    Details
-                </button>
+                <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+                    <button class="btn-view-details"
+                            onclick="openDetails(<?php echo $applicant['id']; ?>)" title="View Details">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="btn-view-details" style="border-color:#f59e0b;color:#f59e0b;"
+                            onclick="openEditModal(<?php echo htmlspecialchars(json_encode($applicant)); ?>)" title="Edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn-view-details" style="border-color:#ef4444;color:#ef4444;"
+                            onclick="deleteApplicant(<?php echo $applicant['id']; ?>)" title="Delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
             </td>
 
         </tr>
@@ -1257,6 +1380,146 @@ if (empty($db_error)) {
         </div>
     </div>
 
+    <!-- Edit Applicant Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Edit Applicant Record</h3>
+                <button class="btn-modal-close" type="button" onclick="closeEditModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="editForm" method="POST" style="display:flex;flex-direction:column;height:100%;">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="id" id="edit_applicant_id">
+                
+                <div class="modal-body" style="flex-grow:1;overflow-y:auto;">
+                    <!-- Personal Details -->
+                    <div class="modal-section">
+                        <div class="modal-section-title">Personal Details</div>
+                        <div class="modal-grid">
+                            <div class="modal-field">
+                                <h5>First Name</h5>
+                                <input type="text" name="first_name" id="edit_first_name" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                            <div class="modal-field">
+                                <h5>Last Name</h5>
+                                <input type="text" name="last_name" id="edit_last_name" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                            <div class="modal-field">
+                                <h5>Date of Birth</h5>
+                                <input type="date" name="dob" id="edit_dob" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                            <div class="modal-field">
+                                <h5>Gender</h5>
+                                <select name="gender" id="edit_gender" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                                    <option value="">— Select —</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="modal-field">
+                                <h5>Nationality</h5>
+                                <input type="text" name="nationality" id="edit_nationality" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                            <div class="modal-field">
+                                <h5>Passport Number</h5>
+                                <input type="text" name="passport" id="edit_passport" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Details -->
+                    <div class="modal-section">
+                        <div class="modal-section-title">Contact Information</div>
+                        <div class="modal-grid">
+                            <div class="modal-field">
+                                <h5>Email Address</h5>
+                                <input type="email" name="email" id="edit_email" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                            <div class="modal-field">
+                                <h5>WhatsApp / Phone</h5>
+                                <input type="tel" name="phone" id="edit_phone" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                            <div class="modal-field" style="grid-column:span 2;">
+                                <h5>Current Location</h5>
+                                <input type="text" name="current_location" id="edit_current_location" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Academic -->
+                    <div class="modal-section">
+                        <div class="modal-section-title">Academic Credentials</div>
+                        <div class="modal-grid">
+                            <div class="modal-field">
+                                <h5>Education Level</h5>
+                                <select name="education_level" id="edit_education_level" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                                    <option value="">— Select —</option>
+                                    <option value="High School / Senior Secondary">High School</option>
+                                    <option value="Diploma (D-I / D-II / D-III)">Diploma</option>
+                                    <option value="Bachelor's Degree (S-1 / D-IV)">Bachelor</option>
+                                    <option value="Master's Degree (S-2)">Master</option>
+                                </select>
+                            </div>
+                            <div class="modal-field">
+                                <h5>GPA / Final Grade</h5>
+                                <input type="text" name="gpa" id="edit_gpa" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                            <div class="modal-field" style="grid-column:span 2;">
+                                <h5>Previous School / University</h5>
+                                <input type="text" name="previous_school" id="edit_previous_school" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Program & Language -->
+                    <div class="modal-section">
+                        <div class="modal-section-title">Program & Language</div>
+                        <div class="modal-grid">
+                            <div class="modal-field">
+                                <h5>Study Program</h5>
+                                <select name="program1" id="edit_program1" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                                    <option value="Bachelor Promosi Kesehatan">Bachelor of Health Promotion</option>
+                                </select>
+                            </div>
+                            <div class="modal-field">
+                                <h5>English Proficiency</h5>
+                                <select name="english_proficiency" id="edit_english_proficiency" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                                    <option value="">— Select —</option>
+                                    <option value="IELTS 5.0–5.5">IELTS 5.0–5.5</option>
+                                    <option value="IELTS 6.0+">IELTS 6.0+</option>
+                                    <option value="TOEFL ITP 500–549">TOEFL ITP 500–549</option>
+                                    <option value="TOEFL ITP 550+">TOEFL ITP 550+</option>
+                                    <option value="Other Certificate">Other Certificate</option>
+                                    <option value="No Certificate (applying for waiver)">No Certificate</option>
+                                </select>
+                            </div>
+                            <div class="modal-field" style="grid-column:span 2;">
+                                <h5>How did they hear about us?</h5>
+                                <input type="text" name="referral" id="edit_referral" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;width:100%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statement of Purpose -->
+                    <div class="modal-section">
+                        <div class="modal-section-title">Statement of Purpose</div>
+                        <textarea name="sop" id="edit_sop" class="form-control" style="padding:8px;border:1px solid #cbd5e1;border-radius:6px;min-height:120px;resize:vertical;width:100%;"></textarea>
+                    </div>
+                </div>
+
+                <div style="padding:2rem;border-top:1px solid var(--border-color);display:flex;gap:1rem;justify-content:flex-end;">
+                    <button type="button" class="btn-reset-filter" onclick="closeEditModal()" style="margin:0;">
+                        <i class="fa-solid fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn-submit-filter" style="background-color:var(--primary);margin:0;">
+                        <i class="fa-solid fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Client-side applicant database for instant details loader -->
     <script>
         // Convert PHP Array of applicants to client JSON
@@ -1316,6 +1579,81 @@ if (empty($db_error)) {
                 closeDetails();
             }
         });
+
+        // ============================================
+        // EDIT FUNCTIONALITY
+        // ============================================
+        const editModal = document.getElementById('editModal');
+        const editForm = document.getElementById('editForm');
+
+        function openEditModal(data) {
+            // Populate all form fields
+            document.getElementById('edit_applicant_id').value = data.id;
+            document.getElementById('edit_first_name').value = data.first_name || '';
+            document.getElementById('edit_last_name').value = data.last_name || '';
+            document.getElementById('edit_dob').value = data.dob || '';
+            document.getElementById('edit_gender').value = data.gender || '';
+            document.getElementById('edit_nationality').value = data.nationality || '';
+            document.getElementById('edit_passport').value = data.passport || '';
+            document.getElementById('edit_email').value = data.email || '';
+            document.getElementById('edit_phone').value = data.phone || '';
+            document.getElementById('edit_current_location').value = data.current_location || '';
+            document.getElementById('edit_education_level').value = data.education_level || '';
+            document.getElementById('edit_gpa').value = data.gpa || '';
+            document.getElementById('edit_previous_school').value = data.previous_school || '';
+            document.getElementById('edit_program1').value = data.program1 || 'Bachelor Promosi Kesehatan';
+            document.getElementById('edit_english_proficiency').value = data.english_proficiency || '';
+            document.getElementById('edit_referral').value = data.referral || '';
+            document.getElementById('edit_sop').value = data.sop || '';
+
+            // Show edit modal
+            editModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEditModal() {
+            editModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Close edit modal when clicking on overlay background
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+
+        // Handle form submission
+        editForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            editForm.submit();
+        });
+
+        // ============================================
+        // DELETE FUNCTIONALITY
+        // ============================================
+        function deleteApplicant(id) {
+            if (confirm('Are you sure you want to delete this applicant? This action cannot be undone.')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.style.display = 'none';
+                
+                const actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action';
+                actionInput.value = 'delete';
+                
+                const idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                idInput.value = id;
+                
+                form.appendChild(actionInput);
+                form.appendChild(idInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
     </script>
 </body>
 </html>
