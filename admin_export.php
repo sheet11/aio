@@ -71,15 +71,21 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
     mysqli_stmt_close($stmt);
 }
 
-// Configure CSV headers for download
-header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename=registrants_report_' . date('Y-m-d_His') . '.csv');
+// Configure headers for download
+$format = isset($_GET['format']) && strtolower($_GET['format']) === 'csv' ? 'csv' : 'xls';
+$filename = 'registrants_report_' . date('Y-m-d_His') . '.' . $format;
+if ($format === 'csv') {
+    header('Content-Type: text/csv; charset=utf-8');
+} else {
+    header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+}
+header('Content-Disposition: attachment; filename=' . $filename);
 
 // Open the output stream
 $output = fopen('php://output', 'w');
 
 // Output UTF-8 BOM to make Excel read unicode accents properly
-fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
 // Add CSV header row
 fputcsv($output, [
@@ -129,4 +135,3 @@ foreach ($applicants as $row) {
 
 fclose($output);
 exit;
-?>
