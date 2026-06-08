@@ -76,19 +76,65 @@ $format = isset($_GET['format']) && strtolower($_GET['format']) === 'csv' ? 'csv
 $filename = 'registrants_report_' . date('Y-m-d_His') . '.' . $format;
 if ($format === 'csv') {
     header('Content-Type: text/csv; charset=utf-8');
-} else {
-    header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+    header('Content-Disposition: attachment; filename=' . $filename);
+    echo "\xEF\xBB\xBF";
+    $output = fopen('php://output', 'w');
+    fputcsv($output, [
+        'ID',
+        'First Name',
+        'Last Name',
+        'Date of Birth',
+        'Gender',
+        'Nationality',
+        'Passport Number',
+        'Email Address',
+        'Phone / WhatsApp',
+        'Current Location',
+        'Education Level',
+        'GPA',
+        'Previous School',
+        'Study Program',
+        'English Proficiency',
+        'Statement of Purpose',
+        'Referral Channel',
+        'Registered Date'
+    ]);
+    foreach ($applicants as $row) {
+        fputcsv($output, [
+            $row['id'],
+            $row['first_name'],
+            $row['last_name'],
+            $row['dob'],
+            $row['gender'],
+            $row['nationality'],
+            $row['passport'],
+            $row['email'],
+            $row['phone'],
+            $row['current_location'],
+            $row['education_level'],
+            $row['gpa'],
+            $row['previous_school'],
+            ($row['program1'] == 'Bachelor Promosi Kesehatan') ? 'Bachelor of Health Promotion' : $row['program1'],
+            $row['english_proficiency'],
+            $row['sop'],
+            $row['referral'],
+            $row['created_at']
+        ]);
+    }
+    fclose($output);
+    exit;
 }
+
+header('Content-Type: application/vnd.ms-excel; charset=utf-8');
 header('Content-Disposition: attachment; filename=' . $filename);
+echo "\xEF\xBB\xBF";
 
-// Open the output stream
-$output = fopen('php://output', 'w');
+function exportValue($value)
+{
+    return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
 
-// Output UTF-8 BOM to make Excel read unicode accents properly
-fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
-
-// Add CSV header row
-fputcsv($output, [
+$headerLabels = [
     'ID',
     'First Name',
     'Last Name',
@@ -107,31 +153,38 @@ fputcsv($output, [
     'Statement of Purpose',
     'Referral Channel',
     'Registered Date'
-]);
+];
 
-// Write applicant records
+echo "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body>";
+echo "<table border=1 cellspacing=0 cellpadding=5>";
+echo "<tr style=\"background-color:#f2f2f2;font-weight:bold;\">";
+foreach ($headerLabels as $label) {
+    echo "<th>" . exportValue($label) . "</th>";
+}
+echo "</tr>";
+
 foreach ($applicants as $row) {
-    fputcsv($output, [
-        $row['id'],
-        $row['first_name'],
-        $row['last_name'],
-        $row['dob'],
-        $row['gender'],
-        $row['nationality'],
-        $row['passport'],
-        $row['email'],
-        $row['phone'],
-        $row['current_location'],
-        $row['education_level'],
-        $row['gpa'],
-        $row['previous_school'],
-        ($row['program1'] == 'Bachelor Promosi Kesehatan') ? 'Bachelor of Health Promotion' : $row['program1'],
-        $row['english_proficiency'],
-        $row['sop'],
-        $row['referral'],
-        $row['created_at']
-    ]);
+    echo "<tr>";
+    echo "<td>" . exportValue($row['id']) . "</td>";
+    echo "<td>" . exportValue($row['first_name']) . "</td>";
+    echo "<td>" . exportValue($row['last_name']) . "</td>";
+    echo "<td>" . exportValue($row['dob']) . "</td>";
+    echo "<td>" . exportValue($row['gender']) . "</td>";
+    echo "<td>" . exportValue($row['nationality']) . "</td>";
+    echo "<td>" . exportValue($row['passport']) . "</td>";
+    echo "<td>" . exportValue($row['email']) . "</td>";
+    echo "<td>" . exportValue($row['phone']) . "</td>";
+    echo "<td>" . exportValue($row['current_location']) . "</td>";
+    echo "<td>" . exportValue($row['education_level']) . "</td>";
+    echo "<td>" . exportValue($row['gpa']) . "</td>";
+    echo "<td>" . exportValue($row['previous_school']) . "</td>";
+    echo "<td>" . exportValue(($row['program1'] == 'Bachelor Promosi Kesehatan') ? 'Bachelor of Health Promotion' : $row['program1']) . "</td>";
+    echo "<td>" . exportValue($row['english_proficiency']) . "</td>";
+    echo "<td>" . exportValue($row['sop']) . "</td>";
+    echo "<td>" . exportValue($row['referral']) . "</td>";
+    echo "<td>" . exportValue($row['created_at']) . "</td>";
+    echo "</tr>";
 }
 
-fclose($output);
+echo "</table></body></html>";
 exit;
