@@ -14,6 +14,7 @@ if (isset($db_connection_error)) {
 }
 
 // Read filters matching the dashboard
+$exportAll = isset($_GET['all']) && $_GET['all'] === '1';
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $filter_nationality = isset($_GET['nationality']) ? trim($_GET['nationality']) : '';
 $filter_program = isset($_GET['program']) ? trim($_GET['program']) : '';
@@ -24,32 +25,34 @@ $where_clauses = [];
 $params = [];
 $types = "";
 
-if ($search !== '') {
-    $where_clauses[] = "(first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR passport LIKE ?)";
-    $search_param = "%$search%";
-    $params[] = $search_param;
-    $params[] = $search_param;
-    $params[] = $search_param;
-    $params[] = $search_param;
-    $types .= "ssss";
-}
+if (!$exportAll) {
+    if ($search !== '') {
+        $where_clauses[] = "(first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR passport LIKE ?)";
+        $search_param = "%$search%";
+        $params[] = $search_param;
+        $params[] = $search_param;
+        $params[] = $search_param;
+        $params[] = $search_param;
+        $types .= "ssss";
+    }
 
-if ($filter_nationality !== '') {
-    $where_clauses[] = "nationality = ?";
-    $params[] = $filter_nationality;
-    $types .= "s";
-}
+    if ($filter_nationality !== '') {
+        $where_clauses[] = "nationality = ?";
+        $params[] = $filter_nationality;
+        $types .= "s";
+    }
 
-if ($filter_program !== '') {
-    $where_clauses[] = "program1 = ?";
-    $params[] = $filter_program;
-    $types .= "s";
-}
+    if ($filter_program !== '') {
+        $where_clauses[] = "program1 = ?";
+        $params[] = $filter_program;
+        $types .= "s";
+    }
 
-if ($filter_education !== '') {
-    $where_clauses[] = "education_level = ?";
-    $params[] = $filter_education;
-    $types .= "s";
+    if ($filter_education !== '') {
+        $where_clauses[] = "education_level = ?";
+        $params[] = $filter_education;
+        $types .= "s";
+    }
 }
 
 $sql = "SELECT * FROM tb_interstudent";

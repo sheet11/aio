@@ -1131,7 +1131,7 @@ if (empty($db_error)) {
                         class="btn-export-csv" title="Export current list to XLS file">
                         <i class="fa-solid fa-file-excel"></i> Export Report (XLS)
                     </a>
-                    <a href="admin_export.php?format=xls" class="btn-export-csv"
+                    <a href="admin_export.php?format=xls&all=1" class="btn-export-csv"
                         title="Export all applicants to XLS file" style="margin-left:0.75rem;">
                         <i class="fa-solid fa-file-excel"></i> Export All (XLS)
                     </a>
