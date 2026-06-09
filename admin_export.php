@@ -102,14 +102,14 @@ if ($format === 'csv') {
     ]);
     foreach ($applicants as $row) {
         $fileLinks = array_filter([
-            $row['passport_file'] ? 'Passport: ' . $row['passport_file'] : null,
-            $row['english_cert_file'] ? 'English Cert: ' . $row['english_cert_file'] : null,
-            $row['diploma_file'] ? 'Diploma: ' . $row['diploma_file'] : null,
-            $row['transcript_file'] ? 'Transcript: ' . $row['transcript_file'] : null,
-            $row['photo_file'] ? 'Photo: ' . $row['photo_file'] : null,
-            $row['cv_file'] ? 'CV: ' . $row['cv_file'] : null,
-            $row['letter_rec_file'] ? 'Letter Rec: ' . $row['letter_rec_file'] : null,
-            $row['statement_file'] ? 'Statement: ' . $row['statement_file'] : null,
+            $row['passport_file'] ? 'Passport: ' . getUploadUrl($row['passport_file']) : null,
+            $row['english_cert_file'] ? 'English Cert: ' . getUploadUrl($row['english_cert_file']) : null,
+            $row['diploma_file'] ? 'Diploma: ' . getUploadUrl($row['diploma_file']) : null,
+            $row['transcript_file'] ? 'Transcript: ' . getUploadUrl($row['transcript_file']) : null,
+            $row['photo_file'] ? 'Photo: ' . getUploadUrl($row['photo_file']) : null,
+            $row['cv_file'] ? 'CV: ' . getUploadUrl($row['cv_file']) : null,
+            $row['letter_rec_file'] ? 'Letter Rec: ' . getUploadUrl($row['letter_rec_file']) : null,
+            $row['statement_file'] ? 'Statement: ' . getUploadUrl($row['statement_file']) : null,
         ]);
 
         fputcsv($output, [
@@ -147,6 +147,20 @@ function exportValue($value)
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+function getUploadUrl(string $path): string
+{
+    if ($path === '') {
+        return '';
+    }
+
+    if (parse_url($path, PHP_URL_SCHEME) !== null) {
+        return $path;
+    }
+
+    $baseUrl = 'https://aio.poltekkesbengkulu.ac.id/';
+    return rtrim($baseUrl, '/') . '/' . ltrim($path, '/');
+}
+
 function exportFileLinks(array $row)
 {
     $links = [];
@@ -163,7 +177,8 @@ function exportFileLinks(array $row)
 
     foreach ($uploadFields as $field => $label) {
         if (!empty($row[$field])) {
-            $links[] = '<a href="' . htmlspecialchars($row[$field], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" target="_blank">' . htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
+            $url = getUploadUrl($row[$field]);
+            $links[] = '<a href="' . htmlspecialchars($url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" target="_blank">' . htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
         }
     }
 
