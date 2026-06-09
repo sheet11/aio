@@ -97,9 +97,21 @@ if ($format === 'csv') {
         'English Proficiency',
         'Statement of Purpose',
         'Referral Channel',
+        'Uploaded Files',
         'Registered Date'
     ]);
     foreach ($applicants as $row) {
+        $fileLinks = array_filter([
+            $row['passport_file'] ? 'Passport: ' . $row['passport_file'] : null,
+            $row['english_cert_file'] ? 'English Cert: ' . $row['english_cert_file'] : null,
+            $row['diploma_file'] ? 'Diploma: ' . $row['diploma_file'] : null,
+            $row['transcript_file'] ? 'Transcript: ' . $row['transcript_file'] : null,
+            $row['photo_file'] ? 'Photo: ' . $row['photo_file'] : null,
+            $row['cv_file'] ? 'CV: ' . $row['cv_file'] : null,
+            $row['letter_rec_file'] ? 'Letter Rec: ' . $row['letter_rec_file'] : null,
+            $row['statement_file'] ? 'Statement: ' . $row['statement_file'] : null,
+        ]);
+
         fputcsv($output, [
             $row['id'],
             $row['first_name'],
@@ -118,6 +130,7 @@ if ($format === 'csv') {
             $row['english_proficiency'],
             $row['sop'],
             $row['referral'],
+            implode(' | ', $fileLinks),
             $row['created_at']
         ]);
     }
@@ -132,6 +145,29 @@ echo "\xEF\xBB\xBF";
 function exportValue($value)
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+function exportFileLinks(array $row)
+{
+    $links = [];
+    $uploadFields = [
+        'passport_file' => 'Passport',
+        'english_cert_file' => 'English Cert',
+        'diploma_file' => 'Diploma',
+        'transcript_file' => 'Transcript',
+        'photo_file' => 'Photo',
+        'cv_file' => 'CV',
+        'letter_rec_file' => 'Letter Rec',
+        'statement_file' => 'Statement'
+    ];
+
+    foreach ($uploadFields as $field => $label) {
+        if (!empty($row[$field])) {
+            $links[] = '<a href="' . htmlspecialchars($row[$field], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" target="_blank">' . htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
+        }
+    }
+
+    return implode('<br/>', $links);
 }
 
 $headerLabels = [
@@ -152,6 +188,7 @@ $headerLabels = [
     'English Proficiency',
     'Statement of Purpose',
     'Referral Channel',
+    'Uploaded Files',
     'Registered Date'
 ];
 
@@ -180,8 +217,9 @@ foreach ($applicants as $row) {
     echo "<td>" . exportValue($row['previous_school']) . "</td>";
     echo "<td>" . exportValue(($row['program1'] == 'Bachelor Promosi Kesehatan') ? 'Bachelor of Health Promotion' : $row['program1']) . "</td>";
     echo "<td>" . exportValue($row['english_proficiency']) . "</td>";
-    echo "<td>" . exportValue($row['sop']) . "</td>";
+    echo "<td style=\"white-space:nowrap;\">" . exportValue($row['sop']) . "</td>";
     echo "<td>" . exportValue($row['referral']) . "</td>";
+    echo "<td>" . exportFileLinks($row) . "</td>";
     echo "<td>" . exportValue($row['created_at']) . "</td>";
     echo "</tr>";
 }
