@@ -97,21 +97,17 @@ if ($format === 'csv') {
         'English Proficiency',
         'Statement of Purpose',
         'Referral Channel',
-        'Uploaded Files',
+        'Passport File',
+        'English Cert File',
+        'Diploma File',
+        'Transcript File',
+        'Photo File',
+        'CV File',
+        'Letter Rec File',
+        'Statement File',
         'Registered Date'
     ]);
     foreach ($applicants as $row) {
-        $fileLinks = array_filter([
-            $row['passport_file'] ? 'Passport: ' . getUploadUrl($row['passport_file']) : null,
-            $row['english_cert_file'] ? 'English Cert: ' . getUploadUrl($row['english_cert_file']) : null,
-            $row['diploma_file'] ? 'Diploma: ' . getUploadUrl($row['diploma_file']) : null,
-            $row['transcript_file'] ? 'Transcript: ' . getUploadUrl($row['transcript_file']) : null,
-            $row['photo_file'] ? 'Photo: ' . getUploadUrl($row['photo_file']) : null,
-            $row['cv_file'] ? 'CV: ' . getUploadUrl($row['cv_file']) : null,
-            $row['letter_rec_file'] ? 'Letter Rec: ' . getUploadUrl($row['letter_rec_file']) : null,
-            $row['statement_file'] ? 'Statement: ' . getUploadUrl($row['statement_file']) : null,
-        ]);
-
         fputcsv($output, [
             $row['id'],
             $row['first_name'],
@@ -130,7 +126,14 @@ if ($format === 'csv') {
             $row['english_proficiency'],
             $row['sop'],
             $row['referral'],
-            implode(' | ', $fileLinks),
+            $row['passport_file'] ? getUploadUrl($row['passport_file']) : '',
+            $row['english_cert_file'] ? getUploadUrl($row['english_cert_file']) : '',
+            $row['diploma_file'] ? getUploadUrl($row['diploma_file']) : '',
+            $row['transcript_file'] ? getUploadUrl($row['transcript_file']) : '',
+            $row['photo_file'] ? getUploadUrl($row['photo_file']) : '',
+            $row['cv_file'] ? getUploadUrl($row['cv_file']) : '',
+            $row['letter_rec_file'] ? getUploadUrl($row['letter_rec_file']) : '',
+            $row['statement_file'] ? getUploadUrl($row['statement_file']) : '',
             $row['created_at']
         ]);
     }
@@ -161,28 +164,14 @@ function getUploadUrl(string $path): string
     return rtrim($baseUrl, '/') . '/' . ltrim($path, '/');
 }
 
-function exportFileLinks(array $row)
+function exportFileLink(?string $path, string $label): string
 {
-    $links = [];
-    $uploadFields = [
-        'passport_file' => 'Passport',
-        'english_cert_file' => 'English Cert',
-        'diploma_file' => 'Diploma',
-        'transcript_file' => 'Transcript',
-        'photo_file' => 'Photo',
-        'cv_file' => 'CV',
-        'letter_rec_file' => 'Letter Rec',
-        'statement_file' => 'Statement'
-    ];
-
-    foreach ($uploadFields as $field => $label) {
-        if (!empty($row[$field])) {
-            $url = getUploadUrl($row[$field]);
-            $links[] = '<a href="' . htmlspecialchars($url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" target="_blank">' . htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
-        }
+    if (trim((string) $path) === '') {
+        return '';
     }
 
-    return implode('<br/>', $links);
+    $url = getUploadUrl((string) $path);
+    return '<a href="' . htmlspecialchars($url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" target="_blank">' . htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a>';
 }
 
 $headerLabels = [
@@ -203,7 +192,14 @@ $headerLabels = [
     'English Proficiency',
     'Statement of Purpose',
     'Referral Channel',
-    'Uploaded Files',
+    'Passport File',
+    'English Cert File',
+    'Diploma File',
+    'Transcript File',
+    'Photo File',
+    'CV File',
+    'Letter Rec File',
+    'Statement File',
     'Registered Date'
 ];
 
@@ -234,7 +230,14 @@ foreach ($applicants as $row) {
     echo "<td>" . exportValue($row['english_proficiency']) . "</td>";
     echo "<td style=\"white-space:nowrap;\">" . exportValue($row['sop']) . "</td>";
     echo "<td>" . exportValue($row['referral']) . "</td>";
-    echo "<td>" . exportFileLinks($row) . "</td>";
+    echo "<td>" . exportFileLink($row['passport_file'], 'Passport') . "</td>";
+    echo "<td>" . exportFileLink($row['english_cert_file'], 'English Cert') . "</td>";
+    echo "<td>" . exportFileLink($row['diploma_file'], 'Diploma') . "</td>";
+    echo "<td>" . exportFileLink($row['transcript_file'], 'Transcript') . "</td>";
+    echo "<td>" . exportFileLink($row['photo_file'], 'Photo') . "</td>";
+    echo "<td>" . exportFileLink($row['cv_file'], 'CV') . "</td>";
+    echo "<td>" . exportFileLink($row['letter_rec_file'], 'Letter Rec') . "</td>";
+    echo "<td>" . exportFileLink($row['statement_file'], 'Statement') . "</td>";
     echo "<td>" . exportValue($row['created_at']) . "</td>";
     echo "</tr>";
 }

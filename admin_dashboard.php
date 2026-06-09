@@ -204,6 +204,18 @@ if (empty($db_error)) {
         mysqli_stmt_close($stmt);
     }
 }
+
+    function getUploadUrl(?string $path): string {
+        if (empty($path)) {
+            return '';
+        }
+        $path = trim($path);
+        if (parse_url($path, PHP_URL_SCHEME) !== null) {
+            return $path;
+        }
+        $baseUrl = 'https://aio.poltekkesbengkulu.ac.id/';
+        return rtrim($baseUrl, '/') . '/' . ltrim($path, '/');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -431,7 +443,7 @@ if (empty($db_error)) {
             gap: 2rem;
         }
 
-        <blade media|%20(max-width%3A%201024px)%20%7B>.dashboard-split {
+        <blade media|%20(max-width%3A%201024px)%20%7B%0D>.dashboard-split {
             grid-template-columns: 1fr;
         }
         }
@@ -537,7 +549,7 @@ if (empty($db_error)) {
             align-items: end;
         }
 
-        <blade media|%20(max-width%3A%20900px)%20%7B>.filter-form {
+        <blade media|%20(max-width%3A%20900px)%20%7B%0D>.filter-form {
             grid-template-columns: 1fr 1fr;
         }
 
@@ -546,7 +558,7 @@ if (empty($db_error)) {
         }
         }
 
-        <blade media|%20(max-width%3A%20500px)%20%7B>.filter-form {
+        <blade media|%20(max-width%3A%20500px)%20%7B%0D>.filter-form {
             grid-template-columns: 1fr;
         }
 
@@ -898,7 +910,7 @@ if (empty($db_error)) {
             gap: 1.5rem;
         }
 
-        <blade media|%20(max-width%3A%20600px)%20%7B>.modal-grid {
+        <blade media|%20(max-width%3A%20600px)%20%7B%0D>.modal-grid {
             grid-template-columns: 1fr;
         }
         }
@@ -1131,10 +1143,6 @@ if (empty($db_error)) {
                         class="btn-export-csv" title="Export current list to XLS file">
                         <i class="fa-solid fa-file-excel"></i> Export Report (XLS)
                     </a>
-                    <a href="admin_export.php?format=xls&all=1" class="btn-export-csv"
-                        title="Export all applicants to XLS file" style="margin-left:0.75rem;">
-                        <i class="fa-solid fa-file-excel"></i> Export All (XLS)
-                    </a>
                     <?php endif; ?>
                 </div>
 
@@ -1207,7 +1215,7 @@ if (empty($db_error)) {
                                     <div style="display:flex;gap:4px;flex-wrap:wrap;">
 
                                         <?php if (!empty($applicant['passport_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['passport_file']); ?>"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['passport_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="Passport" class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-passport"></i>
@@ -1215,7 +1223,7 @@ if (empty($db_error)) {
                                         <?php endif; ?>
 
                                         <?php if (!empty($applicant['english_cert_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['english_cert_file']); ?>"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['english_cert_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="English Certificate" class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-language"></i>
@@ -1223,7 +1231,7 @@ if (empty($db_error)) {
                                         <?php endif; ?>
 
                                         <?php if (!empty($applicant['diploma_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['diploma_file']); ?>"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['diploma_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="Diploma" class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-graduation-cap"></i>
@@ -1231,7 +1239,7 @@ if (empty($db_error)) {
                                         <?php endif; ?>
 
                                         <?php if (!empty($applicant['transcript_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['transcript_file']); ?>"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['transcript_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="Transcript" class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-file-lines"></i>
@@ -1239,7 +1247,7 @@ if (empty($db_error)) {
                                         <?php endif; ?>
 
                                         <?php if (!empty($applicant['photo_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['photo_file']); ?>"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['photo_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="Photo" class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-image"></i>
@@ -1247,15 +1255,15 @@ if (empty($db_error)) {
                                         <?php endif; ?>
 
                                         <?php if (!empty($applicant['cv_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['cv_file']); ?>" target="_blank"
-                                            title="CV" class="btn-view-details"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['cv_file']), ENT_QUOTES, 'UTF-8'); ?>"
+                                            target="_blank" title="CV" class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-file-signature"></i>
                                         </a>
                                         <?php endif; ?>
 
                                         <?php if (!empty($applicant['letter_rec_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['letter_rec_file']); ?>"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['letter_rec_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="Letter of Rec." class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-envelope-open-text"></i>
@@ -1263,7 +1271,7 @@ if (empty($db_error)) {
                                         <?php endif; ?>
 
                                         <?php if (!empty($applicant['statement_file'])): ?>
-                                        <a href="<?php echo htmlspecialchars($applicant['statement_file']); ?>"
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['statement_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="Statement" class="btn-view-details"
                                             style="padding:4px 8px;font-size:0.75rem;">
                                             <i class="fa-solid fa-file-contract"></i>
@@ -1577,9 +1585,8 @@ if (empty($db_error)) {
 
     <!-- Client-side applicant database for instant details loader -->
     <script>
-        // Convert PHP Array of applicants to client JSON
-        const applicantsData = < ? php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG |
-            JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ? > ;
+        // Convert PHP array of applicants to client JSON
+        const applicantsData = <?php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_INVALID_UTF8_SUBSTITUTE); ?> || {};
 
         const modal = document.getElementById('detailModal');
 
