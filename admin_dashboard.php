@@ -954,13 +954,13 @@ if (empty($db_error)) {
 
         <!-- DB Error Display -->
         <?php if (!empty($db_error)): ?>
-            <div class="db-error-alert">
-                <i class="fa-solid fa-circle-exclaim" style="font-size: 1.5rem;"></i>
-                <div>
-                    <strong>Database Connection Error!</strong><br>
-                    <?php echo htmlspecialchars($db_error); ?>
-                </div>
+        <div class="db-error-alert">
+            <i class="fa-solid fa-circle-exclaim" style="font-size: 1.5rem;"></i>
+            <div>
+                <strong>Database Connection Error!</strong><br>
+                <?php echo htmlspecialchars($db_error); ?>
             </div>
+        </div>
         <?php endif; ?>
 
         <!-- Statistics Panel -->
@@ -1021,28 +1021,28 @@ if (empty($db_error)) {
                 <h3><i class="fa-solid fa-chart-pie"></i> Applicants by Country</h3>
                 <div class="country-list">
                     <?php if (count($country_breakdown) > 0): ?>
-                        <?php
+                    <?php
                         foreach ($country_breakdown as $country_item):
                             $percentage = ($total_applicants > 0) ? round(($country_item['cnt'] / $total_applicants) * 100) : 0;
                             $flag_icon = "fa-globe"; // fallback
                         ?>
-                            <div class="country-item">
-                                <div class="country-info-row">
-                                    <span class="country-name">
-                                        <i class="fa-solid fa-map-pin" style="color: var(--primary); font-size: 0.8rem;"></i>
-                                        <?php echo htmlspecialchars($country_item['nationality']); ?>
-                                    </span>
-                                    <span class="country-count"><?php echo $country_item['cnt']; ?></span>
-                                </div>
-                                <div class="country-bar-bg" title="<?php echo $percentage; ?>%">
-                                    <div class="country-bar-fill" style="width: <?php echo $percentage; ?>%;"></div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div style="color: var(--text-light); text-align: center; padding: 1.5rem 0; font-size: 0.85rem;">
-                            No country data.
+                    <div class="country-item">
+                        <div class="country-info-row">
+                            <span class="country-name">
+                                <i class="fa-solid fa-map-pin" style="color: var(--primary); font-size: 0.8rem;"></i>
+                                <?php echo htmlspecialchars($country_item['nationality']); ?>
+                            </span>
+                            <span class="country-count"><?php echo $country_item['cnt']; ?></span>
                         </div>
+                        <div class="country-bar-bg" title="<?php echo $percentage; ?>%">
+                            <div class="country-bar-fill" style="width: <?php echo $percentage; ?>%;"></div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <div style="color: var(--text-light); text-align: center; padding: 1.5rem 0; font-size: 0.85rem;">
+                        No country data.
+                    </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -1067,9 +1067,9 @@ if (empty($db_error)) {
                             <select id="nationality" name="nationality" class="form-control">
                                 <option value="">— All —</option>
                                 <?php foreach ($nationalities_list as $nat): ?>
-                                    <option value="<?php echo htmlspecialchars($nat); ?>"
-                                        <?php echo ($filter_nationality === $nat) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($nat); ?></option>
+                                <option value="<?php echo htmlspecialchars($nat); ?>"
+                                    <?php echo ($filter_nationality === $nat) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($nat); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -1080,10 +1080,10 @@ if (empty($db_error)) {
                             <select id="program" name="program" class="form-control">
                                 <option value="">— All —</option>
                                 <?php foreach ($programs_list as $prog): ?>
-                                    <option value="<?php echo htmlspecialchars($prog); ?>"
-                                        <?php echo ($filter_program === $prog) ? 'selected' : ''; ?>>
-                                        <?php echo ($prog == 'Bachelor Promosi Kesehatan') ? 'Bachelor Health Promotion' : htmlspecialchars($prog); ?>
-                                    </option>
+                                <option value="<?php echo htmlspecialchars($prog); ?>"
+                                    <?php echo ($filter_program === $prog) ? 'selected' : ''; ?>>
+                                    <?php echo ($prog == 'Bachelor Promosi Kesehatan') ? 'Bachelor Health Promotion' : htmlspecialchars($prog); ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -1114,7 +1114,7 @@ if (empty($db_error)) {
                                 <i class="fa-solid fa-magnifying-glass"></i> Filter
                             </button>
                             <?php if ($search !== '' || $filter_nationality !== '' || $filter_program !== '' || $filter_education !== ''): ?>
-                                <a href="admin_dashboard.php" class="btn-reset-filter" title="Clear Filters">Reset</a>
+                            <a href="admin_dashboard.php" class="btn-reset-filter" title="Clear Filters">Reset</a>
                             <?php endif; ?>
                         </div>
                     </form>
@@ -1127,10 +1127,14 @@ if (empty($db_error)) {
                         <p>Found <?php echo count($applicants); ?> applicant records</p>
                     </div>
                     <?php if (count($applicants) > 0): ?>
-                        <a href="admin_export.php?format=xls&search=<?php echo urlencode($search); ?>&nationality=<?php echo urlencode($filter_nationality); ?>&program=<?php echo urlencode($filter_program); ?>&education=<?php echo urlencode($filter_education); ?>"
-                            class="btn-export-csv" title="Export current list to XLS file">
-                            <i class="fa-solid fa-file-excel"></i> Export Report (XLS)
-                        </a>
+                    <a href="admin_export.php?format=xls&search=<?php echo urlencode($search); ?>&nationality=<?php echo urlencode($filter_nationality); ?>&program=<?php echo urlencode($filter_program); ?>&education=<?php echo urlencode($filter_education); ?>"
+                        class="btn-export-csv" title="Export current list to XLS file">
+                        <i class="fa-solid fa-file-excel"></i> Export Report (XLS)
+                    </a>
+                    <a href="admin_export.php?format=xls" class="btn-export-csv"
+                        title="Export all applicants to XLS file" style="margin-left:0.75rem;">
+                        <i class="fa-solid fa-file-excel"></i> Export All (XLS)
+                    </a>
                     <?php endif; ?>
                 </div>
 
@@ -1151,152 +1155,154 @@ if (empty($db_error)) {
                         </thead>
                         <tbody>
                             <?php if (count($applicants) > 0): ?>
-                                <?php foreach ($applicants as $applicant):
+                            <?php foreach ($applicants as $applicant):
                                     $first_initial = strtoupper(substr($applicant['first_name'], 0, 1));
                                     $last_initial = strtoupper(substr($applicant['last_name'], 0, 1));
                                     $initials = $first_initial . $last_initial;
                                 ?>
-                                    <tr>
-                                        <td>
-                                            <div class="cell-avatar">
-                                                <div class="avatar-circle"><?php echo $initials; ?></div>
-                                                <div>
-                                                    <span class="cell-bold">
-                                                        <?php echo htmlspecialchars($applicant['first_name'] . ' ' . $applicant['last_name']); ?>
-                                                    </span>
-                                                    <div style="font-size:0.75rem;color:var(--text-light);">
-                                                        <?php echo htmlspecialchars($applicant['email']); ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <span class="badge-country">
-                                                <i class="fa-solid fa-globe"></i>
-                                                <?php echo htmlspecialchars($applicant['nationality']); ?>
+                            <tr>
+                                <td>
+                                    <div class="cell-avatar">
+                                        <div class="avatar-circle"><?php echo $initials; ?></div>
+                                        <div>
+                                            <span class="cell-bold">
+                                                <?php echo htmlspecialchars($applicant['first_name'] . ' ' . $applicant['last_name']); ?>
                                             </span>
-                                        </td>
+                                            <div style="font-size:0.75rem;color:var(--text-light);">
+                                                <?php echo htmlspecialchars($applicant['email']); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
 
-                                        <td>
-                                            <span class="badge-program">
-                                                <?php echo ($applicant['program1'] == 'Bachelor Promosi Kesehatan')
+                                <td>
+                                    <span class="badge-country">
+                                        <i class="fa-solid fa-globe"></i>
+                                        <?php echo htmlspecialchars($applicant['nationality']); ?>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge-program">
+                                        <?php echo ($applicant['program1'] == 'Bachelor Promosi Kesehatan')
                                                     ? 'Bachelor Health Promotion'
                                                     : htmlspecialchars($applicant['program1']); ?>
-                                            </span>
-                                        </td>
+                                    </span>
+                                </td>
 
-                                        <td class="cell-bold">
-                                            <?php echo !empty($applicant['gpa']) ? htmlspecialchars($applicant['gpa']) : '—'; ?>
-                                        </td>
+                                <td class="cell-bold">
+                                    <?php echo !empty($applicant['gpa']) ? htmlspecialchars($applicant['gpa']) : '—'; ?>
+                                </td>
 
-                                        <td>
-                                            <code><?php echo htmlspecialchars($applicant['passport']); ?></code>
-                                        </td>
+                                <td>
+                                    <code><?php echo htmlspecialchars($applicant['passport']); ?></code>
+                                </td>
 
-                                        <td>
-                                            <?php echo date("M d, Y", strtotime($applicant['created_at'])); ?>
-                                        </td>
+                                <td>
+                                    <?php echo date("M d, Y", strtotime($applicant['created_at'])); ?>
+                                </td>
 
-                                        <!-- KOLOM DOKUMEN -->
-                                        <td>
-                                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                <!-- KOLOM DOKUMEN -->
+                                <td>
+                                    <div style="display:flex;gap:4px;flex-wrap:wrap;">
 
-                                                <?php if (!empty($applicant['passport_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['passport_file']); ?>"
-                                                        target="_blank" title="Passport" class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-passport"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['passport_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['passport_file']); ?>"
+                                            target="_blank" title="Passport" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-passport"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                                <?php if (!empty($applicant['english_cert_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['english_cert_file']); ?>"
-                                                        target="_blank" title="English Certificate" class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-language"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['english_cert_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['english_cert_file']); ?>"
+                                            target="_blank" title="English Certificate" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-language"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                                <?php if (!empty($applicant['diploma_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['diploma_file']); ?>"
-                                                        target="_blank" title="Diploma" class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-graduation-cap"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['diploma_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['diploma_file']); ?>"
+                                            target="_blank" title="Diploma" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-graduation-cap"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                                <?php if (!empty($applicant['transcript_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['transcript_file']); ?>"
-                                                        target="_blank" title="Transcript" class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-file-lines"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['transcript_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['transcript_file']); ?>"
+                                            target="_blank" title="Transcript" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-file-lines"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                                <?php if (!empty($applicant['photo_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['photo_file']); ?>"
-                                                        target="_blank" title="Photo" class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-image"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['photo_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['photo_file']); ?>"
+                                            target="_blank" title="Photo" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-image"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                                <?php if (!empty($applicant['cv_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['cv_file']); ?>" target="_blank"
-                                                        title="CV" class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-file-signature"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['cv_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['cv_file']); ?>" target="_blank"
+                                            title="CV" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-file-signature"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                                <?php if (!empty($applicant['letter_rec_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['letter_rec_file']); ?>"
-                                                        target="_blank" title="Letter of Rec." class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-envelope-open-text"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['letter_rec_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['letter_rec_file']); ?>"
+                                            target="_blank" title="Letter of Rec." class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-envelope-open-text"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                                <?php if (!empty($applicant['statement_file'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($applicant['statement_file']); ?>"
-                                                        target="_blank" title="Statement" class="btn-view-details"
-                                                        style="padding:4px 8px;font-size:0.75rem;">
-                                                        <i class="fa-solid fa-file-contract"></i>
-                                                    </a>
-                                                <?php endif; ?>
+                                        <?php if (!empty($applicant['statement_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars($applicant['statement_file']); ?>"
+                                            target="_blank" title="Statement" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-file-contract"></i>
+                                        </a>
+                                        <?php endif; ?>
 
-                                            </div>
-                                        </td>
+                                    </div>
+                                </td>
 
-                                        <!-- KOLOM AKSI -->
-                                        <td style="text-align:center;">
-                                            <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
-                                                <button type="button" class="btn-view-details"
-                                                    onclick="openDetails(<?php echo $applicant['id']; ?>)" title="View Details">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </button>
-                                                <button type="button" class="btn-view-details" style="border-color:#f59e0b;color:#f59e0b;"
-                                                    onclick="openEditModal(<?php echo htmlspecialchars(json_encode($applicant), ENT_QUOTES, 'UTF-8'); ?>)"
-                                                    title="Edit">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                </button>
-                                                <button type="button" class="btn-view-details" style="border-color:#ef4444;color:#ef4444;"
-                                                    onclick="deleteApplicant(<?php echo $applicant['id']; ?>)" title="Delete">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
+                                <!-- KOLOM AKSI -->
+                                <td style="text-align:center;">
+                                    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+                                        <button type="button" class="btn-view-details"
+                                            onclick="openDetails(<?php echo $applicant['id']; ?>)" title="View Details">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn-view-details"
+                                            style="border-color:#f59e0b;color:#f59e0b;"
+                                            onclick="openEditModal(<?php echo htmlspecialchars(json_encode($applicant), ENT_QUOTES, 'UTF-8'); ?>)"
+                                            title="Edit">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button type="button" class="btn-view-details"
+                                            style="border-color:#ef4444;color:#ef4444;"
+                                            onclick="deleteApplicant(<?php echo $applicant['id']; ?>)" title="Delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
 
-                                    </tr>
-                                <?php endforeach; ?>
+                            </tr>
+                            <?php endforeach; ?>
                             <?php else: ?>
-                                <tr>
-                                    <td colspan="8" class="empty-table-state">
-                                        <i class="fa-solid fa-folder-open"></i>
-                                        No applicant records found matching your filters.
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="8" class="empty-table-state">
+                                    <i class="fa-solid fa-folder-open"></i>
+                                    No applicant records found matching your filters.
+                                </td>
+                            </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -1572,7 +1578,8 @@ if (empty($db_error)) {
     <!-- Client-side applicant database for instant details loader -->
     <script>
         // Convert PHP Array of applicants to client JSON
-        const applicantsData = <?php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+        const applicantsData = < ? php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG |
+            JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ? > ;
 
         const modal = document.getElementById('detailModal');
 
