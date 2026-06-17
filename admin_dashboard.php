@@ -1607,8 +1607,7 @@ if (empty($db_error)) {
     <!-- Client-side applicant database for instant details loader -->
     <script>
         // Convert PHP array of applicants to client JSON
-        const applicantsData = < ? php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG |
-            JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_INVALID_UTF8_SUBSTITUTE); ? > || {};
+        const applicantsData = <?php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_INVALID_UTF8_SUBSTITUTE); ?> || {};
 
         const modal = document.getElementById('detailModal');
 
