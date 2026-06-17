@@ -1270,6 +1270,22 @@ if (empty($db_error)) {
                                         </a>
                                         <?php endif; ?>
 
+                                        <?php if (!empty($applicant['health_cert_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['health_cert_file']), ENT_QUOTES, 'UTF-8'); ?>"
+                                            target="_blank" title="Health Certificate" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-file-medical"></i>
+                                        </a>
+                                        <?php endif; ?>
+
+                                        <?php if (!empty($applicant['sponsor_statement_file'])): ?>
+                                        <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['sponsor_statement_file']), ENT_QUOTES, 'UTF-8'); ?>"
+                                            target="_blank" title="Sponsor Statement" class="btn-view-details"
+                                            style="padding:4px 8px;font-size:0.75rem;">
+                                            <i class="fa-solid fa-handshake-angle"></i>
+                                        </a>
+                                        <?php endif; ?>
+
                                         <?php if (!empty($applicant['statement_file'])): ?>
                                         <a href="<?php echo htmlspecialchars(getUploadUrl($applicant['statement_file']), ENT_QUOTES, 'UTF-8'); ?>"
                                             target="_blank" title="Statement" class="btn-view-details"
@@ -1586,7 +1602,8 @@ if (empty($db_error)) {
     <!-- Client-side applicant database for instant details loader -->
     <script>
         // Convert PHP array of applicants to client JSON
-        const applicantsData = <?php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_INVALID_UTF8_SUBSTITUTE); ?> || {};
+        const applicantsData = < ? php echo json_encode(array_column($applicants, null, 'id'), JSON_HEX_TAG |
+            JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_INVALID_UTF8_SUBSTITUTE); ? > || {};
 
         const modal = document.getElementById('detailModal');
 

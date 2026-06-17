@@ -10,7 +10,9 @@ ALTER TABLE `tb_interstudent`
   ADD COLUMN IF NOT EXISTS `photo_file` VARCHAR(255) NULL AFTER `transcript_file`,
   ADD COLUMN IF NOT EXISTS `cv_file` VARCHAR(255) NULL AFTER `photo_file`,
   ADD COLUMN IF NOT EXISTS `letter_rec_file` VARCHAR(255) NULL AFTER `cv_file`,
-  ADD COLUMN IF NOT EXISTS `statement_file` VARCHAR(255) NULL AFTER `letter_rec_file`;
+  ADD COLUMN IF NOT EXISTS `health_cert_file` VARCHAR(255) NULL AFTER `letter_rec_file`,
+  ADD COLUMN IF NOT EXISTS `sponsor_statement_file` VARCHAR(255) NULL AFTER `health_cert_file`,
+  ADD COLUMN IF NOT EXISTS `statement_file` VARCHAR(255) NULL AFTER `sponsor_statement_file`;
 
 -- Rollback (drop added columns)
 -- To rollback, uncomment and run the following:

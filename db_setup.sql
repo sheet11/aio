@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS `tb_interstudent` (
     `photo_file` VARCHAR(255) DEFAULT NULL,
     `cv_file` VARCHAR(255) DEFAULT NULL,
     `letter_rec_file` VARCHAR(255) DEFAULT NULL,
+    `health_cert_file` VARCHAR(255) DEFAULT NULL,
+    `sponsor_statement_file` VARCHAR(255) DEFAULT NULL,
     `statement_file` VARCHAR(255) DEFAULT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

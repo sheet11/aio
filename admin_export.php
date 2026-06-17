@@ -133,6 +133,8 @@ if ($format === 'csv') {
             $row['photo_file'] ? getUploadUrl($row['photo_file']) : '',
             $row['cv_file'] ? getUploadUrl($row['cv_file']) : '',
             $row['letter_rec_file'] ? getUploadUrl($row['letter_rec_file']) : '',
+            $row['health_cert_file'] ? getUploadUrl($row['health_cert_file']) : '',
+            $row['sponsor_statement_file'] ? getUploadUrl($row['sponsor_statement_file']) : '',
             $row['statement_file'] ? getUploadUrl($row['statement_file']) : '',
             $row['created_at']
         ]);
@@ -199,6 +201,8 @@ $headerLabels = [
     'Photo File',
     'CV File',
     'Letter Rec File',
+    'Health Cert File',
+    'Sponsor Statement File',
     'Statement File',
     'Registered Date'
 ];
@@ -237,6 +241,8 @@ foreach ($applicants as $row) {
     echo "<td>" . exportFileLink($row['photo_file'], 'Photo') . "</td>";
     echo "<td>" . exportFileLink($row['cv_file'], 'CV') . "</td>";
     echo "<td>" . exportFileLink($row['letter_rec_file'], 'Letter Rec') . "</td>";
+    echo "<td>" . exportFileLink($row['health_cert_file'], 'Health Cert') . "</td>";
+    echo "<td>" . exportFileLink($row['sponsor_statement_file'], 'Sponsor Statement') . "</td>";
     echo "<td>" . exportFileLink($row['statement_file'], 'Statement') . "</td>";
     echo "<td>" . exportValue($row['created_at']) . "</td>";
     echo "</tr>";

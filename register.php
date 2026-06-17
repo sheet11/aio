@@ -79,32 +79,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     // -------------------------------------------------------
     // Handle file uploads
     // -------------------------------------------------------
-    $passportUpload      = handleFileUpload('passport_file', 'Passport Scan');
-    $englishCertUpload   = handleFileUpload('english_cert_file', 'English Certificate');
-    $diplomaUpload       = handleFileUpload('diploma_file', 'Diploma / Certificate');
-    $transcriptUpload    = handleFileUpload('transcript_file', 'Transcript');
-    $photoUpload         = handleFileUpload('photo_file', 'Passport Photo');
-    $cvUpload            = handleFileUpload('cv_file', 'Curriculum Vitae (CV)');
-    $letterRecUpload     = handleFileUpload('letter_rec_file', 'Letter of Recommendation');
-    $statementUpload     = handleFileUpload('statement_file', 'Statement of Legal Commitment');
+    $passportUpload            = handleFileUpload('passport_file', 'Passport Scan');
+    $englishCertUpload         = handleFileUpload('english_cert_file', 'English Certificate');
+    $diplomaUpload             = handleFileUpload('diploma_file', 'Diploma / Certificate');
+    $transcriptUpload          = handleFileUpload('transcript_file', 'Transcript');
+    $photoUpload               = handleFileUpload('photo_file', 'Passport Photo');
+    $cvUpload                  = handleFileUpload('cv_file', 'Curriculum Vitae (CV)');
+    $letterRecUpload           = handleFileUpload('letter_rec_file', 'Letter of Recommendation');
+    $healthCertUpload          = handleFileUpload('health_cert_file', 'Health Certificate');
+    $sponsorStatementUpload    = handleFileUpload('sponsor_statement_file', 'Parent/Guardian/Sponsor Statement');
+    $statementUpload           = handleFileUpload('statement_file', 'Statement of Legal Commitment');
 
     // Consolidate upload errors (take the first non-null error)
     $uploadError = null;
-    foreach ([$passportUpload, $englishCertUpload, $diplomaUpload, $transcriptUpload, $photoUpload, $cvUpload, $letterRecUpload, $statementUpload] as $u) {
+    foreach ([$passportUpload, $englishCertUpload, $diplomaUpload, $transcriptUpload, $photoUpload, $cvUpload, $letterRecUpload, $healthCertUpload, $sponsorStatementUpload, $statementUpload] as $u) {
         if (!empty($u['error'])) {
             $uploadError = $u['error'];
             break;
         }
     }
 
-    $passportFilePath        = $passportUpload['path'];
-    $englishCertFilePath     = $englishCertUpload['path'];
-    $diplomaFilePath         = $diplomaUpload['path'];
-    $transcriptFilePath      = $transcriptUpload['path'];
-    $photoFilePath           = $photoUpload['path'];
-    $cvFilePath              = $cvUpload['path'];
-    $letterRecFilePath       = $letterRecUpload['path'];
-    $statementFilePath       = $statementUpload['path'];
+    $passportFilePath           = $passportUpload['path'];
+    $englishCertFilePath        = $englishCertUpload['path'];
+    $diplomaFilePath            = $diplomaUpload['path'];
+    $transcriptFilePath         = $transcriptUpload['path'];
+    $photoFilePath              = $photoUpload['path'];
+    $cvFilePath                 = $cvUpload['path'];
+    $letterRecFilePath          = $letterRecUpload['path'];
+    $healthCertFilePath         = $healthCertUpload['path'];
+    $sponsorStatementFilePath   = $sponsorStatementUpload['path'];
+    $statementFilePath          = $statementUpload['path'];
 
     // Check mandatory fields
     if (
@@ -124,13 +128,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                     first_name, last_name, dob, gender, nationality, passport, email, phone, 
                     current_location, education_level, gpa, previous_school, program1, 
                     english_proficiency, sop, referral,
-                    passport_file, english_cert_file, diploma_file, transcript_file, photo_file, cv_file, letter_rec_file, statement_file
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    passport_file, english_cert_file, diploma_file, transcript_file, photo_file, cv_file, letter_rec_file, health_cert_file, sponsor_statement_file, statement_file
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if ($stmt = mysqli_prepare($conn, $sql)) {
             mysqli_stmt_bind_param(
                 $stmt,
-                "ssssssssssssssssssssssss",
+                "ssssssssssssssssssssssssss",
                 $firstName,
                 $lastName,
                 $dob,
@@ -154,6 +158,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
                 $photoFilePath,
                 $cvFilePath,
                 $letterRecFilePath,
+                $healthCertFilePath,
+                $sponsorStatementFilePath,
                 $statementFilePath
             );
 
@@ -478,6 +484,46 @@ require_once 'header.php';
                         </div>
                         <input type="file" id="letter_rec_file" name="letter_rec_file" accept=".pdf,.jpg,.jpeg,.png"
                             class="upload-input" data-zone="zone_letter_rec" data-preview="preview_letter_rec">
+                    </div>
+
+                    <!-- Health Certificate -->
+                    <div class="upload-item">
+                        <label class="upload-label" for="health_cert_file">
+                            <div class="upload-icon"><i class="fa-solid fa-file-medical"></i></div>
+                            <div class="upload-info">
+                                <span class="upload-title">Health Certificate</span>
+                                <span class="upload-sub">General physical and mental health certificate from a government hospital in your country of origin</span>
+                            </div>
+                        </label>
+                        <div class="upload-drop-zone" id="zone_health_cert"
+                            onclick="document.getElementById('health_cert_file').click()">
+                            <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
+                            <p class="upload-drop-text">Click to upload or drag & drop</p>
+                            <p class="upload-drop-hint">PDF, JPG, PNG &mdash; max 5MB</p>
+                            <div class="upload-preview" id="preview_health_cert"></div>
+                        </div>
+                        <input type="file" id="health_cert_file" name="health_cert_file" accept=".pdf,.jpg,.jpeg,.png"
+                            class="upload-input" data-zone="zone_health_cert" data-preview="preview_health_cert">
+                    </div>
+
+                    <!-- Parent / Guardian / Sponsor Statement -->
+                    <div class="upload-item">
+                        <label class="upload-label" for="sponsor_statement_file">
+                            <div class="upload-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+                            <div class="upload-info">
+                                <span class="upload-title">Parent / Guardian / Sponsor Statement</span>
+                                <span class="upload-sub">Statement of willingness to cover costs not covered by the scholarship</span>
+                            </div>
+                        </label>
+                        <div class="upload-drop-zone" id="zone_sponsor_statement"
+                            onclick="document.getElementById('sponsor_statement_file').click()">
+                            <i class="fa-solid fa-cloud-arrow-up upload-drop-icon"></i>
+                            <p class="upload-drop-text">Click to upload or drag & drop</p>
+                            <p class="upload-drop-hint">PDF, JPG, PNG &mdash; max 5MB</p>
+                            <div class="upload-preview" id="preview_sponsor_statement"></div>
+                        </div>
+                        <input type="file" id="sponsor_statement_file" name="sponsor_statement_file" accept=".pdf,.jpg,.jpeg,.png"
+                            class="upload-input" data-zone="zone_sponsor_statement" data-preview="preview_sponsor_statement">
                     </div>
 
                     <!-- Statement of Legal Commitment -->
