@@ -1153,6 +1153,7 @@ if (empty($db_error)) {
                             <tr>
                                 <th>Name</th>
                                 <th>Nationality</th>
+                                <th>Gender</th>
                                 <th>Study Program</th>
                                 <th>GPA</th>
                                 <th>Passport No.</th>
@@ -1188,6 +1189,10 @@ if (empty($db_error)) {
                                         <i class="fa-solid fa-globe"></i>
                                         <?php echo htmlspecialchars($applicant['nationality']); ?>
                                     </span>
+                                </td>
+
+                                <td class="cell-bold">
+                                    <?php echo !empty($applicant['gender']) ? htmlspecialchars($applicant['gender']) : '—'; ?>
                                 </td>
 
                                 <td>

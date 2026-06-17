@@ -194,14 +194,14 @@ require_once 'header.php';
 
         <!-- Dynamic Alert Box for PHP Response -->
         <?php if (!empty($message)): ?>
-            <div class="alert alert-<?php echo $message_type; ?>">
-                <?php if ($message_type == 'success'): ?>
-                    <i class="fa-solid fa-circle-check" style="font-size: 1.4rem;"></i>
-                <?php else: ?>
-                    <i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem;"></i>
-                <?php endif; ?>
-                <div><?php echo htmlspecialchars($message); ?></div>
-            </div>
+        <div class="alert alert-<?php echo $message_type; ?>">
+            <?php if ($message_type == 'success'): ?>
+            <i class="fa-solid fa-circle-check" style="font-size: 1.4rem;"></i>
+            <?php else: ?>
+            <i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem;"></i>
+            <?php endif; ?>
+            <div><?php echo htmlspecialchars($message); ?></div>
+        </div>
         <?php endif; ?>
 
         <form id="admissionForm" action="register.php" method="POST" enctype="multipart/form-data">
@@ -389,7 +389,7 @@ require_once 'header.php';
                         <label class="upload-label" for="diploma_file">
                             <div class="upload-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                             <div class="upload-info">
-                                <span class="upload-title">Diploma / Transcript</span>
+                                <span class="upload-title">Diploma</span>
                                 <span class="upload-sub">Most recent academic certificate</span>
                             </div>
                         </label>
@@ -473,7 +473,8 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/letter of recomendation.docx" class="sample-download" download>Download Sample Recommendation Letter</a>
+                            <a href="downloads/letter of recomendation.docx" class="sample-download" download>Download
+                                Sample Recommendation Letter</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_letter_rec"
                             onclick="document.getElementById('letter_rec_file').click()">
@@ -492,7 +493,8 @@ require_once 'header.php';
                             <div class="upload-icon"><i class="fa-solid fa-file-medical"></i></div>
                             <div class="upload-info">
                                 <span class="upload-title">Health Certificate</span>
-                                <span class="upload-sub">General physical and mental health certificate from a government hospital in your country of origin</span>
+                                <span class="upload-sub">General physical and mental health certificate from a
+                                    government hospital in your country of origin</span>
                             </div>
                         </label>
                         <div class="upload-drop-zone" id="zone_health_cert"
@@ -512,7 +514,8 @@ require_once 'header.php';
                             <div class="upload-icon"><i class="fa-solid fa-handshake-angle"></i></div>
                             <div class="upload-info">
                                 <span class="upload-title">Parent / Guardian / Sponsor Statement</span>
-                                <span class="upload-sub">Statement of willingness to cover costs not covered by the scholarship</span>
+                                <span class="upload-sub">Statement of willingness to cover costs not covered by the
+                                    scholarship</span>
                             </div>
                         </label>
                         <div class="upload-drop-zone" id="zone_sponsor_statement"
@@ -522,8 +525,9 @@ require_once 'header.php';
                             <p class="upload-drop-hint">PDF, JPG, PNG &mdash; max 5MB</p>
                             <div class="upload-preview" id="preview_sponsor_statement"></div>
                         </div>
-                        <input type="file" id="sponsor_statement_file" name="sponsor_statement_file" accept=".pdf,.jpg,.jpeg,.png"
-                            class="upload-input" data-zone="zone_sponsor_statement" data-preview="preview_sponsor_statement">
+                        <input type="file" id="sponsor_statement_file" name="sponsor_statement_file"
+                            accept=".pdf,.jpg,.jpeg,.png" class="upload-input" data-zone="zone_sponsor_statement"
+                            data-preview="preview_sponsor_statement">
                     </div>
 
                     <!-- Statement of Legal Commitment -->
@@ -536,7 +540,8 @@ require_once 'header.php';
                             </div>
                         </label>
                         <div class="sample-actions">
-                            <a href="downloads/statement of legal compliment.docx" class="sample-download" download>Download Sample Statement</a>
+                            <a href="downloads/statement of legal compliment.docx" class="sample-download"
+                                download>Download Sample Statement</a>
                         </div>
                         <div class="upload-drop-zone" id="zone_statement"
                             onclick="document.getElementById('statement_file').click()">
@@ -873,7 +878,7 @@ require_once 'header.php';
         const form = document.getElementById('admissionForm');
         if (form) {
             const submitBtn = form.querySelector('.btn-submit');
-            form.addEventListener('submit', function() {
+            form.addEventListener('submit', function () {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML =
                     'Submitting your application... <i class="fa-solid fa-spinner fa-spin" style="margin-left: 8px;"></i>';
