@@ -89,6 +89,133 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
+// ============================================
+// Handle FILE UPLOAD request (for missing documents)
+// ============================================
+$upload_message = "";
+$upload_message_type = ""; // "success" or "error"
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'upload_files') {
+    $applicant_email = isset($_POST['applicant_email']) ? trim($_POST['applicant_email']) : '';
+    $upload_error = false;
+    $uploaded_files = [];
+
+    if (!empty($applicant_email) && empty($db_error)) {
+        // Helper function to handle file upload
+        function handleAdminFileUpload($fileKey, $fieldLabel)
+        {
+            if (!isset($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] === UPLOAD_ERR_NO_FILE) {
+                return ['path' => null, 'error' => null];
+            }
+
+            $file = $_FILES[$fileKey];
+
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                return ['path' => null, 'error' => "Upload error for $fieldLabel. Please try again."];
+            }
+
+            // Validate file size (max 5MB)
+            $maxSize = 5 * 1024 * 1024;
+            if ($file['size'] > $maxSize) {
+                return ['path' => null, 'error' => "$fieldLabel exceeds the 5MB file size limit."];
+            }
+
+            // Validate MIME type
+            $allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
+
+            if (!in_array($mimeType, $allowedTypes)) {
+                return ['path' => null, 'error' => "$fieldLabel must be a PDF, JPG, or PNG file."];
+            }
+
+            // Generate unique filename
+            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $uniqueName = uniqid($fileKey . '_', true) . '.' . strtolower($ext);
+            $uploadDir = __DIR__ . '/uploads/';
+            $destPath = $uploadDir . $uniqueName;
+
+            if (!move_uploaded_file($file['tmp_name'], $destPath)) {
+                return ['path' => null, 'error' => "Failed to save $fieldLabel. Check server permissions."];
+            }
+
+            return ['path' => 'uploads/' . $uniqueName, 'error' => null];
+        }
+
+        // Process file uploads
+        $healthCertUpload = handleAdminFileUpload('health_cert_file', 'Health Certificate');
+        $sponsorStatementUpload = handleAdminFileUpload('sponsor_statement_file', 'Sponsor Statement');
+
+        // Check for upload errors
+        if (!empty($healthCertUpload['error'])) {
+            $upload_message = $healthCertUpload['error'];
+            $upload_message_type = "error";
+            $upload_error = true;
+        } elseif (!empty($sponsorStatementUpload['error'])) {
+            $upload_message = $sponsorStatementUpload['error'];
+            $upload_message_type = "error";
+            $upload_error = true;
+        } else {
+            // Update database with new files (based on email)
+            $update_fields = [];
+            $update_params = [];
+            $types = "";
+
+            if ($healthCertUpload['path']) {
+                $update_fields[] = "health_cert_file = ?";
+                $update_params[] = $healthCertUpload['path'];
+                $types .= "s";
+                $uploaded_files[] = "Health Certificate";
+            }
+
+            if ($sponsorStatementUpload['path']) {
+                $update_fields[] = "sponsor_statement_file = ?";
+                $update_params[] = $sponsorStatementUpload['path'];
+                $types .= "s";
+                $uploaded_files[] = "Sponsor Statement";
+            }
+
+            if (!empty($update_fields)) {
+                $update_params[] = $applicant_email;
+                $types .= "s";
+
+                $update_sql = "UPDATE tb_interstudent SET " . implode(", ", $update_fields) . " WHERE email = ?";
+
+                if ($stmt = mysqli_prepare($conn, $update_sql)) {
+                    mysqli_stmt_bind_param($stmt, $types, ...$update_params);
+                    if (mysqli_stmt_execute($stmt)) {
+                        $upload_message = "Successfully uploaded: " . implode(", ", $uploaded_files) . " for applicant " . htmlspecialchars($applicant_email);
+                        $upload_message_type = "success";
+                    } else {
+                        $upload_message = "Database update failed. Please try again.";
+                        $upload_message_type = "error";
+                        $upload_error = true;
+                    }
+                    mysqli_stmt_close($stmt);
+                } else {
+                    $upload_message = "Database error. Please try again.";
+                    $upload_message_type = "error";
+                    $upload_error = true;
+                }
+            } else {
+                $upload_message = "No files were selected for upload.";
+                $upload_message_type = "error";
+                $upload_error = true;
+            }
+        }
+    } else {
+        if (empty($applicant_email)) {
+            $upload_message = "Error: Applicant email is missing. Please try again.";
+        } else if (!empty($db_error)) {
+            $upload_message = "Error: Database connection issue. Cannot upload files.";
+        } else {
+            $upload_message = "Error: Unable to process your request. Please try again.";
+        }
+        $upload_message_type = "error";
+    }
+}
+
 // Initialize variables for filtering & search
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $filter_nationality = isset($_GET['nationality']) ? trim($_GET['nationality']) : '';
@@ -184,18 +311,43 @@ if ($filter_education !== '') {
     $types .= "s";
 }
 
-$sql = "SELECT * FROM tb_interstudent";
-if (count($where_clauses) > 0) {
-    $sql .= " WHERE " . implode(" AND ", $where_clauses);
-}
-$sql .= " ORDER BY created_at DESC";
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$perPage = 15;
+$offset = ($page - 1) * $perPage;
 
+$where_sql = count($where_clauses) > 0 ? " WHERE " . implode(" AND ", $where_clauses) : "";
+
+// Count total filtered applicants for pagination
+$total_filtered_applicants = 0;
+if (empty($db_error)) {
+    $count_sql = "SELECT COUNT(*) AS cnt FROM tb_interstudent" . $where_sql;
+    if ($count_stmt = mysqli_prepare($conn, $count_sql)) {
+        if (count($params) > 0) {
+            mysqli_stmt_bind_param($count_stmt, $types, ...$params);
+        }
+        mysqli_stmt_execute($count_stmt);
+        mysqli_stmt_bind_result($count_stmt, $total_filtered_applicants);
+        mysqli_stmt_fetch($count_stmt);
+        mysqli_stmt_close($count_stmt);
+    }
+}
+
+$total_pages = max(1, (int) ceil($total_filtered_applicants / $perPage));
+if ($page > $total_pages) {
+    $page = $total_pages;
+    $offset = ($page - 1) * $perPage;
+}
+
+$sql = "SELECT * FROM tb_interstudent" . $where_sql . " ORDER BY created_at DESC LIMIT ? OFFSET ?";
 $applicants = [];
 if (empty($db_error)) {
     if ($stmt = mysqli_prepare($conn, $sql)) {
-        if (count($params) > 0) {
-            mysqli_stmt_bind_param($stmt, $types, ...$params);
-        }
+        $query_types = $types . "ii";
+        $query_params = $params;
+        $query_params[] = $perPage;
+        $query_params[] = $offset;
+
+        mysqli_stmt_bind_param($stmt, $query_types, ...$query_params);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         while ($row = mysqli_fetch_assoc($result)) {
@@ -688,6 +840,53 @@ if (empty($db_error)) {
             border-radius: 8px;
         }
 
+        .pagination-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.25rem 0 0;
+            padding: 0 1rem;
+        }
+
+        .pagination-info {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .pagination-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            padding: 0.55rem 0.8rem;
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            color: var(--text-dark);
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition-all);
+        }
+
+        .pagination-link:hover {
+            background-color: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .pagination-link.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -975,6 +1174,19 @@ if (empty($db_error)) {
         </div>
         <?php endif; ?>
 
+        <!-- File Upload Message Display -->
+        <?php if (!empty($upload_message)): ?>
+        <div
+            style="<?php echo ($upload_message_type === 'success') ? 'background-color:#f0fdf4;border:1px solid #bbf7d0;color:#166534;' : 'background-color:#fef2f2;border:1px solid #fee2e2;color:#991b1b;'; ?>padding:1.25rem;border-radius:var(--border-radius-md);font-weight:600;display:flex;align-items:center;gap:15px;">
+            <i class="fa-solid <?php echo ($upload_message_type === 'success') ? 'fa-circle-check' : 'fa-circle-exclaim'; ?>"
+                style="font-size:1.5rem;"></i>
+            <div>
+                <strong><?php echo ($upload_message_type === 'success') ? 'Upload Successful!' : 'Upload Error!'; ?></strong><br>
+                <?php echo htmlspecialchars($upload_message); ?>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <!-- Statistics Panel -->
         <div class="metrics-grid">
             <!-- Metric 1: Total Applicants -->
@@ -1136,7 +1348,7 @@ if (empty($db_error)) {
                 <div class="table-header-row">
                     <div class="table-title">
                         <h2>Registrant Listing</h2>
-                        <p>Found <?php echo count($applicants); ?> applicant records</p>
+                        <p>Found <?php echo number_format($total_filtered_applicants); ?> applicant records</p>
                     </div>
                     <?php if (count($applicants) > 0): ?>
                     <a href="admin_export.php?format=xls&search=<?php echo urlencode($search); ?>&nationality=<?php echo urlencode($filter_nationality); ?>&program=<?php echo urlencode($filter_program); ?>&education=<?php echo urlencode($filter_education); ?>"
@@ -1316,6 +1528,12 @@ if (empty($db_error)) {
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                         <button type="button" class="btn-view-details"
+                                            style="border-color:#10b981;color:#10b981;"
+                                            onclick="openUploadModal('<?php echo htmlspecialchars($applicant['email'], ENT_QUOTES, 'UTF-8'); ?>')"
+                                            title="Upload Documents">
+                                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                                        </button>
+                                        <button type="button" class="btn-view-details"
                                             style="border-color:#ef4444;color:#ef4444;"
                                             onclick="deleteApplicant(<?php echo $applicant['id']; ?>)" title="Delete">
                                             <i class="fa-solid fa-trash"></i>
@@ -1327,7 +1545,7 @@ if (empty($db_error)) {
                             <?php endforeach; ?>
                             <?php else: ?>
                             <tr>
-                                <td colspan="8" class="empty-table-state">
+                                <td colspan="9" class="empty-table-state">
                                     <i class="fa-solid fa-folder-open"></i>
                                     No applicant records found matching your filters.
                                 </td>
@@ -1335,6 +1553,30 @@ if (empty($db_error)) {
                             <?php endif; ?>
                         </tbody>
                     </table>
+
+                    <?php if ($total_filtered_applicants > $perPage): ?>
+                    <div class="pagination-wrapper">
+                        <div class="pagination-info">
+                            Showing
+                            <?php echo $offset + 1; ?>–<?php echo min($offset + $perPage, $total_filtered_applicants); ?>
+                            of <?php echo $total_filtered_applicants; ?> applicants
+                        </div>
+                        <div class="pagination-buttons">
+                            <?php if ($page > 1): ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>"
+                                class="pagination-link">&laquo; Prev</a>
+                            <?php endif; ?>
+                            <?php for ($p = 1; $p <= $total_pages; $p++): ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $p])); ?>"
+                                class="pagination-link<?php echo $p === $page ? ' active' : ''; ?>"><?php echo $p; ?></a>
+                            <?php endfor; ?>
+                            <?php if ($page < $total_pages): ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>"
+                                class="pagination-link">Next &raquo;</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                 </div>
 
             </div>
@@ -1604,6 +1846,84 @@ if (empty($db_error)) {
         </div>
     </div>
 
+    <!-- Upload Missing Documents Modal -->
+    <div class="modal-overlay" id="uploadFilesModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-cloud-arrow-up"></i> Upload Missing Documents</h3>
+                <button class="btn-modal-close" type="button" onclick="closeUploadModal()"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="uploadFilesForm" method="POST" enctype="multipart/form-data"
+                style="display:flex;flex-direction:column;height:100%;">
+                <input type="hidden" name="action" value="upload_files">
+                <input type="hidden" name="applicant_email" id="upload_applicant_email">
+
+                <div class="modal-body" style="flex-grow:1;overflow-y:auto;">
+                    <!-- Applicant Info -->
+                    <div class="modal-section">
+                        <div class="modal-section-title">Applicant Information</div>
+                        <div class="modal-field">
+                            <h5>Applicant Email</h5>
+                            <p id="upload_email_display" style="color: var(--text-dark); font-weight: 600;">—</p>
+                        </div>
+                    </div>
+
+                    <!-- File Upload Fields -->
+                    <div class="modal-section">
+                        <div class="modal-section-title">Upload Documents</div>
+                        <div style="display:flex;flex-direction:column;gap:1.5rem;">
+
+                            <!-- Health Certificate -->
+                            <div class="modal-field" style="display:flex;flex-direction:column;gap:0.5rem;">
+                                <h5><i class="fa-solid fa-file-medical"
+                                        style="color:var(--primary);margin-right:5px;"></i>Health Certificate (Optional)
+                                </h5>
+                                <p style="font-size:0.8rem;color:var(--text-light);">Upload health certificate (PDF,
+                                    JPG, or PNG)</p>
+                                <input type="file" name="health_cert_file" id="health_cert_file" class="form-control"
+                                    accept=".pdf,.jpg,.jpeg,.png"
+                                    style="padding:10px;border:2px dashed var(--border-color);border-radius:6px;cursor:pointer;">
+                                <small id="health_cert_file_error" style="color:#ef4444;display:none;"></small>
+                            </div>
+
+                            <!-- Sponsor Statement -->
+                            <div class="modal-field" style="display:flex;flex-direction:column;gap:0.5rem;">
+                                <h5><i class="fa-solid fa-handshake-angle"
+                                        style="color:var(--primary);margin-right:5px;"></i>Sponsor Statement (Optional)
+                                </h5>
+                                <p style="font-size:0.8rem;color:var(--text-light);">Upload sponsor/parent statement
+                                    (PDF, JPG, or PNG)</p>
+                                <input type="file" name="sponsor_statement_file" id="sponsor_statement_file"
+                                    class="form-control" accept=".pdf,.jpg,.jpeg,.png"
+                                    style="padding:10px;border:2px dashed var(--border-color);border-radius:6px;cursor:pointer;">
+                                <small id="sponsor_statement_file_error" style="color:#ef4444;display:none;"></small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Info Box -->
+                    <div
+                        style="background-color:#f0fdf4;border-left:4px solid var(--primary);padding:1rem;border-radius:6px;font-size:0.85rem;color:var(--text-muted);">
+                        <i class="fa-solid fa-circle-info" style="color:var(--primary);margin-right:6px;"></i>
+                        <strong>File Requirements:</strong> Max size 5MB per file. Accepted formats: PDF, JPG, PNG
+                    </div>
+                </div>
+
+                <div
+                    style="padding:2rem;border-top:1px solid var(--border-color);display:flex;gap:1rem;justify-content:flex-end;">
+                    <button type="button" class="btn-reset-filter" onclick="closeUploadModal()" style="margin:0;">
+                        <i class="fa-solid fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn-submit-filter" style="background-color:var(--primary);margin:0;">
+                        <i class="fa-solid fa-upload"></i> Upload Files
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Client-side applicant database for instant details loader -->
     <script>
         // Convert PHP array of applicants to client JSON
@@ -1745,6 +2065,64 @@ if (empty($db_error)) {
                 form.submit();
             }
         }
+
+        // ============================================
+        // FILE UPLOAD FUNCTIONALITY
+        // ============================================
+        const uploadFilesModal = document.getElementById('uploadFilesModal');
+        const uploadFilesForm = document.getElementById('uploadFilesForm');
+
+        function openUploadModal(email) {
+            // Set the email in the hidden field
+            document.getElementById('upload_applicant_email').value = email;
+            document.getElementById('upload_email_display').innerText = email;
+
+            // Clear file inputs
+            document.getElementById('health_cert_file').value = '';
+            document.getElementById('sponsor_statement_file').value = '';
+
+            // Clear previous error messages
+            document.getElementById('health_cert_file_error').style.display = 'none';
+            document.getElementById('sponsor_statement_file_error').style.display = 'none';
+            document.getElementById('health_cert_file_error').innerText = '';
+            document.getElementById('sponsor_statement_file_error').innerText = '';
+
+            // Show modal
+            uploadFilesModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUploadModal() {
+            uploadFilesModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Close upload modal when clicking on overlay background
+        uploadFilesModal.addEventListener('click', (e) => {
+            if (e.target === uploadFilesModal) {
+                closeUploadModal();
+            }
+        });
+
+        // Handle upload form submission
+        uploadFilesForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Validate that at least one file is selected
+            const healthCertFile = document.getElementById('health_cert_file').files.length;
+            const sponsorStatementFile = document.getElementById('sponsor_statement_file').files.length;
+
+            if (healthCertFile === 0 && sponsorStatementFile === 0) {
+                alert('Please select at least one file to upload.');
+                return;
+            }
+
+            // Clear previous errors
+            document.getElementById('health_cert_file_error').style.display = 'none';
+            document.getElementById('sponsor_statement_file_error').style.display = 'none';
+
+            uploadFilesForm.submit();
+        });
     </script>
 </body>
 
