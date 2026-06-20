@@ -216,7 +216,7 @@ require_once 'header.php';
             <p style="margin:0;">
                 International student registration for the Health Promotion Department
                 <?php if (!empty($waktu_tutup_str)): ?>
-                was closed on <strong><?php echo date('d F Y, H:i', strtotime($waktu_tutup_str)); ?> WIB</strong>.
+                was closed on <strong><?php echo date('d F Y, h:i A', strtotime($waktu_tutup_str)); ?> (WIB, UTC+7)</strong>.
                 <?php else: ?>
                 is currently unavailable.
                 <?php endif; ?>
@@ -231,7 +231,7 @@ require_once 'header.php';
                 <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.4rem;"></i>
                 <div>
                     <strong>Attention!</strong> Registration will be
-                    <strong>closed on <?php echo date('d F Y, H:i', strtotime($waktu_tutup_str)); ?> WIB</strong>.
+                    <strong>closed on <?php echo date('d F Y, h:i A', strtotime($waktu_tutup_str)); ?> (WIB, UTC+7)</strong>.
                     Please complete and submit your form immediately.
                 </div>
             </div>
@@ -241,7 +241,7 @@ require_once 'header.php';
                 <i class="fa-solid fa-circle-info" style="font-size: 1.2rem;"></i>
                 <div>
                     Registration will be closed on
-                    <strong><?php echo date('d F Y, H:i', strtotime($waktu_tutup_str)); ?> WIB</strong>.
+                    <strong><?php echo date('d F Y, h:i A', strtotime($waktu_tutup_str)); ?> WIB (UTC+7)</strong>.
                 </div>
             </div>
             <?php endif; ?>
