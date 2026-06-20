@@ -1,6 +1,7 @@
 <?php
 // Include database connection
 require_once 'koneksi.php';
+require_once 'cek_status.php';
 
 $message = "";
 $message_type = ""; // "success" or "error"
@@ -55,7 +56,10 @@ function handleFileUpload($fileKey, $fieldLabel)
     return ['path' => 'uploads/' . $uniqueName, 'error' => null];
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error) && $pendaftaran_tutup) {
+    $message = "Sorry, the international student registration for the Health Promotion program has been closed. Your data cannot be processed.";
+    $message_type = "error";
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($db_connection_error)) {
     // Collect and sanitize/validate required fields
     $firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
     $lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
@@ -203,6 +207,44 @@ require_once 'header.php';
             <div><?php echo htmlspecialchars($message); ?></div>
         </div>
         <?php endif; ?>
+
+        <?php if ($pendaftaran_tutup): ?>
+        <!-- ===== REGISTRATION CLOSED ===== -->
+        <div class="alert alert-error" style="text-align:center; flex-direction:column; gap:8px; padding:2rem;">
+            <i class="fa-solid fa-lock" style="font-size: 2rem;"></i>
+            <h3 style="margin:0;">Registration Has Been Closed</h3>
+            <p style="margin:0;">
+                International student registration for the Health Promotion Department
+                <?php if (!empty($waktu_tutup_str)): ?>
+                was closed on <strong><?php echo date('d F Y, H:i', strtotime($waktu_tutup_str)); ?> WIB</strong>.
+                <?php else: ?>
+                is currently unavailable.
+                <?php endif; ?>
+            </p>
+            <p style="margin:0; font-size:0.9rem;">Please contact the Office of International Affairs for further information.</p>
+        </div>
+        <?php else: ?>
+
+            <?php if ($selisih_detik !== null && $selisih_detik > 0 && $selisih_detik <= 3600): ?>
+            <!-- ===== WARNING: LESS THAN 1 HOUR BEFORE CLOSING ===== -->
+            <div class="alert" style="text-align:center; background:#fff3cd; border:1px solid #ffc107; color:#7a5b00;">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.4rem;"></i>
+                <div>
+                    <strong>Attention!</strong> Registration will be
+                    <strong>closed on <?php echo date('d F Y, H:i', strtotime($waktu_tutup_str)); ?> WIB</strong>.
+                    Please complete and submit your form immediately.
+                </div>
+            </div>
+            <?php elseif (!empty($waktu_tutup_str)): ?>
+            <!-- ===== INFO: REGISTRATION CLOSING DATE ===== -->
+            <div class="alert" style="text-align:center; background:#e7f3ff; border:1px solid #90caf9; color:#0d47a1;">
+                <i class="fa-solid fa-circle-info" style="font-size: 1.2rem;"></i>
+                <div>
+                    Registration will be closed on
+                    <strong><?php echo date('d F Y, H:i', strtotime($waktu_tutup_str)); ?> WIB</strong>.
+                </div>
+            </div>
+            <?php endif; ?>
 
         <form id="admissionForm" action="register.php" method="POST" enctype="multipart/form-data">
 
@@ -559,6 +601,7 @@ require_once 'header.php';
             <button type="submit" class="btn-submit">Submit Registration <i class="fa-solid fa-paper-plane"
                     style="margin-left: 8px;"></i></button>
         </form>
+        <?php endif; // end if ($pendaftaran_tutup) ... else ... ?>
     </div>
 </section>
 

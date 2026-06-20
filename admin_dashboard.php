@@ -8,11 +8,50 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 }
 
 require_once 'koneksi.php';
+require_once 'cek_status.php';
 
 // Check connection
 $db_error = "";
 if (isset($db_connection_error)) {
     $db_error = $db_connection_error;
+}
+
+// ============================================
+// Handle UPDATE STATUS PENDAFTARAN (buka/tutup + waktu otomatis)
+// ============================================
+$status_message = "";
+$status_message_type = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status_pendaftaran') {
+    if (empty($db_error)) {
+        $status_baru = (isset($_POST['status_pendaftaran']) && $_POST['status_pendaftaran'] === 'tutup') ? 'tutup' : 'buka';
+        $waktu_baru  = isset($_POST['waktu_tutup']) ? trim($_POST['waktu_tutup']) : '';
+        // input datetime-local format: 2026-06-20T12:00 -> convert to 'Y-m-d H:i:s'
+        $waktu_baru = str_replace('T', ' ', $waktu_baru);
+        if (!empty($waktu_baru) && strlen($waktu_baru) === 16) {
+            $waktu_baru .= ':00';
+        }
+
+        $ok1 = updateSettingValue($conn, 'status_pendaftaran', $status_baru);
+        $ok2 = true;
+        if (!empty($waktu_baru)) {
+            $ok2 = updateSettingValue($conn, 'waktu_tutup', $waktu_baru);
+        }
+
+        if ($ok1 && $ok2) {
+            header("Location: admin_dashboard.php?status_updated=1");
+            exit;
+        } else {
+            $status_message = "Gagal memperbarui status pendaftaran: " . mysqli_error($conn);
+            $status_message_type = "error";
+        }
+    }
+}
+
+// Show success message after redirect from status update
+if (isset($_GET['status_updated']) && $_GET['status_updated'] == '1') {
+    $status_message = "Status pendaftaran berhasil diperbarui.";
+    $status_message_type = "success";
 }
 
 // ============================================
@@ -1186,6 +1225,64 @@ if (empty($db_error)) {
             </div>
         </div>
         <?php endif; ?>
+
+        <!-- Status Pendaftaran Message Display -->
+        <?php if (!empty($status_message)): ?>
+        <div
+            style="<?php echo ($status_message_type === 'success') ? 'background-color:#f0fdf4;border:1px solid #bbf7d0;color:#166534;' : 'background-color:#fef2f2;border:1px solid #fee2e2;color:#991b1b;'; ?>padding:1.25rem;border-radius:var(--border-radius-md);font-weight:600;display:flex;align-items:center;gap:15px;margin-bottom: 1.5rem;">
+            <i class="fa-solid <?php echo ($status_message_type === 'success') ? 'fa-circle-check' : 'fa-circle-exclaim'; ?>"
+                style="font-size:1.5rem;"></i>
+            <div><?php echo htmlspecialchars($status_message); ?></div>
+        </div>
+        <?php endif; ?>
+
+        <!-- ============================================ -->
+        <!-- PANEL KONTROL: BUKA / TUTUP PENDAFTARAN       -->
+        <!-- ============================================ -->
+        <div class="metric-card" style="margin-bottom: 1.5rem; display:block; padding: 1.5rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom: 1rem;">
+                <h3 style="margin:0; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-toggle-on" style="color: var(--primary);"></i>
+                    Kontrol Pendaftaran
+                </h3>
+                <span style="font-weight:700; padding:6px 14px; border-radius:20px; font-size:0.85rem;
+                    <?php echo $pendaftaran_tutup
+                        ? 'background:#fee2e2;color:#991b1b;'
+                        : 'background:#dcfce7;color:#166534;'; ?>">
+                    <i class="fa-solid <?php echo $pendaftaran_tutup ? 'fa-lock' : 'fa-lock-open'; ?>"></i>
+                    <?php echo $pendaftaran_tutup ? 'TUTUP' : 'BUKA'; ?>
+                </span>
+            </div>
+
+            <form method="POST" action="admin_dashboard.php"
+                style="display:flex; flex-wrap:wrap; align-items:end; gap:1rem;">
+                <input type="hidden" name="action" value="update_status_pendaftaran">
+
+                <div>
+                    <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px; color: var(--text-light);">Status Manual</label>
+                    <select name="status_pendaftaran"
+                        style="padding:8px 12px; border-radius:8px; border:1px solid #cbd5e0;">
+                        <option value="buka" <?php echo ($status_manual === 'buka') ? 'selected' : ''; ?>>Buka</option>
+                        <option value="tutup" <?php echo ($status_manual === 'tutup') ? 'selected' : ''; ?>>Tutup</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px; color: var(--text-light);">Tutup Otomatis Pada</label>
+                    <input type="datetime-local" name="waktu_tutup"
+                        value="<?php echo !empty($waktu_tutup_str) ? date('Y-m-d\TH:i', strtotime($waktu_tutup_str)) : ''; ?>"
+                        style="padding:8px 12px; border-radius:8px; border:1px solid #cbd5e0;">
+                </div>
+
+                <button type="submit" class="btn-logout" style="background: var(--primary); border:none;">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan
+                </button>
+            </form>
+            <p style="margin: 0.75rem 0 0; font-size:0.78rem; color: var(--text-light);">
+                Jika "Status Manual" diset ke <strong>Tutup</strong>, pendaftaran langsung tertutup terlepas dari jam.
+                Jika diset <strong>Buka</strong>, pendaftaran otomatis tertutup saat melewati "Tutup Otomatis Pada".
+            </p>
+        </div>
 
         <!-- Statistics Panel -->
         <div class="metrics-grid">
