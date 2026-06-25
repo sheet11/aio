@@ -117,7 +117,7 @@ if ($format === 'csv') {
             $row['nationality'],
             $row['passport'],
             $row['email'],
-            $row['phone'],
+            '+' . $row['phone'],
             $row['current_location'],
             $row['education_level'],
             $row['gpa'],
@@ -225,7 +225,7 @@ foreach ($applicants as $row) {
     echo "<td>" . exportValue($row['nationality']) . "</td>";
     echo "<td>" . exportValue($row['passport']) . "</td>";
     echo "<td>" . exportValue($row['email']) . "</td>";
-    echo "<td>" . exportValue('+' . $row['phone']) . "</td>";
+    echo "<td>" . exportValue($row['phone']) . "</td>";
     echo "<td>" . exportValue($row['current_location']) . "</td>";
     echo "<td>" . exportValue($row['education_level']) . "</td>";
     echo "<td>" . exportValue($row['gpa']) . "</td>";
